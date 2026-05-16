@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CFG Mockups — Collaboration for Good</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Georgia', serif;
+      background: #f9f7f4;
+      color: #2c2c2c;
+      padding: 48px 24px;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    header { margin-bottom: 48px; }
+    header h1 { font-size: 28px; font-weight: normal; letter-spacing: -0.5px; }
+    header p { margin-top: 8px; color: #666; font-family: sans-serif; font-size: 14px; }
+    .badge {
+      display: inline-block;
+      margin-top: 12px;
+      font-family: sans-serif;
+      font-size: 11px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      background: #e8f0e4;
+      color: #3a6b35;
+      padding: 4px 10px;
+      border-radius: 4px;
+    }
+    h2 {
+      font-size: 13px;
+      font-family: sans-serif;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #999;
+      margin-bottom: 16px;
+    }
+    .grid { display: grid; gap: 12px; margin-bottom: 48px; }
+    .card {
+      background: #fff;
+      border: 1px solid #e5e2dc;
+      border-radius: 8px;
+      padding: 20px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-decoration: none;
+      color: inherit;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .card:hover { border-color: #3a6b35; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .card-left h3 { font-size: 17px; font-weight: normal; }
+    .card-left span { font-family: sans-serif; font-size: 12px; color: #999; margin-top: 4px; display: block; }
+    .status {
+      font-family: sans-serif;
+      font-size: 11px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 20px;
+      white-space: nowrap;
+    }
+    .status.ready    { background: #e8f0e4; color: #3a6b35; }
+    .status.progress { background: #fff3e0; color: #e65c00; }
+    .status.pending  { background: #f0f0f0; color: #999; }
+    .status.revision { background: #fce4ec; color: #c62828; }
+    .disabled { pointer-events: none; opacity: 0.45; }
+    footer {
+      font-family: sans-serif;
+      font-size: 12px;
+      color: #bbb;
+      border-top: 1px solid #e5e2dc;
+      padding-top: 24px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <header>
+      <h1>Collaboration for Good — Site Mockups</h1>
+      <p>Website Redesign &amp; Brand Consolidation &nbsp;·&nbsp; Intern: Aaron Hurst, UAT &nbsp;·&nbsp; Principal: Tyler Butler</p>
+      <span class="badge">Phase 1 — Audit &amp; Discovery</span>
+    </header>
+
+    <h2>Page Mockups</h2>
+    <div class="grid">
+
+      <a href="01_Audit_and_Discovery/mockups/home/" class="card disabled">
+        <div class="card-left">
+          <h3>Home</h3>
+          <span>Primary landing page · hero, value prop, social proof, CTA</span>
+        </div>
+        <span class="status pending">Not Started</span>
+      </a>
+
+      <a href="01_Audit_and_Discovery/mockups/about/" class="card disabled">
+        <div class="card-left">
+          <h3>About</h3>
+          <span>Tyler's bio · Forbes credentials · client history · personal brand</span>
+        </div>
+        <span class="status pending">Not Started</span>
+      </a>
+
+      <a href="01_Audit_and_Discovery/mockups/capabilities/" class="card disabled">
+        <div class="card-left">
+          <h3>Capabilities</h3>
+          <span>Collaborate / Create / Report / Lead framework</span>
+        </div>
+        <span class="status pending">Not Started</span>
+      </a>
+
+      <a href="01_Audit_and_Discovery/mockups/impact/" class="card disabled">
+        <div class="card-left">
+          <h3>Impact / Case Studies</h3>
+          <span>Microsoft, GoDaddy, Lyft, Bridgestone — documented results</span>
+        </div>
+        <span class="status pending">Not Started</span>
+      </a>
+
+      <a href="01_Audit_and_Discovery/mockups/insights/" class="card disabled">
+        <div class="card-left">
+          <h3>Insights / Blog</h3>
+          <span>Forbes column integration · content syndication strategy</span>
+        </div>
+        <span class="status pending">Not Started</span>
+      </a>
+
+      <a href="01_Audit_and_Discovery/mockups/contact/" class="card disabled">
+        <div class="card-left">
+          <h3>Contact</h3>
+          <span>First build · fixes "Send us a Massage" · Calendly integration</span>
+        </div>
+        <span class="status pending">Not Started</span>
+      </a>
+
+    </div>
+
+    <footer>
+      <p>Collaboration for Good, LLC &nbsp;·&nbsp; 3219 E. Camelback Rd. #299, Phoenix, AZ 85018</p>
+      <p style="margin-top:6px;">Feedback? Reply to your weekly status email.</p>
+    </footer>
+
+  </div>
+</body>
+</html>
