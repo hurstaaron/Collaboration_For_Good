@@ -1,0 +1,918 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFG — Desert Authority Mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --terra:      #7D3D28;
+      --terra-lt:   #A0533A;
+      --sage:       #4A7C59;
+      --sage-lt:    #6A9E78;
+      --sage-mist:  #D6E8DB;
+      --sand:       #F5EFE0;
+      --sand-dk:    #EDE5D2;
+      --stone:      #C4A882;
+      --stone-lt:   #DDD1BC;
+      --ink:        #1E1612;
+      --bark:       #3A2516;
+      --orange:     #D94E1F;
+      --crimson:    #C42B18;
+      --amber:      #E8791A;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--sand);
+      color: var(--ink);
+      overflow-x: hidden;
+    }
+
+    /* ── PALETTE BANNER ──────────────────────────── */
+    .palette-bar {
+      background: var(--ink);
+      padding: 18px 40px;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .palette-label {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--stone); margin-right: 8px;
+    }
+    .swatch { display: flex; align-items: center; gap: 8px; }
+    .swatch-dot { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; }
+    .swatch-info { display: flex; flex-direction: column; }
+    .swatch-name { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--stone); }
+    .swatch-hex  { font-size: 11px; color: var(--stone-lt); font-family: monospace; }
+    .swatch-divider { width: 1px; height: 36px; background: #3a2516; margin: 0 4px; }
+
+    /* ── NAV ─────────────────────────────────────── */
+    nav {
+      background: var(--sand);
+      padding: 0 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 78px;
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--stone-lt);
+    }
+    .logo-area { display: flex; align-items: center; gap: 14px; }
+    .logo-heart { width: 44px; height: 44px; flex-shrink: 0; }
+    .logo-heart svg { width: 100%; height: 100%; }
+    .logo-wordmark { display: flex; flex-direction: column; line-height: 1; }
+    .logo-wordmark .top {
+      font-family: 'DM Sans', sans-serif; font-weight: 600;
+      font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--ink);
+    }
+    .logo-wordmark .mid {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 11px; color: var(--terra); letter-spacing: 0.08em; padding: 1px 0;
+    }
+    .logo-wordmark .bot {
+      font-family: 'DM Sans', sans-serif; font-weight: 600;
+      font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--ink);
+    }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--bark);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--terra); }
+    .nav-cta {
+      background: var(--sage) !important; color: white !important;
+      padding: 10px 22px; border-radius: 2px;
+      font-weight: 600 !important; transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--sage-lt) !important; }
+
+    /* ── HERO ─────────────────────────────────────── */
+    .hero {
+      background: var(--sand);
+      min-height: 90vh;
+      display: grid;
+      grid-template-rows: 1fr auto;
+    }
+    .hero-main {
+      display: grid;
+      grid-template-columns: 1fr 420px;
+      gap: 0;
+    }
+    .hero-content {
+      padding: 96px 72px 80px 56px;
+      display: flex; flex-direction: column; justify-content: center;
+      border-right: 1px solid var(--stone-lt);
+    }
+    .hero-tag {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: var(--sage-mist);
+      border: 1px solid rgba(74,124,89,0.2);
+      padding: 7px 14px; border-radius: 100px;
+      margin-bottom: 36px; width: fit-content;
+    }
+    .hero-tag-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--sage); }
+    .hero-tag-text {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--sage);
+    }
+    .hero-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 82px; font-weight: 300;
+      line-height: 0.92; color: var(--ink);
+      margin-bottom: 36px; letter-spacing: -0.01em;
+    }
+    .hero-headline .word-em {
+      font-style: italic; color: var(--terra);
+    }
+    .hero-headline .word-bold {
+      font-weight: 700;
+    }
+    .hero-sub-row {
+      display: flex; align-items: flex-start; gap: 40px;
+      margin-bottom: 56px;
+    }
+    .hero-rule { width: 1px; background: var(--stone); align-self: stretch; flex-shrink: 0; }
+    .hero-body {
+      font-size: 16px; font-weight: 300; line-height: 1.8;
+      color: var(--bark); flex: 1;
+    }
+    .hero-actions { display: flex; gap: 14px; align-items: center; }
+    .btn-terra {
+      background: var(--terra); color: var(--sand);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 15px 32px; border: none; border-radius: 2px;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: background 0.2s;
+    }
+    .btn-terra:hover { background: var(--bark); }
+    .btn-sage {
+      background: transparent; color: var(--sage);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 14px 28px;
+      border: 1px solid var(--sage);
+      border-radius: 2px; cursor: pointer;
+      text-decoration: none; display: inline-block;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-sage:hover { background: var(--sage); color: white; }
+
+    .hero-sidebar {
+      background: var(--ink);
+      padding: 64px 44px;
+      display: flex; flex-direction: column; justify-content: space-between;
+      position: relative; overflow: hidden;
+    }
+    .hero-sidebar::before {
+      content: '';
+      position: absolute; bottom: -80px; right: -80px;
+      width: 280px; height: 280px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(125,61,40,0.35) 0%, transparent 70%);
+    }
+    .sidebar-press {
+      position: relative; z-index: 1;
+    }
+    .sidebar-kicker {
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--stone); margin-bottom: 18px;
+    }
+    .sidebar-press-names {
+      display: flex; flex-direction: column; gap: 10px;
+    }
+    .sidebar-press-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 700; font-style: italic;
+      color: rgba(245,239,224,0.28); letter-spacing: 0.02em;
+    }
+    .sidebar-quote {
+      position: relative; z-index: 1;
+    }
+    .sidebar-quote-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-style: italic; font-weight: 300;
+      line-height: 1.5; color: var(--sand);
+      margin-bottom: 18px;
+    }
+    .sidebar-quote-attr {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--terra-lt);
+    }
+    .sidebar-stats {
+      position: relative; z-index: 1;
+      border-top: 1px solid rgba(255,255,255,0.07);
+      padding-top: 28px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    .sidebar-stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 38px; font-weight: 700;
+      color: var(--sand); line-height: 1; margin-bottom: 4px;
+    }
+    .sidebar-stat-num span { color: var(--terra-lt); font-size: 20px; }
+    .sidebar-stat-label {
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: rgba(245,239,224,0.35);
+    }
+
+    /* ── SAGE BAND ───────────────────────────────── */
+    .sage-band {
+      background: var(--sage);
+      padding: 28px 56px;
+      display: flex; align-items: center;
+      justify-content: center; gap: 48px;
+      flex-wrap: wrap;
+    }
+    .sage-band-item {
+      display: flex; align-items: center; gap: 14px;
+    }
+    .sage-band-icon { font-size: 18px; }
+    .sage-band-text {
+      font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,0.85); letter-spacing: 0.02em;
+    }
+    .sage-band-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.2); }
+
+    /* ── CAPABILITIES ─────────────────────────────── */
+    .capabilities {
+      background: var(--sand-dk);
+      padding: 100px 56px;
+    }
+    .section-intro {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 64px; margin-bottom: 72px; align-items: end;
+    }
+    .eyebrow-row {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 16px;
+    }
+    .eyebrow-leaf { color: var(--sage); font-size: 14px; }
+    .eyebrow-txt {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.26em;
+      text-transform: uppercase; color: var(--sage);
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 50px; font-weight: 600;
+      line-height: 1.08; color: var(--ink);
+    }
+    .section-body {
+      font-size: 15px; font-weight: 300;
+      line-height: 1.8; color: var(--bark);
+      margin-bottom: 28px;
+    }
+    .section-link {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--terra); text-decoration: none;
+      border-bottom: 1px solid var(--terra); padding-bottom: 2px;
+    }
+
+    .cap-grid {
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px;
+    }
+    .cap-card {
+      background: var(--sand);
+      padding: 48px 32px;
+      position: relative; overflow: hidden;
+      transition: background 0.25s; cursor: default;
+    }
+    .cap-card:hover { background: white; }
+    .cap-card-top {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 28px;
+    }
+    .cap-card-icon {
+      width: 44px; height: 44px;
+      border-radius: 50%;
+      background: var(--sage-mist);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .cap-card-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 14px; font-weight: 600;
+      color: var(--stone); letter-spacing: 0.08em;
+    }
+    .cap-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-weight: 600;
+      color: var(--ink); margin-bottom: 14px;
+    }
+    .cap-card-body {
+      font-size: 13px; font-weight: 300;
+      line-height: 1.75; color: var(--bark);
+    }
+    .cap-card-bar {
+      position: absolute; bottom: 0; left: 0;
+      height: 3px; width: 0; background: var(--terra);
+      transition: width 0.4s ease;
+    }
+    .cap-card:hover .cap-card-bar { width: 100%; }
+
+    /* ── ABOUT ────────────────────────────────────── */
+    .about-section {
+      background: var(--sand);
+      padding: 100px 56px;
+      display: grid;
+      grid-template-columns: 560px 1fr;
+      gap: 80px; align-items: start;
+    }
+    .about-sticky { position: sticky; top: 100px; }
+    .about-eyebrow {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+    }
+    .about-eyebrow .eyebrow-leaf { color: var(--terra); }
+    .about-eyebrow .eyebrow-txt { color: var(--terra); }
+    .about-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px; font-weight: 600;
+      line-height: 1.1; color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .about-headline em { font-style: italic; color: var(--terra); }
+    .about-subhead {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 300; font-style: italic;
+      color: var(--stone); margin-bottom: 32px;
+    }
+    .about-body {
+      font-size: 15px; font-weight: 300;
+      line-height: 1.85; color: var(--bark);
+      margin-bottom: 36px;
+    }
+    .about-creds {
+      display: flex; flex-direction: column; gap: 0;
+      margin-bottom: 40px;
+      border: 1px solid var(--stone-lt); border-radius: 2px;
+      overflow: hidden;
+    }
+    .cred-row {
+      display: flex; align-items: center; gap: 16px;
+      padding: 16px 20px;
+      border-bottom: 1px solid var(--stone-lt);
+      background: white;
+    }
+    .cred-row:last-child { border-bottom: none; }
+    .cred-icon { font-size: 16px; flex-shrink: 0; }
+    .cred-text {
+      font-size: 13px; font-weight: 400;
+      color: var(--ink);
+    }
+    .about-btns { display: flex; gap: 12px; }
+    .about-right { }
+    .quote-card {
+      background: var(--terra);
+      padding: 52px 44px;
+      margin-bottom: 3px;
+      position: relative; overflow: hidden;
+    }
+    .quote-card::after {
+      content: '\201C';
+      position: absolute; top: -30px; right: 20px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 200px; font-weight: 700;
+      color: rgba(255,255,255,0.07);
+      line-height: 1; pointer-events: none;
+    }
+    .quote-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-style: italic; font-weight: 300;
+      line-height: 1.55; color: var(--sand);
+      margin-bottom: 24px; position: relative; z-index: 1;
+    }
+    .quote-attr {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(245,239,224,0.55);
+    }
+    .bcorp-card {
+      background: var(--sage-mist);
+      border: 1px solid rgba(74,124,89,0.2);
+      padding: 36px 44px;
+      margin-bottom: 3px;
+      display: flex; align-items: center; justify-content: space-between; gap: 24px;
+    }
+    .bcorp-left { }
+    .bcorp-label {
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--sage); margin-bottom: 8px;
+    }
+    .bcorp-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 600;
+      color: var(--sage); line-height: 1.2;
+    }
+    .bcorp-badge {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: var(--sage);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .bcorp-badge-inner {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: white; text-align: center; line-height: 1.4;
+    }
+    .client-card {
+      background: var(--sand-dk); padding: 32px 44px;
+    }
+    .client-label {
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--stone); margin-bottom: 18px;
+    }
+    .client-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+    .client-tag {
+      background: white; border: 1px solid var(--stone-lt);
+      padding: 6px 14px; border-radius: 100px;
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      color: var(--bark);
+    }
+
+    /* ── CTA ──────────────────────────────────────── */
+    .cta-section {
+      background: var(--ink);
+      padding: 100px 56px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; top: -100px; left: 40%;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,124,89,0.12) 0%, transparent 65%);
+    }
+    .cta-left { position: relative; z-index: 1; }
+    .cta-eyebrow {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 20px;
+    }
+    .cta-eyebrow .eyebrow-leaf { color: var(--sage-lt); }
+    .cta-eyebrow .eyebrow-txt { color: var(--sage-lt); }
+    .cta-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 54px; font-weight: 300;
+      line-height: 1.1; color: var(--sand);
+      margin-bottom: 28px;
+    }
+    .cta-headline em { font-style: italic; font-weight: 700; color: var(--terra-lt); }
+    .cta-body {
+      font-size: 15px; font-weight: 300;
+      line-height: 1.75; color: rgba(245,239,224,0.5);
+    }
+    .cta-right {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; gap: 3px;
+    }
+    .cta-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 32px 36px;
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 20px;
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .cta-card:hover { background: rgba(74,124,89,0.15); border-color: var(--sage); }
+    .cta-card-icon {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(255,255,255,0.05);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; flex-shrink: 0;
+    }
+    .cta-card-body { flex: 1; }
+    .cta-card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 600;
+      color: var(--sand); margin-bottom: 4px;
+    }
+    .cta-card-sub {
+      font-size: 12px; font-weight: 300;
+      color: rgba(245,239,224,0.4);
+    }
+    .cta-card-arrow { font-size: 18px; color: var(--terra-lt); }
+
+    /* ── FOOTER ───────────────────────────────────── */
+    footer {
+      background: var(--bark);
+      padding: 64px 56px 32px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+      margin-bottom: 32px;
+    }
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 600;
+      color: var(--sand); margin-bottom: 12px;
+    }
+    .footer-tagline {
+      font-size: 13px; font-weight: 300;
+      line-height: 1.7; color: rgba(245,239,224,0.38);
+      max-width: 240px; margin-bottom: 20px;
+    }
+    .footer-address {
+      font-size: 11px; color: rgba(245,239,224,0.22); line-height: 1.7;
+    }
+    .footer-col-title {
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--stone); margin-bottom: 20px;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .footer-links a {
+      font-size: 13px; font-weight: 300;
+      color: rgba(245,239,224,0.38); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--sand); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy { font-size: 11px; color: rgba(245,239,242,0.18); letter-spacing: 0.04em; }
+    .footer-bcorp {
+      display: flex; align-items: center; gap: 10px;
+    }
+    .bcorp-pip { width: 8px; height: 8px; border-radius: 50%; background: var(--sage); }
+    .bcorp-txt {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--sage-lt);
+    }
+
+    .mockup-label {
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--terra); color: white;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 8px 14px; border-radius: 2px; z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+
+<!-- PALETTE BANNER -->
+<div class="palette-bar">
+  <span class="palette-label">Desert Authority — Color System</span>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#7D3D28;"></div>
+    <div class="swatch-info"><span class="swatch-name">Terracotta</span><span class="swatch-hex">#7D3D28</span></div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#4A7C59;"></div>
+    <div class="swatch-info"><span class="swatch-name">Sage Green</span><span class="swatch-hex">#4A7C59</span></div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#F5EFE0; border:1px solid #ccc;"></div>
+    <div class="swatch-info"><span class="swatch-name">Warm Sand</span><span class="swatch-hex">#F5EFE0</span></div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#C4A882;"></div>
+    <div class="swatch-info"><span class="swatch-name">Warm Stone</span><span class="swatch-hex">#C4A882</span></div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#1E1612;"></div>
+    <div class="swatch-info"><span class="swatch-name">Rich Ink</span><span class="swatch-hex">#1E1612</span></div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#D94E1F;"></div>
+    <div class="swatch-info"><span class="swatch-name">Orange-Red</span><span class="swatch-hex">#D94E1F</span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo-area">
+    <div class="logo-heart">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hg4" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#C42B18"/>
+            <stop offset="55%" stop-color="#D94E1F"/>
+            <stop offset="100%" stop-color="#E8791A"/>
+          </linearGradient>
+        </defs>
+        <path d="M50 85 C50 85 12 58 12 35 C12 22 22 14 34 14 C41 14 47 18 50 23 C53 18 59 14 66 14 C78 14 88 22 88 35 C88 58 50 85 50 85Z" fill="url(#hg4)" opacity="0.15"/>
+        <path d="M50 78 C50 78 32 64 26 50 C23 43 24 35 30 30" stroke="url(#hg4)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M30 30 C36 24 44 22 50 28" stroke="url(#hg4)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M50 28 C56 22 64 24 70 30" stroke="url(#hg4)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M70 30 C76 35 77 43 74 50 C68 64 50 78 50 78" stroke="url(#hg4)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M38 20 C38 20 50 32 62 20" stroke="url(#hg4)" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+        <path d="M22 42 C22 42 38 38 50 50 C62 62 78 58 78 42" stroke="url(#hg4)" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.45"/>
+      </svg>
+    </div>
+    <div class="logo-wordmark">
+      <span class="top">Collaboration</span>
+      <span class="mid">for</span>
+      <span class="bot">Good</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#">Capabilities</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Impact</a></li>
+    <li><a href="#">Insights</a></li>
+    <li><a href="#" class="nav-cta">Work With Us</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-main">
+    <div class="hero-content">
+      <div class="hero-tag">
+        <div class="hero-tag-dot"></div>
+        <span class="hero-tag-text">B-Corp in transition · Phoenix, AZ</span>
+      </div>
+      <h1 class="hero-headline">
+        Where <span class="word-em">purpose</span><br/>
+        meets <span class="word-bold">practice.</span>
+      </h1>
+      <div class="hero-sub-row">
+        <div class="hero-rule"></div>
+        <p class="hero-body">Collaboration for Good partners with organizations to design, build, and report CSR programs that create real, lasting change — for communities, companies, and causes alike.</p>
+      </div>
+      <div class="hero-actions">
+        <a href="#" class="btn-terra">Start a Conversation</a>
+        <a href="#" class="btn-sage">See Our Work</a>
+      </div>
+    </div>
+    <div class="hero-sidebar">
+      <div class="sidebar-press">
+        <p class="sidebar-kicker">Featured Expert Contributor</p>
+        <div class="sidebar-press-names">
+          <span class="sidebar-press-name">Forbes</span>
+          <span class="sidebar-press-name">Fortune</span>
+          <span class="sidebar-press-name">Fast Company</span>
+          <span class="sidebar-press-name">US News</span>
+        </div>
+      </div>
+      <div class="sidebar-quote">
+        <p class="sidebar-quote-text">"I believe magic is something we make — and leadership is not a position or a title, it is an action and example."</p>
+        <p class="sidebar-quote-attr">— Tyler Butler, Founder &amp; Principal</p>
+      </div>
+      <div class="sidebar-stats">
+        <div>
+          <div class="sidebar-stat-num">9<span>+</span></div>
+          <div class="sidebar-stat-label">Years Practice</div>
+        </div>
+        <div>
+          <div class="sidebar-stat-num">10<span>+</span></div>
+          <div class="sidebar-stat-label">F500 Clients</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SAGE BAND -->
+<div class="sage-band">
+  <div class="sage-band-item">
+    <span class="sage-band-icon">🌿</span>
+    <span class="sage-band-text">B-Corp Certification in Progress</span>
+  </div>
+  <div class="sage-band-divider"></div>
+  <div class="sage-band-item">
+    <span class="sage-band-icon">♻️</span>
+    <span class="sage-band-text">ESG Strategy &amp; Reporting</span>
+  </div>
+  <div class="sage-band-divider"></div>
+  <div class="sage-band-item">
+    <span class="sage-band-icon">🤝</span>
+    <span class="sage-band-text">Community &amp; Stakeholder Engagement</span>
+  </div>
+  <div class="sage-band-divider"></div>
+  <div class="sage-band-item">
+    <span class="sage-band-icon">📋</span>
+    <span class="sage-band-text">Impact Measurement &amp; Transparency</span>
+  </div>
+</div>
+
+<!-- CAPABILITIES -->
+<section class="capabilities">
+  <div class="section-intro">
+    <div>
+      <div class="eyebrow-row">
+        <span class="eyebrow-leaf">✦</span>
+        <span class="eyebrow-txt">How We Work</span>
+      </div>
+      <h2 class="section-title">Four pillars.<br/>One mission.</h2>
+    </div>
+    <div>
+      <p class="section-body">Every engagement starts with listening. We map where you are, define where you need to be, and build the programs that close the gap — with the transparency and measurement to prove it worked.</p>
+      <a href="#" class="section-link">View Full Capabilities →</a>
+    </div>
+  </div>
+  <div class="cap-grid">
+    <div class="cap-card">
+      <div class="cap-card-top">
+        <div class="cap-card-icon">🤝</div>
+        <span class="cap-card-num">01</span>
+      </div>
+      <h3 class="cap-card-title">Collaborate</h3>
+      <p class="cap-card-body">Community engagement, stakeholder alignment, and partnership strategy that connects your brand to the causes that matter most.</p>
+      <div class="cap-card-bar"></div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-card-top">
+        <div class="cap-card-icon">✦</div>
+        <span class="cap-card-num">02</span>
+      </div>
+      <h3 class="cap-card-title">Create</h3>
+      <p class="cap-card-body">CSR program design, employee volunteer strategy, and signature initiatives built for longevity — not just the next press cycle.</p>
+      <div class="cap-card-bar"></div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-card-top">
+        <div class="cap-card-icon">📋</div>
+        <span class="cap-card-num">03</span>
+      </div>
+      <h3 class="cap-card-title">Report</h3>
+      <p class="cap-card-body">Impact measurement, ESG documentation, and stakeholder reporting that gives leadership proof and communities accountability.</p>
+      <div class="cap-card-bar"></div>
+    </div>
+    <div class="cap-card">
+      <div class="cap-card-top">
+        <div class="cap-card-icon">◈</div>
+        <span class="cap-card-num">04</span>
+      </div>
+      <h3 class="cap-card-title">Lead</h3>
+      <p class="cap-card-body">Thought leadership, speaking, facilitation, and coaching that places your organization at the front of the responsible business conversation.</p>
+      <div class="cap-card-bar"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <div class="about-sticky">
+    <div class="about-eyebrow">
+      <span class="eyebrow-leaf">✦</span>
+      <span class="eyebrow-txt">About Tyler Butler</span>
+    </div>
+    <h2 class="about-headline"><em>Social Impact</em><br/>Architect.</h2>
+    <p class="about-subhead">Nine years. Two firms. One mission.</p>
+    <p class="about-body">Former Head of Global CSR at GoDaddy. Director of Community Relations at Microsoft. Featured contributor to Forbes, Fortune, and Fast Company. Tyler Butler has spent nearly a decade building the programs that define what responsible business looks like in practice.</p>
+    <div class="about-creds">
+      <div class="cred-row">
+        <span class="cred-icon">🏆</span>
+        <span class="cred-text">Forbes Outstanding Businesswomen 2019</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-icon">🎓</span>
+        <span class="cred-text">Boston College — Corporate Citizenship Management</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-icon">✍️</span>
+        <span class="cred-text">MuckRack-listed journalist &amp; expert contributor</span>
+      </div>
+      <div class="cred-row">
+        <span class="cred-icon">🌿</span>
+        <span class="cred-text">B-Corp certification in active progress</span>
+      </div>
+    </div>
+    <div class="about-btns">
+      <a href="#" class="btn-terra">Meet Tyler →</a>
+      <a href="#" class="btn-sage">See Client Work</a>
+    </div>
+  </div>
+  <div class="about-right">
+    <div class="quote-card">
+      <p class="quote-text">"I bring electric energy to everything I am committed to. I thrive when rallying people together to make a positive difference. I believe magic is something we make."</p>
+      <p class="quote-attr">— Tyler Butler, Founder &amp; Principal</p>
+    </div>
+    <div class="bcorp-card">
+      <div class="bcorp-left">
+        <div class="bcorp-label">Certification Status</div>
+        <div class="bcorp-text">B-Corp Transition<br/>in Progress</div>
+      </div>
+      <div class="bcorp-badge">
+        <div class="bcorp-badge-inner">B<br/>Corp</div>
+      </div>
+    </div>
+    <div class="client-card">
+      <p class="client-label">Client Roster</p>
+      <div class="client-wrap">
+        <span class="client-tag">Microsoft</span>
+        <span class="client-tag">GoDaddy</span>
+        <span class="client-tag">Lyft</span>
+        <span class="client-tag">Nissan</span>
+        <span class="client-tag">Shell</span>
+        <span class="client-tag">WebPT</span>
+        <span class="client-tag">Bridgestone</span>
+        <span class="client-tag">Aventiv</span>
+        <span class="client-tag">Weedmaps</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-left">
+    <div class="cta-eyebrow">
+      <span class="eyebrow-leaf">✦</span>
+      <span class="eyebrow-txt">Let's Work Together</span>
+    </div>
+    <h2 class="cta-headline">Ready to build something <em>worth</em> reporting?</h2>
+    <p class="cta-body">Whether you're starting from scratch or looking to level up an existing program, we meet you where you are and build what you actually need.</p>
+  </div>
+  <div class="cta-right">
+    <a href="#" class="cta-card">
+      <div class="cta-card-icon">📞</div>
+      <div class="cta-card-body">
+        <div class="cta-card-title">Schedule a Discovery Call</div>
+        <div class="cta-card-sub">30 minutes. No pitch. Just an honest conversation.</div>
+      </div>
+      <div class="cta-card-arrow">→</div>
+    </a>
+    <a href="#" class="cta-card">
+      <div class="cta-card-icon">🌿</div>
+      <div class="cta-card-body">
+        <div class="cta-card-title">B-Corp Readiness Guide</div>
+        <div class="cta-card-sub">Free resource for organizations starting certification.</div>
+      </div>
+      <div class="cta-card-arrow">→</div>
+    </a>
+    <a href="#" class="cta-card">
+      <div class="cta-card-icon">✍️</div>
+      <div class="cta-card-body">
+        <div class="cta-card-title">Read Tyler's Forbes Column</div>
+        <div class="cta-card-sub">Expert insight on CSR, ESG, and social impact strategy.</div>
+      </div>
+      <div class="cta-card-arrow">→</div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">Collaboration for Good</div>
+      <p class="footer-tagline">All for good, and good for all. Phoenix, AZ — serving organizations nationwide.</p>
+      <p class="footer-address">3219 E. Camelback Rd. #299<br/>Phoenix, AZ 85018<br/>connect@collaborationforgood.com</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Capabilities</a></li>
+        <li><a href="#">Impact</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Insights</div>
+      <ul class="footer-links">
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Media</a></li>
+        <li><a href="#">Collections</a></li>
+        <li><a href="#">Dossier</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Connect</div>
+      <ul class="footer-links">
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Forbes Column</a></li>
+        <li><a href="#">Email Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Collaboration For Good, LLC — Phoenix, AZ 85018</span>
+    <div class="footer-bcorp">
+      <div class="bcorp-pip"></div>
+      <span class="bcorp-txt">B-Corp In Transition</span>
+    </div>
+  </div>
+</footer>
+
+<div class="mockup-label">Mockup — Desert Authority</div>
+
+</body>
+</html>

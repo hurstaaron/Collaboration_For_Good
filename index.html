@@ -36,7 +36,8 @@
       color: #999;
       margin-bottom: 16px;
     }
-    .grid { display: grid; gap: 12px; margin-bottom: 48px; }
+    .section { margin-bottom: 48px; }
+    .grid { display: grid; gap: 12px; }
     .card {
       background: #fff;
       border: 1px solid #e5e2dc;
@@ -65,6 +66,14 @@
     .status.pending  { background: #f0f0f0; color: #999; }
     .status.revision { background: #fce4ec; color: #c62828; }
     .disabled { pointer-events: none; opacity: 0.45; }
+    .swatches { display: flex; align-items: center; gap: 6px; margin-left: 12px; }
+    .swatch {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      border: 1px solid rgba(0,0,0,0.08);
+    }
     footer {
       font-family: sans-serif;
       font-size: 12px;
@@ -83,57 +92,123 @@
       <span class="badge">Phase 1 — Audit &amp; Discovery</span>
     </header>
 
-    <h2>Page Mockups</h2>
-    <div class="grid">
+    <!-- BRAND CONCEPT MOCKUPS -->
+    <div class="section">
+      <h2>Brand Color Concepts — Pick Your Direction</h2>
+      <div class="grid">
 
-      <a href="01_Audit_and_Discovery/mockups/home/" class="card disabled">
-        <div class="card-left">
-          <h3>Home</h3>
-          <span>Primary landing page · hero, value prop, social proof, CTA</span>
-        </div>
-        <span class="status pending">Not Started</span>
-      </a>
+        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-forbes-authority.html" class="card">
+          <div class="card-left">
+            <h3>Forbes Authority</h3>
+            <span>Deep forest green · gold · parchment — editorial gravitas</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;">
+            <div class="swatches">
+              <div class="swatch" style="background:#1E3A2F;"></div>
+              <div class="swatch" style="background:#C49A3C;"></div>
+              <div class="swatch" style="background:#FAF7F2;"></div>
+            </div>
+            <span class="status ready">View</span>
+          </div>
+        </a>
 
-      <a href="01_Audit_and_Discovery/mockups/about/" class="card disabled">
-        <div class="card-left">
-          <h3>About</h3>
-          <span>Tyler's bio · Forbes credentials · client history · personal brand</span>
-        </div>
-        <span class="status pending">Not Started</span>
-      </a>
+        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-electric-heart.html" class="card">
+          <div class="card-left">
+            <h3>Electric Heart</h3>
+            <span>Bold, high-contrast energy — modern and disruptive</span>
+          </div>
+          <span class="status ready">View</span>
+        </a>
 
-      <a href="01_Audit_and_Discovery/mockups/capabilities/" class="card disabled">
-        <div class="card-left">
-          <h3>Capabilities</h3>
-          <span>Collaborate / Create / Report / Lead framework</span>
-        </div>
-        <span class="status pending">Not Started</span>
-      </a>
+        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-desert-authority.html" class="card">
+          <div class="card-left">
+            <h3>Desert Authority</h3>
+            <span>Arizona warmth · terracotta · sand — rooted in place</span>
+          </div>
+          <span class="status ready">View</span>
+        </a>
 
-      <a href="01_Audit_and_Discovery/mockups/impact/" class="card disabled">
-        <div class="card-left">
-          <h3>Impact / Case Studies</h3>
-          <span>Microsoft, GoDaddy, Lyft, Bridgestone — documented results</span>
-        </div>
-        <span class="status pending">Not Started</span>
-      </a>
+        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-ember-slate.html" class="card">
+          <div class="card-left">
+            <h3>Ember Slate</h3>
+            <span>Cool slate · warm ember accent — professional with warmth</span>
+          </div>
+          <span class="status ready">View</span>
+        </a>
 
-      <a href="01_Audit_and_Discovery/mockups/insights/" class="card disabled">
-        <div class="card-left">
-          <h3>Insights / Blog</h3>
-          <span>Forbes column integration · content syndication strategy</span>
-        </div>
-        <span class="status pending">Not Started</span>
-      </a>
+        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-ember-forest.html" class="card">
+          <div class="card-left">
+            <h3>Ember Forest</h3>
+            <span>Forest green · ember orange — B-Corp earthy meets energy</span>
+          </div>
+          <span class="status ready">View</span>
+        </a>
 
-      <a href="01_Audit_and_Discovery/mockups/contact/" class="card disabled">
-        <div class="card-left">
-          <h3>Contact</h3>
-          <span>First build · fixes "Send us a Massage" · Calendly integration</span>
-        </div>
-        <span class="status pending">Not Started</span>
-      </a>
+        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-ember-earth.html" class="card">
+          <div class="card-left">
+            <h3>Ember Earth</h3>
+            <span>Warm earth tones · ember · natural neutrals — grounded and approachable</span>
+          </div>
+          <span class="status ready">View</span>
+        </a>
 
+      </div>
+    </div>
+
+    <!-- PAGE MOCKUPS -->
+    <div class="section">
+      <h2>Page Mockups</h2>
+      <div class="grid">
+
+        <a href="01_Audit_and_Discovery/mockups/home/" class="card disabled">
+          <div class="card-left">
+            <h3>Home</h3>
+            <span>Primary landing page · hero, value prop, social proof, CTA</span>
+          </div>
+          <span class="status pending">Not Started</span>
+        </a>
+
+        <a href="01_Audit_and_Discovery/mockups/about/" class="card disabled">
+          <div class="card-left">
+            <h3>About</h3>
+            <span>Tyler's bio · Forbes credentials · client history · personal brand</span>
+          </div>
+          <span class="status pending">Not Started</span>
+        </a>
+
+        <a href="01_Audit_and_Discovery/mockups/capabilities/" class="card disabled">
+          <div class="card-left">
+            <h3>Capabilities</h3>
+            <span>Collaborate / Create / Report / Lead framework</span>
+          </div>
+          <span class="status pending">Not Started</span>
+        </a>
+
+        <a href="01_Audit_and_Discovery/mockups/impact/" class="card disabled">
+          <div class="card-left">
+            <h3>Impact / Case Studies</h3>
+            <span>Microsoft, GoDaddy, Lyft, Bridgestone — documented results</span>
+          </div>
+          <span class="status pending">Not Started</span>
+        </a>
+
+        <a href="01_Audit_and_Discovery/mockups/insights/" class="card disabled">
+          <div class="card-left">
+            <h3>Insights / Blog</h3>
+            <span>Forbes column integration · content syndication strategy</span>
+          </div>
+          <span class="status pending">Not Started</span>
+        </a>
+
+        <a href="01_Audit_and_Discovery/mockups/contact/" class="card disabled">
+          <div class="card-left">
+            <h3>Contact</h3>
+            <span>First build · fixes "Send us a Massage" · Calendly integration</span>
+          </div>
+          <span class="status pending">Not Started</span>
+        </a>
+
+      </div>
     </div>
 
     <footer>

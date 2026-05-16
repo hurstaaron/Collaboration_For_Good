@@ -1,0 +1,845 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFG — Ember & Forest Mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --forest:   #1E3A2F;
+      --forest2:  #2A5C4E;
+      --parchment:#FAF7F2;
+      --dark:     #141414;
+      --amber:    #E8791A;
+      --crimson:  #C42B18;
+      --orange:   #D94E1F;
+      --stone:    #D6CEBA;
+      --mist:     #EAE6DF;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { font-family: 'DM Sans', sans-serif; background: var(--parchment); color: var(--dark); overflow-x: hidden; }
+
+    /* ── PALETTE BANNER ─────────────────────────────── */
+    .palette-bar {
+      background: var(--dark);
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .palette-label {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: #888;
+      margin-right: 8px;
+    }
+    .swatch {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .swatch-dot {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .swatch-info { display: flex; flex-direction: column; }
+    .swatch-name { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #aaa; }
+    .swatch-hex  { font-size: 11px; font-weight: 400; color: #eee; font-family: monospace; }
+    .swatch-divider { width: 1px; height: 36px; background: #333; margin: 0 4px; }
+
+    /* ── NAV ─────────────────────────────────────────── */
+    nav {
+      background: var(--forest);
+      padding: 0 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 80px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+    .logo-area {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .logo-heart {
+      width: 46px; height: 46px;
+      position: relative;
+      flex-shrink: 0;
+    }
+    .logo-heart svg { width: 100%; height: 100%; }
+    .logo-wordmark { display: flex; flex-direction: column; line-height: 1; }
+    .logo-wordmark .top {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--parchment);
+    }
+    .logo-wordmark .mid {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 11px;
+      color: var(--amber);
+      letter-spacing: 0.08em;
+      padding: 1px 0;
+    }
+    .logo-wordmark .bot {
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 600;
+      font-size: 13px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--parchment);
+    }
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(250,247,242,0.7);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--amber); }
+    .nav-cta {
+      background: var(--amber);
+      color: var(--dark) !important;
+      font-weight: 600 !important;
+      padding: 10px 22px;
+      border-radius: 2px;
+      color: var(--dark);
+    }
+
+    /* ── HERO ─────────────────────────────────────────── */
+    .hero {
+      background: var(--forest);
+      min-height: 88vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      right: 0; top: 0;
+      width: 50%;
+      height: 100%;
+      background: var(--forest2);
+      clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
+    }
+    .hero-left {
+      padding: 100px 64px 80px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      z-index: 2;
+    }
+    .hero-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 24px;
+    }
+    .hero-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 70px;
+      font-weight: 600;
+      line-height: 1.0;
+      color: var(--parchment);
+      margin-bottom: 28px;
+    }
+    .hero-headline em {
+      font-style: italic;
+      color: var(--amber);
+    }
+    .hero-body {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(250,247,242,0.72);
+      max-width: 440px;
+      margin-bottom: 48px;
+    }
+    .hero-actions { display: flex; gap: 16px; align-items: center; }
+    .btn-primary {
+      background: var(--amber);
+      color: var(--dark);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 16px 34px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      text-decoration: none;
+      display: inline-block;
+    }
+    .btn-ghost {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(250,247,242,0.6);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 1px solid rgba(250,247,242,0.2);
+      padding-bottom: 2px;
+    }
+    .hero-right {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 60px 80px 60px;
+    }
+    .hero-stat-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 36px 28px;
+    }
+    .stat-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px;
+      font-weight: 700;
+      color: var(--parchment);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+    .stat-number span { color: var(--amber); }
+    .stat-label {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(250,247,242,0.45);
+    }
+    .press-bar {
+      margin-top: 2px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.07);
+      padding: 22px 28px;
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+    .press-label {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(250,247,242,0.3);
+      white-space: nowrap;
+    }
+    .press-logos {
+      display: flex;
+      gap: 28px;
+      align-items: center;
+    }
+    .press-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px;
+      font-weight: 700;
+      font-style: italic;
+      color: rgba(250,247,242,0.35);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── TAGLINE BAND ─────────────────────────────── */
+    .tagline-band {
+      background: var(--amber);
+      padding: 22px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+    }
+    .tagline-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-style: italic;
+      font-weight: 600;
+      color: var(--dark);
+      letter-spacing: 0.01em;
+    }
+    .tagline-dot {
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--dark);
+      opacity: 0.35;
+    }
+
+    /* ── CAPABILITIES ─────────────────────────────── */
+    .capabilities {
+      background: var(--parchment);
+      padding: 100px 56px;
+    }
+    .section-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 64px;
+    }
+    .section-eyebrow {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--forest);
+    }
+    .section-link {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--forest);
+      text-decoration: none;
+      border-bottom: 1px solid var(--forest);
+      padding-bottom: 2px;
+      white-space: nowrap;
+    }
+    .cap-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2px;
+    }
+    .cap-card {
+      background: var(--mist);
+      padding: 44px 32px;
+      border-bottom: 3px solid transparent;
+      transition: border-color 0.25s, background 0.25s;
+      cursor: default;
+    }
+    .cap-card:hover {
+      background: white;
+      border-bottom-color: var(--amber);
+    }
+    .cap-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--stone);
+      line-height: 1;
+      margin-bottom: 20px;
+    }
+    .cap-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--forest);
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .cap-body {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: #555;
+    }
+
+    /* ── ABOUT SPLIT ─────────────────────────────── */
+    .about-split {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 520px;
+    }
+    .about-left {
+      background: var(--forest);
+      padding: 80px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .about-right {
+      background: var(--dark);
+      padding: 80px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .about-eyebrow { margin-bottom: 20px; }
+    .about-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 42px;
+      font-weight: 600;
+      line-height: 1.15;
+      color: var(--parchment);
+      margin-bottom: 24px;
+    }
+    .about-body {
+      font-size: 15px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(250,247,242,0.65);
+      margin-bottom: 36px;
+    }
+    .credentials-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .credentials-list li {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 400;
+      color: rgba(250,247,242,0.75);
+      letter-spacing: 0.02em;
+    }
+    .cred-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--amber);
+      flex-shrink: 0;
+    }
+    .quote-block {
+      border-left: 3px solid var(--amber);
+      padding-left: 28px;
+    }
+    .quote-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 28px;
+      font-style: italic;
+      font-weight: 400;
+      line-height: 1.5;
+      color: var(--parchment);
+      margin-bottom: 24px;
+    }
+    .quote-attribution {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--amber);
+    }
+    .client-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      margin-top: 48px;
+    }
+    .client-chip {
+      background: rgba(255,255,255,0.04);
+      padding: 18px 14px;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(250,247,242,0.35);
+      text-align: center;
+    }
+
+    /* ── CTA SECTION ─────────────────────────────── */
+    .cta-section {
+      background: var(--amber);
+      padding: 100px 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 40px;
+    }
+    .cta-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 54px;
+      font-weight: 600;
+      line-height: 1.1;
+      color: var(--dark);
+      max-width: 600px;
+    }
+    .cta-headline em { font-style: italic; }
+    .btn-dark {
+      background: var(--dark);
+      color: var(--parchment);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 18px 40px;
+      border: none;
+      border-radius: 2px;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+      display: inline-block;
+    }
+
+    /* ── FOOTER ──────────────────────────────────── */
+    footer {
+      background: var(--dark);
+      padding: 56px 56px 32px;
+    }
+    .footer-top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 32px;
+    }
+    .footer-brand-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px;
+      font-weight: 600;
+      color: var(--parchment);
+      margin-bottom: 14px;
+    }
+    .footer-tagline {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.7;
+      color: rgba(250,247,242,0.45);
+      max-width: 260px;
+    }
+    .footer-col-title {
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--amber);
+      margin-bottom: 20px;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .footer-links a {
+      font-size: 13px;
+      font-weight: 300;
+      color: rgba(250,247,242,0.5);
+      text-decoration: none;
+    }
+    .footer-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-copy {
+      font-size: 11px;
+      color: rgba(250,247,242,0.25);
+      letter-spacing: 0.04em;
+    }
+    .bcorp-badge {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--forest2);
+      border: 1px solid var(--forest2);
+      padding: 6px 12px;
+      border-radius: 2px;
+    }
+
+    /* ── MOCKUP LABEL ─────────────────────────────── */
+    .mockup-label {
+      position: fixed;
+      bottom: 20px; right: 20px;
+      background: var(--crimson);
+      color: white;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 8px 14px;
+      border-radius: 2px;
+      z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+
+<!-- PALETTE BANNER -->
+<div class="palette-bar">
+  <span class="palette-label">Ember &amp; Forest — Color System</span>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#1E3A2F;"></div>
+    <div class="swatch-info">
+      <span class="swatch-name">Forest</span>
+      <span class="swatch-hex">#1E3A2F</span>
+    </div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#2A5C4E;"></div>
+    <div class="swatch-info">
+      <span class="swatch-name">Teal Green</span>
+      <span class="swatch-hex">#2A5C4E</span>
+    </div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#FAF7F2; border:1px solid #ccc;"></div>
+    <div class="swatch-info">
+      <span class="swatch-name">Parchment</span>
+      <span class="swatch-hex">#FAF7F2</span>
+    </div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#141414;"></div>
+    <div class="swatch-info">
+      <span class="swatch-name">Near Black</span>
+      <span class="swatch-hex">#141414</span>
+    </div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#E8791A;"></div>
+    <div class="swatch-info">
+      <span class="swatch-name">Warm Amber</span>
+      <span class="swatch-hex">#E8791A</span>
+    </div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#C42B18;"></div>
+    <div class="swatch-info">
+      <span class="swatch-name">Deep Crimson</span>
+      <span class="swatch-hex">#C42B18</span>
+    </div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo-area">
+    <div class="logo-heart">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hg" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#C42B18"/>
+            <stop offset="55%" stop-color="#D94E1F"/>
+            <stop offset="100%" stop-color="#E8791A"/>
+          </linearGradient>
+        </defs>
+        <path d="M50 85 C50 85 12 58 12 35 C12 22 22 14 34 14 C41 14 47 18 50 23 C53 18 59 14 66 14 C78 14 88 22 88 35 C88 58 50 85 50 85Z" fill="url(#hg)" opacity="0.15"/>
+        <path d="M50 78 C50 78 32 64 26 50 C23 43 24 35 30 30" stroke="url(#hg)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M30 30 C36 24 44 22 50 28" stroke="url(#hg)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M50 28 C56 22 64 24 70 30" stroke="url(#hg)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M70 30 C76 35 77 43 74 50 C68 64 50 78 50 78" stroke="url(#hg)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M38 20 C38 20 50 32 62 20" stroke="url(#hg)" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+        <path d="M22 42 C22 42 38 38 50 50 C62 62 78 58 78 42" stroke="url(#hg)" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.45"/>
+      </svg>
+    </div>
+    <div class="logo-wordmark">
+      <span class="top">Collaboration</span>
+      <span class="mid">for</span>
+      <span class="bot">Good</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#">Capabilities</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Impact</a></li>
+    <li><a href="#">Insights</a></li>
+    <li><a href="#" class="nav-cta">Work With Us</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <p class="hero-eyebrow">CSR Strategy &amp; Social Impact Consulting — Phoenix, AZ</p>
+    <h1 class="hero-headline">Purpose<br/>is not a<br/><em>campaign.</em><br/>It's a practice.</h1>
+    <p class="hero-body">We help organizations build corporate social responsibility programs that go beyond optics — creating measurable, sustainable impact that earns trust, builds culture, and moves the needle on what matters.</p>
+    <div class="hero-actions">
+      <a href="#" class="btn-primary">Start a Conversation</a>
+      <a href="#" class="btn-ghost">See Our Work →</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stat-grid">
+      <div class="stat-card">
+        <div class="stat-number">9<span>+</span></div>
+        <div class="stat-label">Years in practice</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">10<span>+</span></div>
+        <div class="stat-label">Fortune 500 clients</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">2</div>
+        <div class="stat-label">Firms, one mission</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number">B<span>☐</span></div>
+        <div class="stat-label">B-Corp in transition</div>
+      </div>
+    </div>
+    <div class="press-bar">
+      <span class="press-label">Featured in</span>
+      <div class="press-logos">
+        <span class="press-name">Forbes</span>
+        <span class="press-name">Fortune</span>
+        <span class="press-name">Fast Company</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TAGLINE BAND -->
+<div class="tagline-band">
+  <span class="tagline-text">Connecting Communities</span>
+  <div class="tagline-dot"></div>
+  <span class="tagline-text">Companies</span>
+  <div class="tagline-dot"></div>
+  <span class="tagline-text">Causes</span>
+</div>
+
+<!-- CAPABILITIES -->
+<section class="capabilities">
+  <div class="section-header">
+    <div>
+      <p class="section-eyebrow">What We Do</p>
+      <h2 class="section-title">Four ways we<br/>drive real impact</h2>
+    </div>
+    <a href="#" class="section-link">Full Capabilities →</a>
+  </div>
+  <div class="cap-grid">
+    <div class="cap-card">
+      <div class="cap-number">01</div>
+      <h3 class="cap-title">Collaborate</h3>
+      <p class="cap-body">Community engagement, stakeholder alignment, and partnership strategy that connects your brand to the causes that matter.</p>
+    </div>
+    <div class="cap-card">
+      <div class="cap-number">02</div>
+      <h3 class="cap-title">Create</h3>
+      <p class="cap-body">CSR program design, employee engagement, volunteer strategy, and signature initiatives built to last beyond a single campaign cycle.</p>
+    </div>
+    <div class="cap-card">
+      <div class="cap-number">03</div>
+      <h3 class="cap-title">Report</h3>
+      <p class="cap-body">Impact measurement, ESG documentation, and transparency reporting that gives your stakeholders the proof they require.</p>
+    </div>
+    <div class="cap-card">
+      <div class="cap-number">04</div>
+      <h3 class="cap-title">Lead</h3>
+      <p class="cap-body">Thought leadership, speaking, facilitation, and coaching that positions your organization at the front of the responsible business conversation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT SPLIT -->
+<section class="about-split">
+  <div class="about-left">
+    <p class="about-eyebrow section-eyebrow">About Tyler Butler</p>
+    <h2 class="about-headline">Social Impact<br/>Architect.<br/>Nine years<br/>of proof.</h2>
+    <p class="about-body">Featured contributor to Forbes, Fortune, and Fast Company. Former Head of Global CSR at GoDaddy. Director of Community Relations at Microsoft. Tyler Butler has spent nearly a decade building the programs that define what responsible business looks like in practice.</p>
+    <ul class="credentials-list">
+      <li><span class="cred-dot"></span>Forbes Outstanding Businesswomen, 2019</li>
+      <li><span class="cred-dot"></span>Boston College — Corporate Citizenship Management</li>
+      <li><span class="cred-dot"></span>MuckRack-listed journalist &amp; expert contributor</li>
+      <li><span class="cred-dot"></span>B-Corp certification in progress</li>
+    </ul>
+  </div>
+  <div class="about-right">
+    <div class="quote-block">
+      <p class="quote-text">"I bring electric energy to everything I am committed to. I thrive when rallying people together to make a positive difference. I believe magic is something we make."</p>
+      <p class="quote-attribution">— Tyler Butler, Founder &amp; Principal</p>
+    </div>
+    <div class="client-grid">
+      <div class="client-chip">Microsoft</div>
+      <div class="client-chip">GoDaddy</div>
+      <div class="client-chip">Lyft</div>
+      <div class="client-chip">Nissan</div>
+      <div class="client-chip">Shell</div>
+      <div class="client-chip">WebPT</div>
+      <div class="client-chip">Bridgestone</div>
+      <div class="client-chip">Aventiv</div>
+      <div class="client-chip">Weedmaps</div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <h2 class="cta-headline">Ready to build something <em>worth</em> reporting?</h2>
+  <a href="#" class="btn-dark">Schedule a Discovery Call</a>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand-name">Collaboration for Good</div>
+      <p class="footer-tagline">All for good, and good for all. Phoenix, AZ — serving organizations nationwide.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Capabilities</a></li>
+        <li><a href="#">Impact</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Insights</div>
+      <ul class="footer-links">
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Media</a></li>
+        <li><a href="#">Collections</a></li>
+        <li><a href="#">Dossier</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Connect</div>
+      <ul class="footer-links">
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Forbes Column</a></li>
+        <li><a href="#">connect@collaborationforgood.com</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Collaboration For Good, LLC — Phoenix, AZ 85018</span>
+    <span class="bcorp-badge">B-Corp In Transition</span>
+  </div>
+</footer>
+
+<div class="mockup-label">Mockup — Ember &amp; Forest</div>
+
+</body>
+</html>
