@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFG — Ember & Slate Mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --slate:      #1C2B38;
+      --slate2:     #3D5A73;
+      --slate3:     #5C7A94;
+      --white:      #FAFAFA;
+      --warm-gray:  #E8E4DF;
+      --mid-gray:   #B8B2AA;
+      --crimson:    #C42B18;
+      --orange:     #D94E1F;
+      --amber:      #E8791A;
+      --ink:        #0E1A24;
+    }
+
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--slate);
+      overflow-x: hidden;
+    }
+
+    /* ── PALETTE BANNER ──────────────────────────── */
+    .palette-bar {
+      background: var(--ink);
+      padding: 18px 40px;
+      display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    }
+    .palette-label {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--slate3); margin-right: 8px;
+    }
+    .swatch { display: flex; align-items: center; gap: 8px; }
+    .swatch-dot { width: 32px; height: 32px; border-radius: 50%; flex-shrink: 0; }
+    .swatch-info { display: flex; flex-direction: column; }
+    .swatch-name { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--slate3); }
+    .swatch-hex  { font-size: 11px; color: #aab8c4; font-family: monospace; }
+    .swatch-divider { width: 1px; height: 36px; background: #1e3040; margin: 0 4px; }
+
+    /* ── NAV ─────────────────────────────────────── */
+    nav {
+      background: var(--white);
+      padding: 0 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 76px;
+      position: sticky; top: 0; z-index: 100;
+      border-bottom: 1px solid var(--warm-gray);
+    }
+    .logo-area { display: flex; align-items: center; gap: 14px; }
+    .logo-heart { width: 44px; height: 44px; flex-shrink: 0; }
+    .logo-heart svg { width: 100%; height: 100%; }
+    .logo-wordmark { display: flex; flex-direction: column; line-height: 1; }
+    .logo-wordmark .top {
+      font-family: 'DM Sans', sans-serif; font-weight: 600;
+      font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--slate);
+    }
+    .logo-wordmark .mid {
+      font-family: 'Cormorant Garamond', serif; font-style: italic;
+      font-size: 11px; color: var(--crimson); letter-spacing: 0.08em; padding: 1px 0;
+    }
+    .logo-wordmark .bot {
+      font-family: 'DM Sans', sans-serif; font-weight: 600;
+      font-size: 12px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--slate);
+    }
+    .nav-links { display: flex; align-items: center; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-size: 12px; font-weight: 500; letter-spacing: 0.14em;
+      text-transform: uppercase; color: var(--slate2);
+      text-decoration: none; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--crimson); }
+    .nav-cta {
+      background: var(--slate) !important;
+      color: var(--white) !important;
+      padding: 10px 22px; border-radius: 2px;
+      font-weight: 600 !important;
+      transition: background 0.2s !important;
+    }
+    .nav-cta:hover { background: var(--crimson) !important; }
+
+    /* ── HERO ─────────────────────────────────────── */
+    .hero {
+      background: var(--white);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 92vh;
+    }
+    .hero-left {
+      background: var(--slate);
+      padding: 0 72px 0 56px;
+      display: flex; flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    /* background texture grid */
+    .hero-left::before {
+      content: '';
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 48px 48px;
+    }
+    .hero-left::after {
+      content: '';
+      position: absolute;
+      bottom: -120px; left: -80px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,43,24,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-left-inner {
+      position: relative; z-index: 1;
+    }
+    .hero-overline {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.28em; text-transform: uppercase;
+      color: var(--crimson); margin-bottom: 36px;
+      display: flex; align-items: center; gap: 12px;
+    }
+    .overline-pip { width: 24px; height: 1px; background: var(--crimson); }
+    .hero-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 80px; font-weight: 300;
+      line-height: 0.95; color: var(--white);
+      margin-bottom: 36px; letter-spacing: -0.01em;
+    }
+    .hero-headline .line-accent {
+      font-style: italic; font-weight: 600;
+      color: var(--white); display: block;
+    }
+    .hero-headline .line-red {
+      color: var(--crimson); font-style: italic;
+    }
+    .hero-body {
+      font-size: 16px; font-weight: 300; line-height: 1.8;
+      color: rgba(250,250,250,0.55); max-width: 420px;
+      margin-bottom: 52px; border-left: 2px solid var(--crimson);
+      padding-left: 20px;
+    }
+    .hero-ctas { display: flex; gap: 12px; }
+    .btn-white {
+      background: var(--white); color: var(--slate);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 15px 32px; border: none; border-radius: 1px;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: background 0.2s, color 0.2s;
+    }
+    .btn-white:hover { background: var(--crimson); color: var(--white); }
+    .btn-ghost-white {
+      background: transparent; color: rgba(250,250,250,0.55);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 14px 28px;
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 1px; cursor: pointer;
+      text-decoration: none; display: inline-block;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost-white:hover { border-color: var(--white); color: var(--white); }
+
+    .hero-right {
+      background: var(--white);
+      padding: 80px 56px 80px 72px;
+      display: flex; flex-direction: column;
+      justify-content: space-between;
+    }
+    .hero-press-block { }
+    .press-kicker {
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.24em; text-transform: uppercase;
+      color: var(--mid-gray); margin-bottom: 20px;
+    }
+    .press-row { display: flex; gap: 4px; flex-wrap: wrap; }
+    .press-pill {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 15px; font-weight: 700; font-style: italic;
+      color: var(--warm-gray);
+      background: transparent;
+      padding: 4px 14px;
+      border: 1px solid var(--warm-gray);
+      border-radius: 100px;
+      letter-spacing: 0.02em;
+    }
+    .hero-center-content {
+      flex: 1; display: flex; flex-direction: column;
+      justify-content: center;
+    }
+    .stat-column { display: flex; flex-direction: column; gap: 2px; }
+    .stat-row {
+      display: flex; align-items: center;
+      gap: 24px; padding: 28px 0;
+      border-bottom: 1px solid var(--warm-gray);
+    }
+    .stat-row:first-child { border-top: 1px solid var(--warm-gray); }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px; font-weight: 700;
+      color: var(--slate); line-height: 1;
+      min-width: 100px;
+    }
+    .stat-num .accent { color: var(--crimson); }
+    .stat-info { }
+    .stat-label {
+      font-size: 13px; font-weight: 500;
+      color: var(--slate); margin-bottom: 4px;
+    }
+    .stat-sub {
+      font-size: 12px; font-weight: 300;
+      color: var(--mid-gray);
+    }
+    .hero-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 18px; font-style: italic; font-weight: 400;
+      color: var(--mid-gray);
+      padding-top: 28px;
+    }
+    .hero-tagline span { color: var(--crimson); }
+
+    /* ── CAPABILITIES ─────────────────────────────── */
+    .capabilities {
+      background: var(--warm-gray);
+      padding: 100px 56px;
+    }
+    .cap-header {
+      display: grid; grid-template-columns: 340px 1fr;
+      gap: 64px; align-items: start; margin-bottom: 64px;
+    }
+    .eyebrow-row {
+      display: flex; align-items: center; gap: 12px; margin-bottom: 16px;
+    }
+    .eyebrow-pip { width: 6px; height: 6px; border-radius: 50%; background: var(--crimson); }
+    .eyebrow-txt {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.26em;
+      text-transform: uppercase; color: var(--crimson);
+    }
+    .cap-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 50px; font-weight: 600;
+      line-height: 1.05; color: var(--slate);
+    }
+    .cap-subtitle {
+      font-size: 15px; font-weight: 300; line-height: 1.8;
+      color: #6a7a88; padding-top: 28px;
+    }
+    .cap-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--slate2); text-decoration: none;
+      margin-top: 28px;
+      border-bottom: 1px solid var(--slate2); padding-bottom: 2px;
+    }
+
+    .cap-list { display: flex; flex-direction: column; gap: 2px; }
+    .cap-item {
+      background: var(--white);
+      display: grid; grid-template-columns: 60px 1fr auto;
+      align-items: center; gap: 32px;
+      padding: 36px 40px;
+      transition: background 0.2s; cursor: default;
+    }
+    .cap-item:hover { background: var(--slate); }
+    .cap-item:hover .cap-item-num,
+    .cap-item:hover .cap-item-title,
+    .cap-item:hover .cap-item-desc { color: var(--white) !important; }
+    .cap-item:hover .cap-item-arrow { color: var(--crimson) !important; }
+    .cap-item-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 36px; font-weight: 300;
+      color: var(--warm-gray); line-height: 1;
+      transition: color 0.2s;
+    }
+    .cap-item-body { }
+    .cap-item-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-weight: 600;
+      color: var(--slate); margin-bottom: 6px;
+      transition: color 0.2s;
+    }
+    .cap-item-desc {
+      font-size: 13px; font-weight: 300;
+      color: #7a8a94; line-height: 1.65;
+      transition: color 0.2s;
+    }
+    .cap-item-arrow {
+      font-size: 22px; color: var(--warm-gray);
+      transition: color 0.2s;
+    }
+
+    /* ── ABOUT ────────────────────────────────────── */
+    .about-section {
+      background: var(--white);
+      padding: 100px 56px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .about-left { }
+    .about-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 56px; font-weight: 300;
+      line-height: 1.05; color: var(--slate);
+      margin-bottom: 28px;
+    }
+    .about-headline em { font-style: italic; color: var(--crimson); }
+    .about-headline strong { font-weight: 700; }
+    .about-divider {
+      width: 48px; height: 2px;
+      background: var(--crimson); margin-bottom: 28px;
+    }
+    .about-body {
+      font-size: 15px; font-weight: 300;
+      line-height: 1.85; color: #6a7a88;
+      margin-bottom: 36px;
+    }
+    .cred-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+      margin-bottom: 40px;
+    }
+    .cred-item {
+      background: var(--warm-gray);
+      padding: 16px 18px;
+      border-left: 3px solid var(--crimson);
+    }
+    .cred-item-text {
+      font-size: 12px; font-weight: 500;
+      color: var(--slate); line-height: 1.5;
+    }
+    .btn-slate {
+      background: var(--slate); color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      padding: 15px 32px; border: none; border-radius: 1px;
+      cursor: pointer; text-decoration: none; display: inline-block;
+      transition: background 0.2s;
+    }
+    .btn-slate:hover { background: var(--crimson); }
+
+    .about-right { }
+    .quote-section {
+      background: var(--slate);
+      padding: 52px 44px;
+      position: relative; overflow: hidden;
+      margin-bottom: 3px;
+    }
+    .quote-section::before {
+      content: '\201C';
+      position: absolute; top: -20px; right: 24px;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 180px; font-weight: 700;
+      color: rgba(255,255,255,0.04); line-height: 1;
+      pointer-events: none;
+    }
+    .quote-text {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 26px; font-style: italic; font-weight: 300;
+      line-height: 1.55; color: var(--white);
+      margin-bottom: 24px; position: relative; z-index: 1;
+    }
+    .quote-attr {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--crimson);
+    }
+    .client-section {
+      background: var(--warm-gray);
+      padding: 32px 44px;
+    }
+    .client-section-label {
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--mid-gray); margin-bottom: 18px;
+    }
+    .client-wrap { display: flex; flex-wrap: wrap; gap: 8px; }
+    .client-badge {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--slate2);
+      background: var(--white);
+      padding: 6px 12px; border-radius: 1px;
+    }
+
+    /* ── CTA ──────────────────────────────────────── */
+    .cta-section {
+      background: var(--slate);
+      padding: 100px 56px;
+      display: grid; grid-template-columns: 1fr 1px 1fr;
+      gap: 64px; align-items: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-section::before {
+      content: '';
+      position: absolute; top: -100px; right: -100px;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,43,24,0.12) 0%, transparent 65%);
+    }
+    .cta-divider { background: rgba(255,255,255,0.08); align-self: stretch; }
+    .cta-left { position: relative; z-index: 1; }
+    .cta-kicker {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.26em; text-transform: uppercase;
+      color: var(--crimson); margin-bottom: 20px;
+    }
+    .cta-headline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 52px; font-weight: 300;
+      line-height: 1.1; color: var(--white);
+    }
+    .cta-headline em { font-style: italic; font-weight: 600; color: var(--crimson); }
+    .cta-right {
+      position: relative; z-index: 1;
+      display: flex; flex-direction: column; gap: 20px;
+    }
+    .cta-action {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 28px 32px;
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      text-decoration: none;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .cta-action:hover { background: rgba(196,43,24,0.15); border-color: var(--crimson); }
+    .cta-action-text { }
+    .cta-action-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 22px; font-weight: 600;
+      color: var(--white); margin-bottom: 4px;
+    }
+    .cta-action-sub {
+      font-size: 12px; font-weight: 300;
+      color: rgba(250,250,250,0.45);
+    }
+    .cta-action-arrow { font-size: 20px; color: var(--crimson); }
+
+    /* ── FOOTER ───────────────────────────────────── */
+    footer {
+      background: var(--ink);
+      padding: 64px 56px 32px;
+    }
+    .footer-top {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px; padding-bottom: 48px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      margin-bottom: 32px;
+    }
+    .footer-brand {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 20px; font-weight: 600;
+      color: var(--white); margin-bottom: 12px;
+    }
+    .footer-tagline {
+      font-size: 13px; font-weight: 300;
+      line-height: 1.7; color: rgba(250,250,250,0.35);
+      max-width: 240px; margin-bottom: 24px;
+    }
+    .footer-address {
+      font-size: 11px; color: rgba(250,250,250,0.2); line-height: 1.7;
+    }
+    .footer-col-title {
+      font-size: 9px; font-weight: 600;
+      letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--slate3); margin-bottom: 20px;
+    }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 11px; }
+    .footer-links a {
+      font-size: 13px; font-weight: 300;
+      color: rgba(250,250,250,0.38); text-decoration: none;
+      transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--white); }
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .footer-copy { font-size: 11px; color: rgba(250,250,250,0.18); letter-spacing: 0.04em; }
+    .bcorp-badge {
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.16em; text-transform: uppercase;
+      color: var(--slate3);
+      border: 1px solid rgba(61,90,115,0.5);
+      padding: 6px 12px; border-radius: 2px;
+    }
+
+    .mockup-label {
+      position: fixed; bottom: 20px; right: 20px;
+      background: var(--crimson); color: white;
+      font-size: 10px; font-weight: 600;
+      letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 8px 14px; border-radius: 2px; z-index: 9999;
+    }
+  </style>
+</head>
+<body>
+
+<!-- PALETTE BANNER -->
+<div class="palette-bar">
+  <span class="palette-label">Ember &amp; Slate — Color System</span>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#1C2B38;"></div>
+    <div class="swatch-info"><span class="swatch-name">Deep Slate</span><span class="swatch-hex">#1C2B38</span></div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#3D5A73;"></div>
+    <div class="swatch-info"><span class="swatch-name">Steel Blue</span><span class="swatch-hex">#3D5A73</span></div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#FAFAFA; border:1px solid #ccc;"></div>
+    <div class="swatch-info"><span class="swatch-name">Clean White</span><span class="swatch-hex">#FAFAFA</span></div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#E8E4DF;"></div>
+    <div class="swatch-info"><span class="swatch-name">Warm Gray</span><span class="swatch-hex">#E8E4DF</span></div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#C42B18;"></div>
+    <div class="swatch-info"><span class="swatch-name">Deep Crimson</span><span class="swatch-hex">#C42B18</span></div>
+  </div>
+  <div class="swatch-divider"></div>
+  <div class="swatch">
+    <div class="swatch-dot" style="background:#E8791A;"></div>
+    <div class="swatch-info"><span class="swatch-name">Warm Amber</span><span class="swatch-hex">#E8791A</span></div>
+  </div>
+</div>
+
+<!-- NAV -->
+<nav>
+  <div class="logo-area">
+    <div class="logo-heart">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <linearGradient id="hg3" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse">
+            <stop offset="0%" stop-color="#C42B18"/>
+            <stop offset="55%" stop-color="#D94E1F"/>
+            <stop offset="100%" stop-color="#E8791A"/>
+          </linearGradient>
+        </defs>
+        <path d="M50 85 C50 85 12 58 12 35 C12 22 22 14 34 14 C41 14 47 18 50 23 C53 18 59 14 66 14 C78 14 88 22 88 35 C88 58 50 85 50 85Z" fill="url(#hg3)" opacity="0.15"/>
+        <path d="M50 78 C50 78 32 64 26 50 C23 43 24 35 30 30" stroke="url(#hg3)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M30 30 C36 24 44 22 50 28" stroke="url(#hg3)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M50 28 C56 22 64 24 70 30" stroke="url(#hg3)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M70 30 C76 35 77 43 74 50 C68 64 50 78 50 78" stroke="url(#hg3)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M38 20 C38 20 50 32 62 20" stroke="url(#hg3)" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+        <path d="M22 42 C22 42 38 38 50 50 C62 62 78 58 78 42" stroke="url(#hg3)" stroke-width="3" stroke-linecap="round" fill="none" opacity="0.45"/>
+      </svg>
+    </div>
+    <div class="logo-wordmark">
+      <span class="top">Collaboration</span>
+      <span class="mid">for</span>
+      <span class="bot">Good</span>
+    </div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#">Capabilities</a></li>
+    <li><a href="#">About</a></li>
+    <li><a href="#">Impact</a></li>
+    <li><a href="#">Insights</a></li>
+    <li><a href="#" class="nav-cta">Work With Us</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-left-inner">
+      <div class="hero-overline">
+        <div class="overline-pip"></div>
+        CSR Strategy &amp; Social Impact — Phoenix, AZ
+      </div>
+      <h1 class="hero-headline">
+        <span>The work</span>
+        <span class="line-accent">is the</span>
+        <span class="line-red">message.</span>
+      </h1>
+      <p class="hero-body">We partner with organizations to design, build, and report corporate social responsibility programs that create real, lasting change. Not campaigns. Commitments.</p>
+      <div class="hero-ctas">
+        <a href="#" class="btn-white">Start a Conversation</a>
+        <a href="#" class="btn-ghost-white">See Our Work</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="hero-press-block">
+      <p class="press-kicker">Featured Expert Contributor</p>
+      <div class="press-row">
+        <span class="press-pill">Forbes</span>
+        <span class="press-pill">Fortune</span>
+        <span class="press-pill">Fast Company</span>
+        <span class="press-pill">US News</span>
+      </div>
+    </div>
+    <div class="hero-center-content">
+      <div class="stat-column">
+        <div class="stat-row">
+          <div class="stat-num">9<span class="accent">+</span></div>
+          <div class="stat-info">
+            <div class="stat-label">Years in CSR practice</div>
+            <div class="stat-sub">Across two firms, one mission</div>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-num">10<span class="accent">+</span></div>
+          <div class="stat-info">
+            <div class="stat-label">Fortune 500 clients served</div>
+            <div class="stat-sub">Microsoft, GoDaddy, Lyft &amp; more</div>
+          </div>
+        </div>
+        <div class="stat-row">
+          <div class="stat-num">B<span class="accent">☐</span></div>
+          <div class="stat-info">
+            <div class="stat-label">B-Corp certification</div>
+            <div class="stat-sub">In active transition</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="hero-tagline">
+      Connecting <span>Communities</span> · <span>Companies</span> · <span>Causes</span>
+    </div>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section class="capabilities">
+  <div class="cap-header">
+    <div>
+      <div class="eyebrow-row">
+        <div class="eyebrow-pip"></div>
+        <span class="eyebrow-txt">What We Do</span>
+      </div>
+      <h2 class="cap-title">Four pillars.<br/>One mission.</h2>
+    </div>
+    <div>
+      <p class="cap-subtitle">Every engagement starts with listening. We map where you are, define where you need to be, and build the programs that close the gap — with the transparency and measurement to prove it worked.</p>
+      <a href="#" class="cap-link">View Full Capabilities →</a>
+    </div>
+  </div>
+  <div class="cap-list">
+    <div class="cap-item">
+      <div class="cap-item-num">01</div>
+      <div class="cap-item-body">
+        <div class="cap-item-title">Collaborate</div>
+        <div class="cap-item-desc">Community engagement, stakeholder alignment, and partnership strategy that connects your brand to the causes your people care about most.</div>
+      </div>
+      <div class="cap-item-arrow">→</div>
+    </div>
+    <div class="cap-item">
+      <div class="cap-item-num">02</div>
+      <div class="cap-item-body">
+        <div class="cap-item-title">Create</div>
+        <div class="cap-item-desc">CSR program design, employee volunteer strategy, and signature initiatives built for longevity — not just the next press cycle.</div>
+      </div>
+      <div class="cap-item-arrow">→</div>
+    </div>
+    <div class="cap-item">
+      <div class="cap-item-num">03</div>
+      <div class="cap-item-body">
+        <div class="cap-item-title">Report</div>
+        <div class="cap-item-desc">Impact measurement, ESG documentation, and stakeholder reporting that delivers the proof your leadership needs and communities deserve.</div>
+      </div>
+      <div class="cap-item-arrow">→</div>
+    </div>
+    <div class="cap-item">
+      <div class="cap-item-num">04</div>
+      <div class="cap-item-body">
+        <div class="cap-item-title">Lead</div>
+        <div class="cap-item-desc">Thought leadership, speaking, facilitation, and coaching that positions your organization at the forefront of responsible business.</div>
+      </div>
+      <div class="cap-item-arrow">→</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about-section">
+  <div class="about-left">
+    <div class="eyebrow-row" style="margin-bottom:20px;">
+      <div class="eyebrow-pip"></div>
+      <span class="eyebrow-txt">About Tyler Butler</span>
+    </div>
+    <h2 class="about-headline">
+      <em>Nine years</em><br/>
+      of <strong>proof.</strong>
+    </h2>
+    <div class="about-divider"></div>
+    <p class="about-body">Former Head of Global CSR at GoDaddy. Director of Community Relations at Microsoft. Featured contributor to Forbes, Fortune, and Fast Company. Tyler Butler has spent nearly a decade building the programs that define what responsible business looks like in practice — and now brings that depth to your organization.</p>
+    <div class="cred-grid">
+      <div class="cred-item"><div class="cred-item-text">Forbes Outstanding Businesswomen 2019</div></div>
+      <div class="cred-item"><div class="cred-item-text">Boston College — Corporate Citizenship</div></div>
+      <div class="cred-item"><div class="cred-item-text">MuckRack-listed journalist</div></div>
+      <div class="cred-item"><div class="cred-item-text">B-Corp certification in progress</div></div>
+    </div>
+    <a href="#" class="btn-slate">Meet Tyler →</a>
+  </div>
+  <div class="about-right">
+    <div class="quote-section">
+      <p class="quote-text">"I bring electric energy to everything I am committed to. I believe magic is something we make — and that leadership is not a position or a title, it is an action and example."</p>
+      <p class="quote-attr">— Tyler Butler, Founder &amp; Principal</p>
+    </div>
+    <div class="client-section">
+      <p class="client-section-label">Client Roster</p>
+      <div class="client-wrap">
+        <span class="client-badge">Microsoft</span>
+        <span class="client-badge">GoDaddy</span>
+        <span class="client-badge">Lyft</span>
+        <span class="client-badge">Nissan</span>
+        <span class="client-badge">Shell</span>
+        <span class="client-badge">WebPT</span>
+        <span class="client-badge">Bridgestone</span>
+        <span class="client-badge">Aventiv</span>
+        <span class="client-badge">Weedmaps</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-left">
+    <p class="cta-kicker">Let's Work Together</p>
+    <h2 class="cta-headline">Ready to build something <em>worth</em> reporting?</h2>
+  </div>
+  <div class="cta-divider"></div>
+  <div class="cta-right">
+    <a href="#" class="cta-action">
+      <div class="cta-action-text">
+        <div class="cta-action-title">Schedule a Discovery Call</div>
+        <div class="cta-action-sub">30 minutes. No pitch. Just an honest conversation.</div>
+      </div>
+      <div class="cta-action-arrow">→</div>
+    </a>
+    <a href="#" class="cta-action">
+      <div class="cta-action-text">
+        <div class="cta-action-title">Download the B-Corp Guide</div>
+        <div class="cta-action-sub">Free resource for organizations starting their certification journey.</div>
+      </div>
+      <div class="cta-action-arrow">→</div>
+    </a>
+    <a href="#" class="cta-action">
+      <div class="cta-action-text">
+        <div class="cta-action-title">Read Tyler's Forbes Column</div>
+        <div class="cta-action-sub">Expert insight on CSR, ESG, and social impact strategy.</div>
+      </div>
+      <div class="cta-action-arrow">→</div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-top">
+    <div>
+      <div class="footer-brand">Collaboration for Good</div>
+      <p class="footer-tagline">All for good, and good for all. Phoenix, AZ — serving organizations nationwide.</p>
+      <p class="footer-address">3219 E. Camelback Rd. #299<br/>Phoenix, AZ 85018<br/>connect@collaborationforgood.com</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Company</div>
+      <ul class="footer-links">
+        <li><a href="#">About</a></li>
+        <li><a href="#">Capabilities</a></li>
+        <li><a href="#">Impact</a></li>
+        <li><a href="#">Contact</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Insights</div>
+      <ul class="footer-links">
+        <li><a href="#">Blog</a></li>
+        <li><a href="#">Media</a></li>
+        <li><a href="#">Collections</a></li>
+        <li><a href="#">Dossier</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-col-title">Connect</div>
+      <ul class="footer-links">
+        <li><a href="#">LinkedIn</a></li>
+        <li><a href="#">Instagram</a></li>
+        <li><a href="#">Forbes Column</a></li>
+        <li><a href="#">Email Us</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span class="footer-copy">© 2026 Collaboration For Good, LLC — Phoenix, AZ 85018</span>
+    <span class="bcorp-badge">B-Corp In Transition</span>
+  </div>
+</footer>
+
+<div class="mockup-label">Mockup — Ember &amp; Slate</div>
+
+</body>
+</html>
