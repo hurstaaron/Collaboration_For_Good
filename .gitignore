@@ -1,0 +1,17 @@
+# Internal working files — never published
+_Meta/
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Node (if tooling added later)
+node_modules/
+npm-debug.log*
