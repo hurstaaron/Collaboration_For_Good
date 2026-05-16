@@ -1,22 +1,15 @@
 # Collaboration for Good — Project Repository
 
-<<<<<<< HEAD
 **Client:** Collaboration for Good, LLC (CFG)
 **Principal:** Tyler Butler, Founder & Principal
 **Intern:** Aaron Hurst, University of Advancing Technology
 **Engagement:** May–August 2026 · 150 hours · Academic Credit
-=======
-**Client:** Collaboration for Good, LLC (CFG)  
-**Principal:** Tyler Butler, Founder & Principal  
-**Intern:** Aaron Hurst, University of Advancing Technology  
-**Engagement:** May–August 2026 · 150 hours · Academic Credit  
->>>>>>> 8235dadece2e735e4921fea57d4436d44fa27b14
 
 ---
 
 ## 🔗 Mockup Viewer
 
-**→ [View All Mockups](https://hurstaaron.github.io/cfg-mockups/)**
+**→ [View All Mockups](https://hurstaaron.github.io/Collaboration_For_Good/)**
 
 Click the link above to view current page mockups in your browser. No login required.
 
@@ -49,10 +42,5 @@ Click the link above to view current page mockups in your browser. No login requ
 
 ---
 
-<<<<<<< HEAD
 *Questions? Contact Aaron Hurst*
 *Last updated: reflects latest push.*
-=======
-*Questions? Contact Aaron Hurst · ahurst94649@uat.edu*  
-*Last updated: reflects latest push.*
->>>>>>> 8235dadece2e735e4921fea57d4436d44fa27b14
