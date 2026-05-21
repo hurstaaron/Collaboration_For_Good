@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CFG — Carbon & Red Mockup</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800;900&family=Open+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --carbon:    #0A0A0A;
+      --carbon2:   #141414;
+      --carbon3:   #1E1E1E;
+      --carbon4:   #2A2A2A;
+      --red:       #E02020;
+      --red-dk:    #B01818;
+      --white:     #FFFFFF;
+      --off-white: #F2F0ED;
+      --warm-gray: #D8D5D0;
+      --mid:       #888888;
+      --border-dk: #2E2E2E;
+      --border-lt: #E0DDD8;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Open Sans', sans-serif; background: var(--carbon); color: var(--white); overflow-x: hidden; }
+
+    /* PALETTE BAR */
+    .palette-bar { background: #000; padding: 14px 40px; display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+    .palette-label { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--red); margin-right: 8px; }
+    .swatch { display: flex; align-items: center; gap: 8px; }
+    .swatch-dot { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; }
+    .swatch-name { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: #555; }
+    .swatch-hex { font-size: 11px; color: #888; font-family: monospace; }
+    .swatch-info { display: flex; flex-direction: column; }
+    .swatch-div { width: 1px; height: 32px; background: #222; margin: 0 4px; }
+
+    /* NAV */
+    nav { background: var(--carbon); border-bottom: 1px solid var(--border-dk); padding: 0 48px; display: flex; align-items: center; justify-content: space-between; height: 70px; position: sticky; top: 0; z-index: 100; }
+    .logo-area { display: flex; align-items: center; gap: 12px; }
+    .logo-heart { width: 38px; height: 38px; }
+    .logo-heart svg { width: 100%; height: 100%; }
+    .logo-top { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); }
+    .logo-for { font-family: 'Open Sans', sans-serif; font-style: italic; font-size: 10px; color: var(--red); letter-spacing: 0.06em; padding: 1px 0; }
+    .logo-bot { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--white); }
+    .logo-wordmark { display: flex; flex-direction: column; line-height: 1; }
+    .nav-links { display: flex; align-items: center; gap: 32px; list-style: none; }
+    .nav-links a { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.5); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--red); }
+    .nav-cta { border: 1px solid var(--red) !important; color: var(--red) !important; padding: 8px 20px; border-radius: 2px; transition: background 0.2s !important; }
+    .nav-cta:hover { background: var(--red) !important; color: white !important; }
+
+    /* HERO — full black, red line accent, white type */
+    .hero { background: var(--carbon); min-height: 500px; display: grid; grid-template-columns: 1fr 1fr; position: relative; overflow: hidden; }
+    .hero::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px; background: var(--border-dk); }
+    .hero-accent-line { position: absolute; left: 0; top: 0; width: 4px; height: 100%; background: var(--red); }
+    .hero-left { padding: 80px 56px 80px 64px; display: flex; flex-direction: column; justify-content: center; position: relative; z-index: 1; }
+    .hero-headline { font-family: 'Montserrat', sans-serif; font-size: 54px; font-weight: 900; line-height: 1.0; color: var(--white); text-transform: uppercase; margin-bottom: 4px; }
+    .hero-headline .red-word { color: var(--red); }
+    .hero-divider { width: 48px; height: 2px; background: var(--red); margin: 24px 0; }
+    .hero-sub { font-size: 14px; font-weight: 300; line-height: 1.8; color: rgba(255,255,255,0.45); max-width: 400px; margin-bottom: 40px; }
+    .btn-red-outline { display: inline-block; background: transparent; color: var(--red); border: 1px solid var(--red); font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 13px 30px; border-radius: 1px; text-decoration: none; transition: background 0.2s, color 0.2s; margin-right: 12px; }
+    .btn-red-outline:hover { background: var(--red); color: white; }
+    .btn-red-solid { display: inline-block; background: var(--red); color: white; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 13px 30px; border-radius: 1px; text-decoration: none; border: none; cursor: pointer; transition: background 0.2s; }
+    .btn-red-solid:hover { background: var(--red-dk); }
+    .hero-right { display: flex; align-items: center; justify-content: center; padding: 48px; position: relative; z-index: 1; }
+    .hero-img-ph { width: 100%; max-width: 420px; aspect-ratio: 4/3; background: var(--carbon3); border: 1px dashed var(--border-dk); display: flex; align-items: center; justify-content: center; }
+    .ph-label { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.15); }
+
+    /* HOW WE WORK — carbon, red numbers */
+    .how { background: var(--carbon2); padding: 56px 48px; display: grid; grid-template-columns: 160px 1fr; gap: 48px; align-items: center; border-bottom: 1px solid var(--border-dk); }
+    .how-label { font-family: 'Montserrat', sans-serif; font-size: 20px; font-weight: 900; text-transform: uppercase; color: var(--white); line-height: 1.1; }
+    .how-cols { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 28px; }
+    .how-num { font-family: 'Montserrat', sans-serif; font-size: 28px; font-weight: 900; color: var(--red); line-height: 1; margin-bottom: 8px; }
+    .how-title { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: var(--white); margin-bottom: 6px; }
+    .how-body { font-size: 12px; font-weight: 300; color: rgba(255,255,255,0.35); line-height: 1.65; }
+    .btn-white { display: inline-block; background: var(--white); color: var(--carbon); font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 11px 24px; border-radius: 1px; text-decoration: none; transition: opacity 0.2s; }
+
+    /* TESTIMONIALS — white section */
+    .testimonials { background: var(--off-white); padding: 72px 48px; text-align: center; }
+    .sec-kicker { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--red); margin-bottom: 10px; }
+    .sec-heading { font-family: 'Montserrat', sans-serif; font-size: 26px; font-weight: 900; text-transform: uppercase; color: var(--carbon); margin-bottom: 8px; }
+    .sec-sub { font-size: 13px; font-weight: 300; color: var(--mid); margin-bottom: 48px; font-style: italic; }
+    .testi-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; margin-bottom: 32px; }
+    .testi-card { background: var(--white); padding: 32px 24px; text-align: left; border-top: 3px solid transparent; transition: border-color 0.2s; }
+    .testi-card:hover { border-top-color: var(--red); }
+    .testi-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--warm-gray); margin-bottom: 16px; display: flex; align-items: center; justify-content: center; font-size: 16px; color: #aaa; }
+    .testi-text { font-size: 12px; font-weight: 300; font-style: italic; color: var(--mid); line-height: 1.7; margin-bottom: 18px; }
+    .testi-name { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; color: var(--carbon); letter-spacing: 0.08em; margin-bottom: 6px; }
+    .testi-stars { color: var(--red); font-size: 13px; letter-spacing: 2px; }
+
+    /* PARTNERS */
+    .partners { background: var(--carbon3); padding: 40px 48px; border-top: 1px solid var(--border-dk); border-bottom: 1px solid var(--border-dk); }
+    .partners-heading { font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 24px; }
+    .partners-row { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+    .partner-ph { width: 140px; height: 48px; background: var(--carbon4); border: 1px dashed var(--border-dk); display: flex; align-items: center; justify-content: center; }
+    .partner-ph span { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: rgba(255,255,255,0.15); }
+
+    /* INSIGHTS — white */
+    .insights { background: var(--white); padding: 72px 48px; }
+    .insights-heading { font-family: 'Montserrat', sans-serif; font-size: 22px; font-weight: 900; text-transform: uppercase; color: var(--carbon); margin-bottom: 36px; }
+    .insights-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 28px; }
+    .insight-card { border: 1px solid var(--border-lt); }
+    .insight-img { width: 100%; aspect-ratio: 16/9; background: var(--off-white); display: flex; align-items: center; justify-content: center; }
+    .insight-img span { font-size: 10px; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: #bbb; }
+    .insight-body { padding: 20px; }
+    .insight-tag { display: inline-block; font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: white; background: var(--red); padding: 3px 8px; margin-bottom: 10px; }
+    .insight-title { font-family: 'Montserrat', sans-serif; font-size: 13px; font-weight: 700; color: var(--carbon); line-height: 1.4; margin-bottom: 10px; }
+    .insight-excerpt { font-size: 12px; font-weight: 300; color: var(--mid); line-height: 1.65; margin-bottom: 14px; }
+    .insight-link { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--red); text-decoration: none; }
+
+    /* CTA / CONTACT — carbon */
+    .cta-contact { background: var(--carbon2); padding: 72px 48px; display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+    .form-field { background: var(--carbon3); border: 1px solid var(--border-dk); padding: 12px 16px; color: rgba(255,255,255,0.5); font-family: 'Open Sans', sans-serif; font-size: 13px; }
+    .form-field.full { width: 100%; margin-bottom: 10px; display: block; }
+    .form-submit { background: var(--red); color: white; font-family: 'Montserrat', sans-serif; font-size: 11px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; padding: 13px 32px; border: none; cursor: pointer; margin-top: 4px; }
+    .cta-kicker { font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.22em; text-transform: uppercase; color: var(--red); margin-bottom: 16px; }
+    .cta-headline { font-family: 'Montserrat', sans-serif; font-size: 38px; font-weight: 900; text-transform: uppercase; color: var(--white); line-height: 1.05; margin-bottom: 28px; }
+    .contact-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+    .contact-icon { font-size: 15px; flex-shrink: 0; margin-top: 2px; }
+    .contact-label { font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--red); margin-bottom: 2px; }
+    .contact-value { font-size: 13px; font-weight: 300; color: rgba(255,255,255,0.5); }
+
+    /* FOOTER */
+    footer { background: var(--carbon); border-top: 1px solid var(--border-dk); padding: 24px 48px; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 24px; }
+    .footer-policies { display: flex; flex-direction: column; gap: 4px; }
+    .footer-policy-label { font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(255,255,255,0.2); margin-bottom: 4px; }
+    .footer-policy-link { font-size: 11px; font-weight: 300; color: rgba(255,255,255,0.3); text-decoration: none; display: block; }
+    .footer-center { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .footer-logo-area { display: flex; align-items: center; gap: 10px; }
+    .footer-logo-heart { width: 34px; height: 34px; }
+    .footer-logo-heart svg { width: 100%; height: 100%; }
+    .footer-logo-text { font-family: 'Montserrat', sans-serif; font-size: 9px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: white; text-align: center; line-height: 1.4; }
+    .footer-copy { font-size: 10px; font-weight: 300; color: rgba(255,255,255,0.2); }
+    .footer-social { display: flex; justify-content: flex-end; gap: 12px; }
+    .social-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--carbon3); display: flex; align-items: center; justify-content: center; font-size: 12px; color: rgba(255,255,255,0.4); text-decoration: none; transition: background 0.2s; }
+    .social-icon:hover { background: var(--red); color: white; }
+
+    .mockup-label { position: fixed; bottom: 20px; right: 20px; background: var(--red); color: white; font-family: 'Montserrat', sans-serif; font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; padding: 8px 14px; border-radius: 2px; z-index: 9999; }
+  </style>
+</head>
+<body>
+
+<div class="palette-bar">
+  <span class="palette-label">Carbon &amp; Red — Color System</span>
+  <div class="swatch"><div class="swatch-dot" style="background:#0A0A0A;"></div><div class="swatch-info"><span class="swatch-name">Carbon Black</span><span class="swatch-hex">#0A0A0A</span></div></div>
+  <div class="swatch-div"></div>
+  <div class="swatch"><div class="swatch-dot" style="background:#E02020;"></div><div class="swatch-info"><span class="swatch-name">Bright Red</span><span class="swatch-hex">#E02020</span></div></div>
+  <div class="swatch-div"></div>
+  <div class="swatch"><div class="swatch-dot" style="background:#FFFFFF; border:1px solid #ccc;"></div><div class="swatch-info"><span class="swatch-name">White</span><span class="swatch-hex">#FFFFFF</span></div></div>
+  <div class="swatch-div"></div>
+  <div class="swatch"><div class="swatch-dot" style="background:#F2F0ED;"></div><div class="swatch-info"><span class="swatch-name">Off-White</span><span class="swatch-hex">#F2F0ED</span></div></div>
+  <div class="swatch-div"></div>
+  <div class="swatch"><div class="swatch-dot" style="background:#1E1E1E;"></div><div class="swatch-info"><span class="swatch-name">Carbon 3</span><span class="swatch-hex">#1E1E1E</span></div></div>
+</div>
+
+<nav>
+  <div class="logo-area">
+    <div class="logo-heart">
+      <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="hg2" x1="10" y1="10" x2="90" y2="90" gradientUnits="userSpaceOnUse"><stop offset="0%" stop-color="#C42B18"/><stop offset="100%" stop-color="#E8791A"/></linearGradient></defs>
+        <path d="M50 85 C50 85 12 58 12 35 C12 22 22 14 34 14 C41 14 47 18 50 23 C53 18 59 14 66 14 C78 14 88 22 88 35 C88 58 50 85 50 85Z" fill="url(#hg2)" opacity="0.18"/>
+        <path d="M50 78 C50 78 32 64 26 50 C23 43 24 35 30 30" stroke="url(#hg2)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M30 30 C36 24 44 22 50 28" stroke="url(#hg2)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M50 28 C56 22 64 24 70 30" stroke="url(#hg2)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M70 30 C76 35 77 43 74 50 C68 64 50 78 50 78" stroke="url(#hg2)" stroke-width="4" stroke-linecap="round" fill="none"/>
+        <path d="M38 20 C38 20 50 32 62 20" stroke="url(#hg2)" stroke-width="3.5" stroke-linecap="round" fill="none" opacity="0.6"/>
+      </svg>
+    </div>
+    <div class="logo-wordmark"><span class="logo-top">Collaboration</span><span class="logo-for">for</span><span class="logo-bot">Good</span></div>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#">About</a></li><li><a href="#">Capabilities</a></li><li><a href="#">Insights</a></li><li><a href="#">Contact</a></li>
+    <li><a href="#" class="nav-cta">Get in Touch</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-accent-line"></div>
+  <div class="hero-left">
+    <h1 class="hero-headline">All for<br/><span class="red-word">Good</span><br/>&amp; Good<br/>for All</h1>
+    <div class="hero-divider"></div>
+    <p class="hero-sub">From ESG reporting to brand storytelling, we turn social impact into a strategic advantage — trusted by Fortune 500s and purpose-led brands alike.</p>
+    <div><a href="#" class="btn-red-solid">Book a Discovery Call</a></div>
+  </div>
+  <div class="hero-right"><div class="hero-img-ph"><span class="ph-label">Hero Image</span></div></div>
+</section>
+
+<div class="how">
+  <div class="how-label">How<br/>We<br/>Work</div>
+  <div>
+    <div class="how-cols">
+      <div><div class="how-num">01</div><div class="how-title">Collaborate</div><div class="how-body">We co-create strategies that deepen connection between brands and communities.</div></div>
+      <div><div class="how-num">02</div><div class="how-title">Create</div><div class="how-body">We build purpose-led programs that drive meaningful, lasting impact.</div></div>
+      <div><div class="how-num">03</div><div class="how-title">Report</div><div class="how-body">We measure impact and craft reports that demonstrate real progress.</div></div>
+      <div><div class="how-num">04</div><div class="how-title">Lead</div><div class="how-body">We embed expertise to guide your social impact journey forward.</div></div>
+    </div>
+    <a href="#" class="btn-white">View All Capabilities</a>
+  </div>
+</div>
+
+<section class="testimonials">
+  <p class="sec-kicker">Client Voices</p>
+  <h2 class="sec-heading">What Our Clients Are Saying</h2>
+  <p class="sec-sub">Purpose is powerful. Proof is better.</p>
+  <div class="testi-grid">
+    <div class="testi-card"><div class="testi-avatar">👤</div><p class="testi-text">"Collaboration for Good transformed how we approach CSR — from a compliance checkbox to a genuine competitive advantage."</p><div class="testi-name">Senior Director, Fortune 500</div><div class="testi-stars">★★★★★</div></div>
+    <div class="testi-card"><div class="testi-avatar">👤</div><p class="testi-text">"Tyler brought clarity and structure to a program we'd been trying to launch for two years. Within six months we had results."</p><div class="testi-name">VP of Community Affairs</div><div class="testi-stars">★★★★★</div></div>
+    <div class="testi-card"><div class="testi-avatar">👤</div><p class="testi-text">"Our ESG report went from a liability to a recruiting asset. The before and after was remarkable."</p><div class="testi-name">Chief People Officer</div><div class="testi-stars">★★★★★</div></div>
+  </div>
+</section>
+
+<section class="partners">
+  <div class="partners-heading">Our Partners</div>
+  <div class="partners-row">
+    <div class="partner-ph"><span>Partner Logo</span></div>
+    <div class="partner-ph"><span>Partner Logo</span></div>
+    <div class="partner-ph"><span>Partner Logo</span></div>
+  </div>
+</section>
+
+<section class="insights">
+  <div class="insights-heading">Insights That Lead with Impact</div>
+  <div class="insights-grid">
+    <div class="insight-card"><div class="insight-img"><span>Blog Image</span></div><div class="insight-body"><span class="insight-tag">ESG</span><div class="insight-title">Six Steps to a Better ESG Report</div><p class="insight-excerpt">The most effective ESG reports don't just document — they demonstrate.</p><a href="#" class="insight-link">Read More →</a></div></div>
+    <div class="insight-card"><div class="insight-img"><span>Blog Image</span></div><div class="insight-body"><span class="insight-tag">Strategy</span><div class="insight-title">Embedding Social Impact into Your Brand</div><p class="insight-excerpt">Social impact that lives only in your annual report isn't strategy — it's documentation.</p><a href="#" class="insight-link">Read More →</a></div></div>
+    <div class="insight-card"><div class="insight-img"><span>Blog Image</span></div><div class="insight-body"><span class="insight-tag">Growth</span><div class="insight-title">How to Make CSR a Business Advantage</div><p class="insight-excerpt">Companies with authentic CSR programs outperform peers on retention and revenue.</p><a href="#" class="insight-link">Read More →</a></div></div>
+  </div>
+</section>
+
+<section class="cta-contact">
+  <div>
+    <div class="form-row"><select class="form-field"><option>I am a...</option></select><select class="form-field"><option>I'm looking for...</option></select></div>
+    <div class="form-row"><input class="form-field" type="text" placeholder="First Name"/><input class="form-field" type="text" placeholder="Last Name"/></div>
+    <div class="form-row"><input class="form-field" type="text" placeholder="Organization"/><input class="form-field" type="text" placeholder="Phone Number"/></div>
+    <input class="form-field full" type="email" placeholder="Email Address"/>
+    <button class="form-submit">Submit</button>
+  </div>
+  <div>
+    <p class="cta-kicker">Let's Connect</p>
+    <h2 class="cta-headline">Let's Map<br/>Your Next<br/>Move</h2>
+    <div class="contact-row"><span class="contact-icon">📞</span><div><div class="contact-label">Phone</div><div class="contact-value">(123) 456-7890</div></div></div>
+    <div class="contact-row"><span class="contact-icon">✉️</span><div><div class="contact-label">Email</div><div class="contact-value">connect@collaborationforgood.com</div></div></div>
+    <div class="contact-row"><span class="contact-icon">📍</span><div><div class="contact-label">Location</div><div class="contact-value">3219 E. Camelback Rd. #299, Phoenix, AZ 85018</div></div></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-policies"><span class="footer-policy-label">Our Policies</span><a href="#" class="footer-policy-link">Terms of Service</a><a href="#" class="footer-policy-link">Privacy Policy</a><a href="#" class="footer-policy-link">Data Collection</a></div>
+  <div class="footer-center">
+    <div class="footer-logo-area"><div class="footer-logo-heart"><svg viewBox="0 0 100 100" fill="none"><path d="M50 82 C50 82 14 58 14 36 C14 23 23 15 34 15 C41 15 47 19 50 24 C53 19 59 15 66 15 C77 15 86 23 86 36 C86 58 50 82 50 82Z" stroke="#C42B18" stroke-width="4" fill="none"/></svg></div><div class="footer-logo-text">Collaboration<br/>for Good</div></div>
+    <span class="footer-copy">© 2026 Collaboration For Good | All Rights Reserved</span>
+  </div>
+  <div class="footer-social"><a href="#" class="social-icon">in</a><a href="#" class="social-icon">f</a><a href="#" class="social-icon">𝕏</a></div>
+</footer>
+
+<div class="mockup-label">Carbon &amp; Red</div>
+</body>
+</html>
