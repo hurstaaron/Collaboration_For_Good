@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collaboration for Good — Coming Soon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;}
+*{cursor:none!important;}
+
+:root{
+  --red:#C42B18;
+  --offwhite:#F5F2EE;
+  --warm-dark:#1C1A18;
+  --ink:#111111;
+  --cream:rgba(245,242,238,0.9);
+  --cream-dim:rgba(245,242,238,0.32);
+  --cream-ghost:rgba(245,242,238,0.08);
+  --cream-faint:rgba(245,242,238,0.04);
+}
+
+/* ── CURSOR ─────────────────────────────────── */
+#c-dot{
+  position:fixed;left:0;top:0;width:6px;height:6px;
+  background:var(--red);border-radius:50%;pointer-events:none;
+  z-index:99999;opacity:0;transition:opacity 0.3s,width 0.25s,height 0.25s;
+  transform-origin:center;
+}
+#c-ring{
+  position:fixed;left:0;top:0;width:30px;height:30px;
+  border:0.5px solid rgba(196,43,24,0.38);border-radius:50%;pointer-events:none;
+  z-index:99998;opacity:0;transition:opacity 0.3s,width 0.3s cubic-bezier(.16,1,.3,1),height 0.3s cubic-bezier(.16,1,.3,1),border-color 0.2s;
+}
+body.cursor-ready #c-dot,body.cursor-ready #c-ring{opacity:1;}
+body.cursor-hover #c-ring{width:48px;height:48px;border-color:rgba(196,43,24,0.65);}
+body.cursor-hover #c-dot{width:4px;height:4px;}
+
+/* ── PAGE ───────────────────────────────────── */
+body{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  background:var(--warm-dark);color:var(--cream);
+  min-height:100vh;display:flex;flex-direction:column;
+  position:relative;overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='250'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='250' height='250' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat:repeat;background-size:250px 250px;opacity:0.038;
+}
+body>*{position:relative;z-index:1;}
+
+/* ── ANIMATIONS ─────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+@keyframes lineUp{from{transform:translateY(110%);}to{transform:translateY(0);}}
+@keyframes drawRule{from{transform:scaleX(0);}to{transform:scaleX(1);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.15;}}
+@keyframes ticker{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+
+.fu{opacity:0;animation:fadeUp 1s cubic-bezier(.16,1,.3,1) forwards;}
+.d1{animation-delay:.15s;} .d2{animation-delay:.3s;} .d3{animation-delay:.5s;}
+.d4{animation-delay:.68s;} .d5{animation-delay:.85s;} .d6{animation-delay:1.02s;}
+.d7{animation-delay:1.2s;} .d8{animation-delay:1.38s;}
+
+/* ── HEADER ─────────────────────────────────── */
+header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:2.25rem 3.5rem;border-bottom:0.5px solid var(--cream-ghost);
+}
+.wordmark{
+  font-size:0.72rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--cream-dim);text-decoration:none;
+}
+.wordmark em{color:var(--red);font-style:normal;}
+.live-wrap{display:flex;align-items:center;gap:8px;font-size:0.62rem;font-weight:300;letter-spacing:0.14em;text-transform:uppercase;color:rgba(245,242,238,0.2);}
+.live-dot{width:5px;height:5px;border-radius:50%;background:var(--red);animation:pulse 2.2s ease-in-out infinite;}
+
+/* ── MAIN ───────────────────────────────────── */
+main{
+  flex:1;display:flex;flex-direction:column;align-items:center;
+  justify-content:center;padding:5rem 2rem 3rem;text-align:center;
+}
+.eyebrow{
+  font-size:0.6rem;font-weight:300;letter-spacing:0.28em;text-transform:uppercase;
+  color:rgba(245,242,238,0.22);margin-bottom:2.5rem;
+}
+
+/* ── HEADLINE MASK REVEAL ────────────────────── */
+.headline{
+  font-family:'Cormorant Garamond',serif;font-weight:300;font-style:italic;
+  font-size:clamp(3.5rem,9.5vw,8.5rem);line-height:1.0;
+  letter-spacing:-0.015em;margin-bottom:3.5rem;
+}
+.line-mask{overflow:hidden;display:block;}
+.line-inner{
+  display:block;color:var(--offwhite);
+  transform:translateY(110%);
+  animation:lineUp 1s cubic-bezier(.16,1,.3,1) forwards;
+}
+.line-inner em{color:var(--red);font-style:italic;}
+.l1{animation-delay:.3s;} .l2{animation-delay:.5s;}
+
+/* ── RED RULE ────────────────────────────────── */
+.rule-outer{overflow:hidden;width:48px;margin:0 auto 3rem;}
+.rule-line{
+  height:0.5px;background:var(--red);
+  transform:scaleX(0);transform-origin:left;
+  animation:drawRule 0.9s cubic-bezier(.16,1,.3,1) .72s forwards;
+}
+
+/* ── SUBTEXT ─────────────────────────────────── */
+.sub{
+  font-size:0.9rem;font-weight:300;line-height:1.9;
+  color:rgba(245,242,238,0.28);max-width:380px;margin-bottom:3.5rem;
+}
+
+/* ── STATS ───────────────────────────────────── */
+.stats{
+  display:flex;align-items:flex-start;justify-content:center;
+  gap:0 4rem;margin-bottom:4rem;flex-wrap:wrap;
+}
+.stat{display:flex;flex-direction:column;align-items:center;gap:0.55rem;}
+.stat-num{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4.5vw,3.2rem);
+  font-weight:300;color:var(--offwhite);line-height:1;min-width:3ch;
+}
+.stat-num.is-f100{font-size:clamp(1.6rem,3.5vw,2.4rem);letter-spacing:0.06em;}
+.stat-label{
+  font-size:0.6rem;font-weight:300;letter-spacing:0.18em;text-transform:uppercase;
+  color:rgba(245,242,238,0.2);max-width:9rem;line-height:1.5;
+}
+.stat-sep{
+  width:0.5px;height:3rem;background:rgba(245,242,238,0.08);
+  align-self:center;
+}
+
+/* ── EMAIL (MAGNETIC) ────────────────────────── */
+.email-cluster{display:flex;flex-direction:column;align-items:center;gap:0.6rem;}
+.email-pre{font-size:0.6rem;font-weight:300;letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,242,238,0.18);}
+.email-wrap{display:inline-block;}
+a.em{
+  display:inline-block;
+  font-size:0.82rem;font-weight:300;letter-spacing:0.06em;
+  color:rgba(245,242,238,0.42);text-decoration:none;
+  border-bottom:0.5px solid rgba(245,242,238,0.12);padding-bottom:3px;
+  transition:color 0.25s,border-color 0.25s;
+}
+a.em:hover{color:var(--red);border-color:rgba(196,43,24,0.4);}
+
+/* ── PRESS MARQUEE ───────────────────────────── */
+.marquee-outer{
+  overflow:hidden;width:100%;padding:1.75rem 0;
+  border-top:0.5px solid var(--cream-ghost);
+  border-bottom:0.5px solid var(--cream-ghost);
+  margin-top:4rem;
+}
+.marquee-track{
+  display:flex;align-items:center;gap:2.5rem;
+  width:max-content;white-space:nowrap;
+  animation:ticker 30s linear infinite;
+}
+.marquee-track:hover{animation-play-state:paused;}
+.mk{
+  font-family:'Cormorant Garamond',serif;font-size:0.85rem;font-weight:300;
+  letter-spacing:0.2em;text-transform:uppercase;color:rgba(245,242,238,0.4);
+  transition:color 0.3s ease;
+}
+.marquee-track:hover .mk{color:rgba(245,242,238,0.54);}
+.mk-sep{width:3px;height:3px;border-radius:50%;background:var(--red);opacity:0.6;flex-shrink:0;}
+
+/* ── FOOTER ──────────────────────────────────── */
+footer{
+  padding:1.5rem 3.5rem;display:flex;justify-content:space-between;
+  align-items:center;flex-wrap:wrap;gap:1rem;
+}
+.copy{font-size:0.65rem;font-weight:300;color:rgba(245,242,238,0.14);}
+.tag{
+  font-size:0.6rem;font-weight:400;letter-spacing:0.14em;text-transform:uppercase;
+  color:rgba(245,242,238,0.18);border:0.5px solid var(--cream-ghost);
+  border-radius:100px;padding:4px 13px;
+}
+
+@media(max-width:600px){
+  header,footer{padding-left:1.75rem;padding-right:1.75rem;}
+  main{padding:4rem 1.5rem 2rem;}
+  .stats{gap:2rem 2.5rem;}
+  .stat-sep{display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div id="c-dot"></div>
+<div id="c-ring"></div>
+
+<!-- HEADER -->
+<header>
+  <a href="#" class="wordmark fu d1">Collaboration <em>for Good</em></a>
+  <div class="live-wrap fu d1">
+    <span class="live-dot"></span>
+    <span>Site refresh in progress</span>
+  </div>
+</header>
+
+<!-- MAIN -->
+<main>
+
+  <p class="eyebrow fu d2">Social Impact · ESG Strategy · CSR Consulting · Phoenix, AZ</p>
+
+  <div class="headline" aria-label="Collaborative work in progress.">
+    <span class="line-mask"><span class="line-inner l1">Collaborative work</span></span>
+    <span class="line-mask"><span class="line-inner l2">in <em>progress.</em></span></span>
+  </div>
+
+  <div class="rule-outer"><div class="rule-line"></div></div>
+
+  <p class="sub fu d4">Something more aligned with the work is being built.<br>Check back soon for the new Collaboration for Good.</p>
+
+  <div class="stats fu d5" id="stats">
+    <div class="stat">
+      <span class="stat-num" data-target="10" data-suffix="+">0</span>
+      <span class="stat-label">Years of Practice</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <span class="stat-num" data-target="30" data-suffix="+">0</span>
+      <span class="stat-label">Boards &amp; Committees</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <span class="stat-num is-f100">F100</span>
+      <span class="stat-label">Clients Served</span>
+    </div>
+    <div class="stat-sep"></div>
+    <div class="stat">
+      <span class="stat-num" data-target="90" data-suffix="%">0</span>
+      <span class="stat-label">Employee Mobilization</span>
+    </div>
+  </div>
+
+  <div class="email-cluster fu d6">
+    <span class="email-pre">In the meantime</span>
+    <div class="email-wrap" id="email-wrap">
+      <a href="mailto:connect@collaborationforgood.com" class="em">connect@collaborationforgood.com</a>
+    </div>
+  </div>
+
+</main>
+
+<!-- PRESS MARQUEE -->
+<div class="marquee-outer fu d7" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="mk">Forbes</span><span class="mk-sep"></span>
+    <span class="mk">Fortune</span><span class="mk-sep"></span>
+    <span class="mk">Fast Company</span><span class="mk-sep"></span>
+    <span class="mk">US News</span><span class="mk-sep"></span>
+    <span class="mk">InBusiness Phoenix</span><span class="mk-sep"></span>
+    <span class="mk">Green Living</span><span class="mk-sep"></span>
+    <span class="mk">Featured Expert Contributor</span><span class="mk-sep"></span>
+    <span class="mk">Forbes</span><span class="mk-sep"></span>
+    <span class="mk">Fortune</span><span class="mk-sep"></span>
+    <span class="mk">Fast Company</span><span class="mk-sep"></span>
+    <span class="mk">US News</span><span class="mk-sep"></span>
+    <span class="mk">InBusiness Phoenix</span><span class="mk-sep"></span>
+    <span class="mk">Green Living</span><span class="mk-sep"></span>
+    <span class="mk">Featured Expert Contributor</span><span class="mk-sep"></span>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="copy fu d8">© 2026 Collaboration For Good, LLC · 3219 E. Camelback Rd. #299, Phoenix, AZ 85018</span>
+  <span class="tag fu d8">B-Corp In Transition</span>
+</footer>
+
+<script>
+(function(){
+
+  /* ── Custom cursor ── */
+  const dot = document.getElementById('c-dot');
+  const ring = document.getElementById('c-ring');
+  let rx = -100, ry = -100, mx = -100, my = -100;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    dot.style.left = (mx - 3) + 'px';
+    dot.style.top  = (my - 3) + 'px';
+    document.body.classList.add('cursor-ready');
+  });
+
+  document.addEventListener('mouseleave', () => document.body.classList.remove('cursor-ready'));
+  document.addEventListener('mouseenter', () => document.body.classList.add('cursor-ready'));
+
+  (function ringLoop(){
+    rx += (mx - rx) * 0.1;
+    ry += (my - ry) * 0.1;
+    ring.style.left = (rx - 15) + 'px';
+    ring.style.top  = (ry - 15) + 'px';
+    requestAnimationFrame(ringLoop);
+  })();
+
+  document.querySelectorAll('a, button').forEach(el => {
+    el.addEventListener('mouseenter', () => document.body.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => document.body.classList.remove('cursor-hover'));
+  });
+
+  /* ── Magnetic email ── */
+  const wrap = document.getElementById('email-wrap');
+  if(wrap){
+    const link = wrap.querySelector('a');
+    wrap.addEventListener('mousemove', e => {
+      const r = wrap.getBoundingClientRect();
+      const dx = (e.clientX - (r.left + r.width  / 2)) * 0.28;
+      const dy = (e.clientY - (r.top  + r.height / 2)) * 0.28;
+      link.style.transform  = `translate(${dx}px, ${dy}px)`;
+      link.style.transition = 'transform 0.15s ease';
+    });
+    wrap.addEventListener('mouseleave', () => {
+      link.style.transform  = 'translate(0,0)';
+      link.style.transition = 'transform 0.6s cubic-bezier(.16,1,.3,1)';
+    });
+  }
+
+  /* ── Stats count-up ── */
+  function countUp(el, target, suffix, duration){
+    const start = performance.now();
+    const step = now => {
+      const t = Math.min((now - start) / duration, 1);
+      const ease = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.floor(ease * target) + (t < 1 ? '' : suffix);
+      if(t < 1) requestAnimationFrame(step);
+    };
+    requestAnimationFrame(step);
+  }
+
+  const statsEl = document.getElementById('stats');
+  if(statsEl){
+    const obs = new IntersectionObserver(entries => {
+      if(entries[0].isIntersecting){
+        document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+          const target = parseInt(el.dataset.target);
+          const suffix = el.dataset.suffix || '';
+          countUp(el, target, suffix, 1600);
+        });
+        obs.disconnect();
+      }
+    }, { threshold: 0.4 });
+    obs.observe(statsEl);
+  }
+
+})();
+</script>
+</body>
+</html>

@@ -1,216 +1,486 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>CFG Mockups — Collaboration for Good</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Georgia', serif; background: #f9f7f4; color: #2c2c2c; padding: 48px 24px; }
-    .container { max-width: 720px; margin: 0 auto; }
-    header { margin-bottom: 48px; }
-    header h1 { font-size: 28px; font-weight: normal; letter-spacing: -0.5px; }
-    header p { margin-top: 8px; color: #666; font-family: sans-serif; font-size: 14px; }
-    .badge { display: inline-block; margin-top: 12px; font-family: sans-serif; font-size: 11px; letter-spacing: 1px; text-transform: uppercase; background: #e8f0e4; color: #3a6b35; padding: 4px 10px; border-radius: 4px; }
-    .section { margin-bottom: 48px; }
-    h2 { font-size: 13px; font-family: sans-serif; text-transform: uppercase; letter-spacing: 1.5px; color: #999; margin-bottom: 16px; }
-    .section-note { font-family: sans-serif; font-size: 12px; color: #aaa; font-style: italic; margin-bottom: 14px; margin-top: -8px; }
-    .grid { display: grid; gap: 12px; }
-    .card { background: #fff; border: 1px solid #e5e2dc; border-radius: 8px; padding: 20px 24px; display: flex; align-items: center; justify-content: space-between; text-decoration: none; color: inherit; transition: border-color 0.15s, box-shadow 0.15s; }
-    .card:hover { border-color: #3a6b35; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-    .card-left h3 { font-size: 17px; font-weight: normal; }
-    .card-left span { font-family: sans-serif; font-size: 12px; color: #999; margin-top: 4px; display: block; }
-    .status { font-family: sans-serif; font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; white-space: nowrap; }
-    .status.ready   { background: #e8f0e4; color: #3a6b35; }
-    .status.pending { background: #f0f0f0; color: #999; }
-    .status.personal { background: #fce8e4; color: #c03a20; }
-    .disabled { pointer-events: none; opacity: 0.45; }
-    .swatches { display: flex; align-items: center; gap: 6px; margin-left: 12px; }
-    .swatch { width: 24px; height: 24px; border-radius: 50%; flex-shrink: 0; border: 1px solid rgba(0,0,0,0.08); }
-    footer { font-family: sans-serif; font-size: 12px; color: #bbb; border-top: 1px solid #e5e2dc; padding-top: 24px; }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CFG Mockups — Collaboration for Good</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{font-size:16px;}
+body{
+  font-family:'DM Sans',sans-serif;font-weight:300;
+  background:#F5F2EE;color:#111111;
+  min-height:100vh;
+}
+
+:root{
+  --red:#C42B18;
+  --ink:#111111;
+  --offwhite:#F5F2EE;
+  --mid:rgba(17,17,17,0.45);
+  --ghost:rgba(17,17,17,0.1);
+  --warm-dark:#1C1A18;
+}
+
+/* ── HEADER ─────────────────────────────────── */
+header{
+  border-bottom:0.5px solid var(--ghost);
+  padding:2.5rem 3.5rem 2rem;
+}
+.header-top{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem;
+}
+.site-title{
+  font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.4rem);
+  font-weight:300;color:var(--ink);letter-spacing:-0.01em;
+}
+.site-title em{color:var(--red);font-style:italic;}
+.phase-badge{
+  font-size:0.62rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--red);border:0.5px solid rgba(196,43,24,0.3);
+  border-radius:100px;padding:5px 14px;white-space:nowrap;align-self:flex-start;
+  margin-top:4px;
+}
+.site-meta{
+  font-size:0.75rem;font-weight:300;letter-spacing:0.04em;color:var(--mid);
+}
+
+/* ── MAIN CONTENT ────────────────────────────── */
+main{padding:0 3.5rem 5rem;}
+
+/* ── SECTION ─────────────────────────────────── */
+.section{padding:3rem 0 0;}
+.section-header{
+  display:flex;align-items:baseline;gap:1.5rem;
+  padding-bottom:1.25rem;
+  border-bottom:0.5px solid var(--ghost);
+  margin-bottom:2rem;
+}
+.section-title{
+  font-family:'Cormorant Garamond',serif;font-size:1.3rem;
+  font-weight:400;color:var(--ink);letter-spacing:0.01em;
+}
+.section-count{
+  font-size:0.65rem;font-weight:400;letter-spacing:0.16em;
+  text-transform:uppercase;color:var(--mid);
+}
+.section-note{
+  font-size:0.78rem;font-weight:300;line-height:1.7;
+  color:var(--mid);margin-bottom:1.75rem;max-width:680px;
+}
+
+/* ── CARD GRID ───────────────────────────────── */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+  gap:1px;
+  border:0.5px solid var(--ghost);
+}
+.grid.wide{grid-template-columns:repeat(auto-fill,minmax(340px,1fr));}
+.grid.solo{grid-template-columns:1fr;}
+
+/* ── CARD ────────────────────────────────────── */
+.card{
+  background:var(--offwhite);padding:1.75rem;
+  display:flex;flex-direction:column;gap:1rem;
+  border:0.5px solid var(--ghost);
+  transition:background 0.18s;
+  position:relative;
+}
+.card:hover{background:#EDE9E4;}
+.card.dark{background:var(--warm-dark);border-color:rgba(245,242,238,0.07);}
+.card.dark:hover{background:#232120;}
+.card.featured{
+  border-color:var(--red);
+  background:rgba(196,43,24,0.03);
+}
+.card.featured:hover{background:rgba(196,43,24,0.06);}
+.card.inactive{opacity:0.55;}
+.card.inactive:hover{background:var(--offwhite);}
+
+.card-badges{display:flex;gap:6px;flex-wrap:wrap;}
+.badge{
+  font-size:0.58rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;
+  padding:3px 10px;border-radius:100px;
+}
+.badge-selected{background:var(--red);color:#fff;}
+.badge-new{background:rgba(17,17,17,0.08);color:var(--mid);}
+.badge-dark{background:rgba(245,242,238,0.1);color:rgba(245,242,238,0.5);}
+.badge-interactive{background:rgba(196,43,24,0.1);color:var(--red);border:0.5px solid rgba(196,43,24,0.2);}
+.badge-pending{background:rgba(17,17,17,0.06);color:rgba(17,17,17,0.3);}
+
+.card-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;font-weight:400;color:var(--ink);
+  line-height:1.2;
+}
+.card.dark .card-title{color:rgba(245,242,238,0.88);}
+
+.card-desc{
+  font-size:0.78rem;font-weight:300;line-height:1.7;
+  color:var(--mid);flex:1;
+}
+.card.dark .card-desc{color:rgba(245,242,238,0.3);}
+
+.card-footer{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:0.25rem;
+}
+.card-link{
+  font-size:0.7rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--ink);text-decoration:none;
+  border-bottom:0.5px solid var(--ghost);padding-bottom:2px;
+  transition:color 0.15s,border-color 0.15s;
+}
+.card-link:hover{color:var(--red);border-color:rgba(196,43,24,0.4);}
+.card.dark .card-link{color:rgba(245,242,238,0.45);border-color:rgba(245,242,238,0.12);}
+.card.dark .card-link:hover{color:rgba(196,43,24,0.85);border-color:rgba(196,43,24,0.3);}
+.card-link.disabled{color:rgba(17,17,17,0.22);border-color:transparent;pointer-events:none;}
+
+.card-sub{
+  font-size:0.65rem;font-weight:300;letter-spacing:0.08em;
+  color:rgba(17,17,17,0.25);
+}
+.card.dark .card-sub{color:rgba(245,242,238,0.14);}
+
+/* ── SUBSECTION LABEL ────────────────────────── */
+.subsection-label{
+  font-size:0.62rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--mid);padding:2rem 0 1rem;border-top:0.5px solid var(--ghost);
+  margin-top:2rem;
+}
+.subsection-label:first-of-type{border-top:none;margin-top:0;}
+
+/* ── DIVIDER ─────────────────────────────────── */
+.divider{height:0.5px;background:var(--ghost);margin:3rem 0 0;}
+
+/* ── FOOTER ──────────────────────────────────── */
+footer{
+  padding:2rem 3.5rem;border-top:0.5px solid var(--ghost);
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;
+}
+.footer-copy{font-size:0.7rem;font-weight:300;color:var(--mid);}
+.footer-note{font-size:0.7rem;font-weight:300;color:rgba(17,17,17,0.28);}
+
+/* ── RESPONSIVE ──────────────────────────────── */
+@media(max-width:680px){
+  header,main,footer{padding-left:1.5rem;padding-right:1.5rem;}
+  .grid{grid-template-columns:1fr;}
+}
+</style>
 </head>
 <body>
-  <div class="container">
 
-    <header>
-      <h1>Collaboration for Good &mdash; Site Mockups</h1>
-      <p>Website Redesign &amp; Brand Consolidation &nbsp;&middot;&nbsp; Intern: Aaron Hurst, UAT &nbsp;&middot;&nbsp; Principal: Tyler Butler</p>
-      <span class="badge">Phase 1 &mdash; Audit &amp; Discovery</span>
-    </header>
-
-    <!-- GROUP 1: Original Concepts -->
-    <div class="section">
-      <h2>Original Concepts &mdash; Ember Series + Brand Exploration</h2>
-      <div class="grid">
-
-        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-forbes-authority.html" class="card">
-          <div class="card-left"><h3>Forbes Authority</h3><span>Deep forest green &middot; gold &middot; parchment &mdash; editorial gravitas</span></div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="swatches"><div class="swatch" style="background:#1E3A2F;"></div><div class="swatch" style="background:#C49A3C;"></div><div class="swatch" style="background:#FAF7F2;border-color:#ccc;"></div></div>
-            <span class="status ready">View</span>
-          </div>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-electric-heart.html" class="card">
-          <div class="card-left"><h3>Electric Heart</h3><span>Deep teal &middot; warm coral &middot; soft blush &mdash; Tyler's energy made visual</span></div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="swatches"><div class="swatch" style="background:#1A6868;"></div><div class="swatch" style="background:#D95A45;"></div><div class="swatch" style="background:#F0C4B8;"></div></div>
-            <span class="status ready">View</span>
-          </div>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-desert-authority.html" class="card">
-          <div class="card-left"><h3>Desert Authority</h3><span>Terracotta &middot; sage green &middot; warm sand &mdash; Arizona roots, B-Corp signal</span></div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="swatches"><div class="swatch" style="background:#7D3D28;"></div><div class="swatch" style="background:#4A7C59;"></div><div class="swatch" style="background:#F5EFE0;border-color:#ccc;"></div></div>
-            <span class="status ready">View</span>
-          </div>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-ember-slate.html" class="card">
-          <div class="card-left"><h3>Ember Slate</h3><span>Cool slate &middot; steel blue &middot; warm gray &mdash; professional with controlled warmth</span></div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="swatches"><div class="swatch" style="background:#1C2B38;"></div><div class="swatch" style="background:#3D5A73;"></div><div class="swatch" style="background:#E8E4DF;"></div></div>
-            <span class="status ready">View</span>
-          </div>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-ember-forest.html" class="card">
-          <div class="card-left"><h3>Ember Forest</h3><span>Forest green &middot; teal green &middot; ember orange &mdash; B-Corp earthy meets energy</span></div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="swatches"><div class="swatch" style="background:#1E3A2F;"></div><div class="swatch" style="background:#2A5C4E;"></div><div class="swatch" style="background:#E8791A;"></div></div>
-            <span class="status ready">View</span>
-          </div>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-ember-earth.html" class="card">
-          <div class="card-left"><h3>Ember Earth</h3><span>Deep espresso &middot; adobe &middot; warm sand &mdash; grounded, warm, approachable</span></div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="swatches"><div class="swatch" style="background:#2C1F18;"></div><div class="swatch" style="background:#7A3728;"></div><div class="swatch" style="background:#F5EFE0;border-color:#ccc;"></div></div>
-            <span class="status ready">View</span>
-          </div>
-        </a>
-
-      </div>
-    </div>
-
-    <!-- GROUP 2: Tyler's Direction -->
-    <div class="section">
-      <h2>Tyler's Direction &mdash; Black &middot; White &middot; Off-White &middot; Red</h2>
-      <div class="grid">
-
-        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-crimson-gold.html" class="card">
-          <div class="card-left"><h3>Crimson &amp; Gold</h3><span>Deep crimson &middot; gold &middot; near-black &mdash; bold, high-energy, brand-forward</span></div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="swatches"><div class="swatch" style="background:#7A1E1E;"></div><div class="swatch" style="background:#F0C830;"></div><div class="swatch" style="background:#1A1A1A;"></div></div>
-            <span class="status ready">View</span>
-          </div>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-chic-noir.html" class="card">
-          <div class="card-left"><h3>Chic Noir</h3><span>Near-black &middot; logo red &middot; off-white &mdash; streamlined, editorial, restrained</span></div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="swatches"><div class="swatch" style="background:#111111;"></div><div class="swatch" style="background:#C42B18;"></div><div class="swatch" style="background:#F5F3F0;border-color:#ccc;"></div></div>
-            <span class="status ready">View</span>
-          </div>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-carbon-red.html" class="card">
-          <div class="card-left"><h3>Carbon &amp; Red</h3><span>Carbon black &middot; bright red &middot; clean white &mdash; high-contrast, modern, sharp</span></div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="swatches"><div class="swatch" style="background:#0A0A0A;"></div><div class="swatch" style="background:#E02020;"></div><div class="swatch" style="background:#F2F0ED;border-color:#ccc;"></div></div>
-            <span class="status ready">View</span>
-          </div>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-ivory-red.html" class="card">
-          <div class="card-left"><h3>Ivory &amp; Red</h3><span>Soft black &middot; deep muted red &middot; warm ivory &mdash; Parisian editorial, most sophisticated</span></div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="swatches"><div class="swatch" style="background:#252220;"></div><div class="swatch" style="background:#B01818;"></div><div class="swatch" style="background:#F0EBE3;border-color:#ccc;"></div></div>
-            <span class="status ready">View</span>
-          </div>
-        </a>
-
-      </div>
-    </div>
-
-    <!-- GROUP 3: Official CFG Brand -->
-    <div class="section">
-      <h2>Official CFG Brand Palette</h2>
-      <div class="grid">
-
-        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-magic-connection.html" class="card">
-          <div class="card-left"><h3>Magic &amp; Connection</h3><span>Official brand palette &middot; Bebas Neue &middot; rust &middot; creme &middot; brand black &mdash; straight from the brand book</span></div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="swatches"><div class="swatch" style="background:#231F1F;"></div><div class="swatch" style="background:#E63C2D;"></div><div class="swatch" style="background:#F6922E;"></div></div>
-            <span class="status ready">View</span>
-          </div>
-        </a>
-
-      </div>
-    </div>
-
-    <!-- GROUP 4: Tyler's Personal Site -->
-    <div class="section">
-      <h2>Tyler's Personal Website &mdash; Recommended Direction</h2>
-      <p class="section-note">Separate from CFG &mdash; this concept is built around Tyler's personal brand and is recommended for tylerjbutler.com or a personal brand site.</p>
-      <div class="grid">
-
-        <a href="01_Audit_and_Discovery/mockups/brand-concepts/cfg-the-protagonist.html" class="card">
-          <div class="card-left"><h3>The Protagonist</h3><span>Beliefs before services &middot; purpose-first editorial &mdash; leads with Tyler's personal conviction, not CFG's service menu</span></div>
-          <div style="display:flex;align-items:center;gap:12px;">
-            <div class="swatches"><div class="swatch" style="background:#111111;"></div><div class="swatch" style="background:#C42B18;"></div><div class="swatch" style="background:#F5F2EE;border-color:#ccc;"></div></div>
-            <span class="status personal">Personal Site</span>
-          </div>
-        </a>
-
-      </div>
-    </div>
-
-    <!-- PAGE MOCKUPS -->
-    <div class="section">
-      <h2>Page Mockups</h2>
-      <div class="grid">
-
-        <a href="01_Audit_and_Discovery/mockups/home/" class="card disabled">
-          <div class="card-left"><h3>Home</h3><span>Primary landing page &middot; hero, value prop, social proof, CTA</span></div>
-          <span class="status pending">Not Started</span>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/about/" class="card disabled">
-          <div class="card-left"><h3>About</h3><span>Tyler's bio &middot; Forbes credentials &middot; client history &middot; personal brand</span></div>
-          <span class="status pending">Not Started</span>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/capabilities/" class="card disabled">
-          <div class="card-left"><h3>Capabilities</h3><span>Collaborate / Create / Report / Lead framework</span></div>
-          <span class="status pending">Not Started</span>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/impact/" class="card disabled">
-          <div class="card-left"><h3>Impact / Case Studies</h3><span>Microsoft, GoDaddy, Lyft, Bridgestone &mdash; documented results</span></div>
-          <span class="status pending">Not Started</span>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/insights/" class="card disabled">
-          <div class="card-left"><h3>Insights / Blog</h3><span>Forbes column integration &middot; content syndication strategy</span></div>
-          <span class="status pending">Not Started</span>
-        </a>
-
-        <a href="01_Audit_and_Discovery/mockups/contact/" class="card disabled">
-          <div class="card-left"><h3>Contact</h3><span>First build &middot; fixes "Send us a Massage" &middot; Calendly integration</span></div>
-          <span class="status pending">Not Started</span>
-        </a>
-
-      </div>
-    </div>
-
-    <footer>
-      <p>Collaboration for Good, LLC &nbsp;&middot;&nbsp; 3219 E. Camelback Rd. #299, Phoenix, AZ 85018</p>
-      <p style="margin-top:6px;">Feedback? Reply to your weekly status email.</p>
-    </footer>
-
+<!-- HEADER -->
+<header>
+  <div class="header-top">
+    <h1 class="site-title">Collaboration <em>for Good</em> — Site Mockups</h1>
+    <span class="phase-badge">Phase 1 · Audit & Discovery</span>
   </div>
+  <p class="site-meta">Website Redesign & Brand Consolidation &nbsp;·&nbsp; Intern: Aaron Hurst, UAT &nbsp;·&nbsp; Principal: Tyler Butler</p>
+</header>
+
+<main>
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 1 — UNDER CONSTRUCTION MOCKUPS
+       ═══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title">Under Construction Mockups</h2>
+      <span class="section-count">12 options · 3 files</span>
+    </div>
+    <p class="section-note">Placeholder pages to replace the live WordPress site during the rebuild. All options use The Protagonist color system — Ink · Logo Red · Off-White. Tyler has requested the live site come down before an upcoming speaking engagement. Options 1–9 and 10–11 use an in-page switcher.</p>
+
+    <div class="subsection-label">Options 1–9 &nbsp;·&nbsp; Light & Dark Variants</div>
+    <div class="grid wide">
+
+      <div class="card dark">
+        <div class="card-badges">
+          <span class="badge badge-dark">Warm Dark</span>
+          <span class="badge badge-interactive">Interactive · 9 Options</span>
+        </div>
+        <p class="card-title">Options 1–9 · Interactive Switcher</p>
+        <p class="card-desc">Nine complete placeholder designs in one file — numbered switcher at bottom. Covers The Reveal, The Column, The Void, The Warmth, The Edition, The Grain, The Edge, The Mark, and The Split. All with entrance animations and warm dark or ivory backgrounds.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/placeholder/cfg-placeholder-v2.html" class="card-link">View All 9 →</a>
+          <span class="card-sub">Use switcher to compare</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="subsection-label">Options 10–11 &nbsp;·&nbsp; Elevated Concepts</div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-badges">
+          <span class="badge badge-new">Light</span>
+          <span class="badge badge-interactive">Interactive · Shared File</span>
+        </div>
+        <p class="card-title">Option 10 · The Masthead</p>
+        <p class="card-desc">The placeholder IS a masthead. Horizontal rules, press names as a structured dateline, centered serif wordmark — references the publications Tyler appears in. Staggered rule-draw animations. Light, print-quality, editorial.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/placeholder/cfg-placeholder-v2-extended.html" class="card-link">View →</a>
+          <span class="card-sub">Option 10 of 2</span>
+        </div>
+      </div>
+
+      <div class="card dark">
+        <div class="card-badges">
+          <span class="badge badge-dark">Warm Dark · Grain</span>
+          <span class="badge badge-interactive">Interactive · Shared File</span>
+        </div>
+        <p class="card-title">Option 11 · The Conviction</p>
+        <p class="card-desc">Not "we're under construction." This IS the pitch. Tyler's conviction copy as hero — "Business has the power to change the world." Dark, grainy, spare. Red on the words that matter. The placeholder becomes a brand statement.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/placeholder/cfg-placeholder-v2-extended.html" class="card-link">View →</a>
+          <span class="card-sub">Option 11 of 2</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="subsection-label">Option 12 &nbsp;·&nbsp; Full Interactive Experience</div>
+    <div class="grid">
+
+      <div class="card dark">
+        <div class="card-badges">
+          <span class="badge badge-dark">Warm Dark · Grain</span>
+          <span class="badge badge-new">Recommended</span>
+        </div>
+        <p class="card-title">Option 12 · The Experience</p>
+        <p class="card-desc">Custom cursor (red dot + lagging ring). Per-line headline reveal from behind clip masks — the luxury text technique used by Loewe, A24, and Apple. Animated credential counters (10+ years, 30+ boards, F100, 90%) that count up on load. Magnetic email link that floats toward the cursor. Continuous press name marquee with hover-pause. The most sophisticated option in the set.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/placeholder/cfg-placeholder-v2-option12.html" class="card-link">View →</a>
+          <span class="card-sub">Recommended for live deployment</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 2 — COLOR SCHEMES
+       ═══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title">Color Schemes</h2>
+      <span class="section-count">12 concepts</span>
+    </div>
+
+    <!-- THE PROTAGONIST — SELECTED, featured at top -->
+    <div class="subsection-label" style="border-top:none;margin-top:0;">Tyler's Selection &nbsp;·&nbsp; Locked Direction</div>
+    <div class="grid">
+      <div class="card featured">
+        <div class="card-badges">
+          <span class="badge badge-selected">Selected · May 21</span>
+          <span class="badge badge-new">CFG Brand Direction</span>
+        </div>
+        <p class="card-title">The Protagonist</p>
+        <p class="card-desc">Ink #111111 · Logo Red #C42B18 · Off-White #F5F2EE · Playfair Display + DM Sans. Purpose-first editorial direction — beliefs before services, conviction over catalog. Tyler selected this as the CFG color scheme on May 21, 2026. Active and production-committed. Also the basis for all Under Construction mockups above.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-the-protagonist.html" class="card-link">View →</a>
+          <span class="card-sub">Phase 3 build target</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TYLER'S DIRECTION -->
+    <div class="subsection-label">Tyler's Direction &nbsp;·&nbsp; Black · White · Off-White · Red</div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-badges"><span class="badge badge-new">Near-Black</span></div>
+        <p class="card-title">Crimson & Gold</p>
+        <p class="card-desc">Deep crimson · gold · near-black — bold, high-energy, brand-forward.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-crimson-gold.html" class="card-link">View →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badges"><span class="badge badge-new">Editorial</span></div>
+        <p class="card-title">Chic Noir</p>
+        <p class="card-desc">Near-black · logo red · off-white — streamlined, editorial, restrained.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-chic-noir.html" class="card-link">View →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badges"><span class="badge badge-new">High Contrast</span></div>
+        <p class="card-title">Carbon & Red</p>
+        <p class="card-desc">Carbon black · bright red · clean white — high-contrast, modern, sharp.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-carbon-red.html" class="card-link">View →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badges"><span class="badge badge-new">Sophisticated</span></div>
+        <p class="card-title">Ivory & Red</p>
+        <p class="card-desc">Soft black · deep muted red · warm ivory — Parisian editorial, most sophisticated.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-ivory-red.html" class="card-link">View →</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- OFFICIAL BRAND PALETTE -->
+    <div class="subsection-label">Official CFG Brand Palette</div>
+    <div class="grid">
+      <div class="card">
+        <div class="card-badges"><span class="badge badge-new">Brand Book</span></div>
+        <p class="card-title">Magic & Connection</p>
+        <p class="card-desc">Official brand palette · Bebas Neue · rust · creme · brand black — straight from the Aidan Taylor Marketing brand book.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-magic-connection.html" class="card-link">View →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- EMBER SERIES -->
+    <div class="subsection-label">Original Concepts &nbsp;·&nbsp; Ember Series + Brand Exploration</div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-badges"><span class="badge badge-new">Forest Green</span></div>
+        <p class="card-title">Forbes Authority</p>
+        <p class="card-desc">Deep forest green · gold · parchment — editorial gravitas.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-forbes-authority.html" class="card-link">View →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badges"><span class="badge badge-new">Teal · Coral</span></div>
+        <p class="card-title">Electric Heart</p>
+        <p class="card-desc">Deep teal · warm coral · soft blush — Tyler's energy made visual.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-electric-heart.html" class="card-link">View →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badges"><span class="badge badge-new">Arizona</span></div>
+        <p class="card-title">Desert Authority</p>
+        <p class="card-desc">Terracotta · sage green · warm sand — Arizona roots, B-Corp signal.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-desert-authority.html" class="card-link">View →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badges"><span class="badge badge-new">Cool Slate</span></div>
+        <p class="card-title">Ember Slate</p>
+        <p class="card-desc">Cool slate · steel blue · warm gray — professional with controlled warmth.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-ember-slate.html" class="card-link">View →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badges"><span class="badge badge-new">B-Corp</span></div>
+        <p class="card-title">Ember Forest</p>
+        <p class="card-desc">Forest green · teal green · ember orange — B-Corp earthy meets energy.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-ember-forest.html" class="card-link">View →</a>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-badges"><span class="badge badge-new">Warm</span></div>
+        <p class="card-title">Ember Earth</p>
+        <p class="card-desc">Deep espresso · adobe · warm sand — grounded, warm, approachable.</p>
+        <div class="card-footer">
+          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-ember-earth.html" class="card-link">View →</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       SECTION 3 — PAGE MOCKUPS
+       ═══════════════════════════════════════════ -->
+  <div class="section">
+    <div class="section-header">
+      <h2 class="section-title">Page Mockups</h2>
+      <span class="section-count">6 pages · not started</span>
+    </div>
+    <p class="section-note">Full page mockups built against The Protagonist design system. These begin after Phase 2 strategy and information architecture are locked with Tyler.</p>
+    <div class="grid">
+
+      <div class="card inactive">
+        <div class="card-badges"><span class="badge badge-pending">Not Started</span></div>
+        <p class="card-title">Home</p>
+        <p class="card-desc">Primary landing page · hero, value prop, social proof, CTA.</p>
+        <div class="card-footer">
+          <span class="card-link disabled">Pending Phase 2</span>
+        </div>
+      </div>
+
+      <div class="card inactive">
+        <div class="card-badges"><span class="badge badge-pending">Not Started</span></div>
+        <p class="card-title">About</p>
+        <p class="card-desc">Tyler's bio · Forbes credentials · client history · personal brand.</p>
+        <div class="card-footer">
+          <span class="card-link disabled">Pending Phase 2</span>
+        </div>
+      </div>
+
+      <div class="card inactive">
+        <div class="card-badges"><span class="badge badge-pending">Not Started</span></div>
+        <p class="card-title">Capabilities</p>
+        <p class="card-desc">Collaborate / Create / Report / Lead framework.</p>
+        <div class="card-footer">
+          <span class="card-link disabled">Pending Phase 2</span>
+        </div>
+      </div>
+
+      <div class="card inactive">
+        <div class="card-badges"><span class="badge badge-pending">Not Started</span></div>
+        <p class="card-title">Impact / Case Studies</p>
+        <p class="card-desc">Microsoft, GoDaddy, Lyft, Bridgestone — documented results.</p>
+        <div class="card-footer">
+          <span class="card-link disabled">Pending Phase 2</span>
+        </div>
+      </div>
+
+      <div class="card inactive">
+        <div class="card-badges"><span class="badge badge-pending">Not Started</span></div>
+        <p class="card-title">Insights / Blog</p>
+        <p class="card-desc">Forbes column integration · content syndication strategy.</p>
+        <div class="card-footer">
+          <span class="card-link disabled">Pending Phase 2</span>
+        </div>
+      </div>
+
+      <div class="card inactive">
+        <div class="card-badges"><span class="badge badge-pending">Not Started</span></div>
+        <p class="card-title">Contact</p>
+        <p class="card-desc">First build · fixes "Send us a Massage" · Calendly integration.</p>
+        <div class="card-footer">
+          <span class="card-link disabled">Pending Phase 2</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <span class="footer-copy">Collaboration for Good, LLC &nbsp;·&nbsp; 3219 E. Camelback Rd. #299, Phoenix, AZ 85018</span>
+  <span class="footer-note">Feedback? Reply to your weekly status email.</span>
+</footer>
+
 </body>
 </html>
