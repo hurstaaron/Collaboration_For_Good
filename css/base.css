@@ -1,0 +1,1310 @@
+/* ==========================================================================
+   COLLABORATION FOR GOOD — base.css
+   Shared design system. Loaded FIRST on every page, before the page-specific
+   stylesheet. Everything global lives here: tokens, reset, typography,
+   layout, header, footer, buttons, forms, motion.
+   ==========================================================================
+
+   ---------------------------------------------------------------------------
+   PREVAILING MODERN WEB DESIGN PRACTICES (as of 2026) — WHY THIS FILE IS BUILT
+   THE WAY IT IS
+   ---------------------------------------------------------------------------
+
+   1. MOBILE-FIRST, THEN SCALE UP.
+      Write the small-screen layout as the default, then use `min-width` media
+      queries to ADD complexity for larger screens. The reverse (desktop-first
+      with `max-width` queries) forces phones — the majority of traffic — to
+      download and then override rules they never use. CFG's current site
+      scores 31/100 on mobile PageSpeed. Mobile-first is the structural fix.
+
+   2. DESIGN TOKENS VIA CSS CUSTOM PROPERTIES.
+      Every color, font, space, and duration is declared ONCE as a variable in
+      `:root` and referenced everywhere else. Change a brand color in one place
+      and the whole site updates. This is how design systems stay consistent
+      across dozens of pages, and it makes a future rebrand a 10-minute job
+      instead of a find-and-replace archaeology dig.
+
+   3. FLUID TYPOGRAPHY AND SPACING WITH `clamp()`.
+      Instead of defining a font size at 4 different breakpoints, `clamp()`
+      defines a minimum, a preferred value that scales with viewport width, and
+      a maximum. Type resizes smoothly between phone and desktop with no jumps
+      and far less CSS.
+
+   4. INTRINSIC LAYOUT: CSS GRID AND FLEXBOX ONLY.
+      No float hacks, no 12-column framework, no Bootstrap. Grid handles
+      two-dimensional page layout, Flexbox handles one-dimensional rows of
+      items. Combined with `minmax()` and `auto-fit`, layouts respond to their
+      own content rather than to a hardcoded list of breakpoints.
+
+   5. SEMANTIC HTML AS THE FOUNDATION (see the .html files).
+      <header>, <nav>, <main>, <section>, <article>, <footer> instead of a pile
+      of <div>s. Semantic markup is what screen readers navigate by and what
+      search engines use to understand page structure. Accessibility and SEO
+      are the same work done once.
+
+   6. WCAG 2.2 AA ACCESSIBILITY AS A FLOOR, NOT A FEATURE.
+      Minimum 4.5:1 text contrast, visible keyboard focus rings, a skip link,
+      44x44px minimum touch targets, real <label> elements on every input, and
+      `prefers-reduced-motion` respected. This is a legal requirement for a
+      firm advising Fortune 100 clients on social responsibility — and it is
+      non-negotiable for a B-Corp-bound brand.
+
+   7. PROGRESSIVE ENHANCEMENT.
+      The site must be readable and navigable with JavaScript disabled or
+      broken. JS adds polish (scroll reveals, counters, menu toggles); it never
+      gates content. Notice that scroll-reveal elements are visible by default
+      and only hidden once JS confirms it can animate them.
+
+   8. PERFORMANCE BUDGET.
+      Two web font families with `font-display: swap`, deferred JavaScript,
+      lazy-loaded below-the-fold images, explicit width/height on images to
+      prevent layout shift (CLS), and zero framework overhead. Target: under
+      2,000 KiB total page weight, down from the current 16,574 KiB.
+
+   9. MOTION WITH RESTRAINT AND CONSENT.
+      Animation guides attention; it does not perform. Every transition is
+      under 700ms, uses transform/opacity only (the two properties the browser
+      can animate on the GPU without repainting), and is disabled entirely for
+      users who have set `prefers-reduced-motion: reduce` at the OS level.
+
+  10. SINGLE-RESPONSIBILITY FILES.
+      base.css = everything shared. page.css = only what is unique to that one
+      page. Same split for JavaScript. A change to the Contact form can never
+      accidentally break the Home hero.
+
+   ---------------------------------------------------------------------------
+   BRAND SYSTEM — "THE PROTAGONIST" (locked by Tyler Butler, May 21, 2026)
+   Ink #111111 · Logo Red #C42B18 · Off-White #F5F2EE · Mid Gray #888888
+   Cormorant Garamond (display) + DM Sans (body/UI)
+   ---------------------------------------------------------------------------
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. DESIGN TOKENS
+   Every value the rest of the site is allowed to use. If a value is not
+   defined here, it should not appear anywhere else in the CSS.
+   ========================================================================== */
+
+:root {
+
+  /* ---- Brand color ---------------------------------------------------- */
+
+  /* Primary near-black. Pure #000 is harsh on screens and reads as "unfinished";
+     #111 keeps the authority while feeling deliberately chosen. */
+  --color-ink: #111111;
+
+  /* Warm dark. Used for full-bleed dark sections. Carries a trace of brown so
+     dark panels feel editorial rather than clinical. Carried over from the
+     approved Option 12 placeholder for brand continuity. */
+  --color-ink-warm: #1C1A18;
+
+  /* The single accent. Used sparingly — this red is a conviction marker, not
+     decoration. Roughly one red element per screenful, maximum. */
+  --color-red: #C42B18;
+
+  /* A darker red reserved for hover/active states on red surfaces so the
+     interaction is felt without introducing a new hue. */
+  --color-red-deep: #9E2213;
+
+  /* The light ground. Warm off-white rather than #FFF — paper, not screen. */
+  --color-paper: #F5F2EE;
+
+  /* Pure white, reserved for cards sitting ON the off-white ground so they
+     lift by one step without needing a shadow. */
+  --color-white: #FFFFFF;
+
+  /* Supporting gray for metadata, captions, and disabled states. Passes 4.5:1
+     against paper — do not go lighter than this for any text. */
+  --color-gray: #6E6E6E;
+
+  /* A lighter gray used ONLY for hairline rules and borders, never for text. */
+  --color-rule: rgba(17, 17, 17, 0.14);
+
+  /* Same hairline, inverted, for use on dark grounds. */
+  --color-rule-invert: rgba(245, 242, 238, 0.18);
+
+
+  /* ---- Semantic color aliases ----------------------------------------- */
+  /* Components reference these, not the raw brand colors above. That gives us
+     one indirection layer — if we ever ship a dark mode, we reassign these
+     six lines and every component follows automatically. */
+
+  --bg-page: var(--color-paper);        /* Default page background */
+  --bg-surface: var(--color-white);     /* Cards and raised panels */
+  --bg-invert: var(--color-ink);        /* Dark section background */
+  --text-primary: var(--color-ink);     /* Body and headline text */
+  --text-muted: var(--color-gray);      /* Captions, metadata, eyebrows */
+  --text-invert: var(--color-paper);    /* Text on dark grounds */
+
+
+  /* ---- Typography families -------------------------------------------- */
+
+  /* Display face. High-contrast old-style serif — carries the editorial,
+     "written by a person with a point of view" tone the brand needs.
+     The fallback stack degrades to other high-contrast serifs so the page
+     still reads correctly in the moment before the web font loads. */
+  --font-display: "Cormorant Garamond", "Playfair Display", Georgia,
+                  "Times New Roman", serif;
+
+  /* Body and UI face. Geometric grotesque — neutral, highly legible at small
+     sizes, and a deliberate contrast against the serif. */
+  --font-body: "DM Sans", -apple-system, BlinkMacSystemFont, "Segoe UI",
+               Roboto, Helvetica, Arial, sans-serif;
+
+
+  /* ---- Type scale (fluid) ---------------------------------------------
+     Each step: clamp(MINIMUM, PREFERRED-THAT-SCALES, MAXIMUM).
+     The `vw` unit in the middle value is what makes it fluid — it grows with
+     the viewport. The `rem` added to it guarantees the text still responds to
+     the user's browser font-size setting, which a pure `vw` value would
+     ignore (an accessibility failure).
+     ------------------------------------------------------------------- */
+
+  --size-display: clamp(2.75rem, 1.5rem + 6.2vw, 7rem);   /* Hero headline */
+  --size-h1:      clamp(2.25rem, 1.4rem + 4.0vw, 4.5rem); /* Page title */
+  --size-h2:      clamp(1.75rem, 1.2rem + 2.4vw, 3rem);   /* Section heading */
+  --size-h3:      clamp(1.3rem, 1.1rem + 0.9vw, 1.75rem); /* Card heading */
+  --size-lead:    clamp(1.1rem, 1rem + 0.5vw, 1.375rem);  /* Intro paragraph */
+  --size-body:    1.0625rem;                              /* 17px default body */
+  --size-small:   0.9375rem;                              /* 15px captions */
+  --size-label:   0.75rem;                                /* 12px eyebrows */
+
+
+  /* ---- Type detail ----------------------------------------------------- */
+
+  /* Large display serif needs NEGATIVE letter-spacing to stop looking loose.
+     Small uppercase sans needs POSITIVE spacing to stay legible. Opposite
+     directions, same goal: even optical rhythm. */
+  --track-display: -0.025em;
+  --track-label: 0.16em;
+
+  /* Line heights. Tight for display type (big text needs less air between
+     lines), generous for body copy (long-form reading comfort). */
+  --leading-tight: 1.02;
+  --leading-snug: 1.2;
+  --leading-body: 1.65;
+
+
+  /* ---- Spacing scale ---------------------------------------------------
+     A modular scale, not arbitrary numbers. Using only these values is what
+     produces visual rhythm — inconsistent spacing is the single most common
+     reason an otherwise good design reads as amateur.
+     -------------------------------------------------------------------- */
+
+  --space-3xs: 0.25rem;   /* 4px  */
+  --space-2xs: 0.5rem;    /* 8px  */
+  --space-xs:  0.75rem;   /* 12px */
+  --space-sm:  1rem;      /* 16px */
+  --space-md:  1.5rem;    /* 24px */
+  --space-lg:  2.5rem;    /* 40px */
+  --space-xl:  4rem;      /* 64px */
+  --space-2xl: 6rem;      /* 96px */
+
+  /* Vertical padding for full-width sections — fluid so sections breathe on
+     desktop without wasting a full phone screen on empty space. */
+  --space-section: clamp(3.5rem, 2rem + 7vw, 8rem);
+
+
+  /* ---- Layout ---------------------------------------------------------- */
+
+  --width-max: 1280px;    /* Outer container ceiling */
+  --width-text: 68ch;     /* Optimal reading measure — 60-75 characters per
+                             line is the researched comfort range for prose */
+  --gutter: clamp(1.25rem, 0.75rem + 2.5vw, 3.5rem); /* Left/right page margin */
+
+
+  /* ---- Borders and radius ---------------------------------------------- */
+
+  /* Near-zero radius. The brand is editorial and print-derived; rounded
+     corners would soften it into generic SaaS. 2px keeps it from looking
+     like an unstyled default. */
+  --radius: 2px;
+  --border-hair: 1px solid var(--color-rule);
+
+
+  /* ---- Motion ----------------------------------------------------------
+     Two durations and one easing curve, used everywhere. A custom cubic-bezier
+     that starts fast and settles slowly reads as "engineered" rather than the
+     rubbery default `ease`.
+     -------------------------------------------------------------------- */
+
+  --ease: cubic-bezier(0.22, 1, 0.36, 1);
+  --dur-fast: 200ms;
+  --dur-slow: 700ms;
+
+
+  /* ---- Z-index ladder --------------------------------------------------
+     Named stacking levels prevent the "z-index: 9999" arms race that happens
+     when layering is decided ad hoc.
+     -------------------------------------------------------------------- */
+
+  --z-base: 1;
+  --z-header: 100;
+  --z-menu: 200;
+  --z-skip: 300;
+}
+
+
+/* ==========================================================================
+   2. MODERN RESET
+   Normalizes browser defaults that actively fight good design. Deliberately
+   minimal — a heavy reset throws away useful defaults we then have to rebuild.
+   ========================================================================== */
+
+/* border-box means padding and border count INSIDE an element's declared
+   width. Without it, `width: 100%` plus padding overflows the container —
+   the single most common layout bug in CSS. Applied to everything. */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Strip default margins. We add spacing back deliberately via the scale
+   above rather than fighting inconsistent browser defaults. */
+* {
+  margin: 0;
+}
+
+html {
+  /* Anchor links and JS scroll calls glide instead of jumping. */
+  scroll-behavior: smooth;
+
+  /* Offset for the fixed header so anchor targets aren't hidden underneath it.
+     This is the modern replacement for the old invisible-spacer-div hack. */
+  scroll-padding-top: 6rem;
+
+  /* 100% respects the user's browser font-size preference. Never set a pixel
+     value here — doing so overrides accessibility settings for low-vision
+     users. */
+  font-size: 100%;
+
+  /* Prevents iOS Safari from auto-inflating text in landscape orientation. */
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: var(--leading-body);
+
+  /* Smooths font rendering on macOS/iOS. Without this, DM Sans renders
+     noticeably heavier on Apple devices than it does on Windows. */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Belt-and-braces guard against a single wide element (a long URL, an
+     oversized image) causing horizontal scroll on mobile. */
+  overflow-x: hidden;
+}
+
+/* Media elements default to `display: inline`, which adds a mysterious ~4px
+   gap below them (it's the space reserved for a text descender). Block
+   display kills it. max-width keeps them inside their container. */
+img,
+picture,
+video,
+canvas,
+svg,
+iframe {
+  display: block;
+  max-width: 100%;
+}
+
+/* Images need explicit dimensions in HTML to reserve space before they load.
+   `height: auto` then lets them scale proportionally. Together these prevent
+   Cumulative Layout Shift — content jumping as images arrive. */
+img {
+  height: auto;
+}
+
+/* Form controls do NOT inherit typography by default. This forces them to
+   match the rest of the site instead of falling back to system fonts. */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+/* Long unbroken strings (URLs, email addresses) break instead of overflowing. */
+p,
+h1,
+h2,
+h3,
+h4,
+li,
+a {
+  overflow-wrap: break-word;
+}
+
+/* Headings inherit the display face and tight tracking by default so we never
+   have to remember to set it. */
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: var(--leading-snug);
+  letter-spacing: var(--track-display);
+}
+
+/* Remove list bullets globally. Lists that genuinely need markers opt back in
+   with a class — most lists on this site are navigation or card grids where
+   bullets would be noise. */
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+/* Links inherit brand color and use a custom underline that sits lower and
+   thinner than the browser default — an editorial detail. */
+a {
+  color: inherit;
+  text-decoration-color: var(--color-red);
+  text-underline-offset: 0.22em;
+  text-decoration-thickness: 1px;
+  transition: color var(--dur-fast) var(--ease);
+}
+
+a:hover {
+  color: var(--color-red);
+}
+
+
+/* ==========================================================================
+   3. ACCESSIBILITY UTILITIES
+   ========================================================================== */
+
+/* Skip link. First focusable element on the page. Invisible until a keyboard
+   user tabs to it, then it appears and lets them jump past the nav straight
+   to content. WCAG 2.4.1 (Bypass Blocks) — required for AA. */
+.skip-link {
+  position: absolute;
+  top: var(--space-sm);
+  left: var(--space-sm);
+  z-index: var(--z-skip);
+  padding: var(--space-xs) var(--space-md);
+  background: var(--color-ink);
+  color: var(--color-paper);
+  font-size: var(--size-small);
+  text-decoration: none;
+
+  /* Parked off-screen rather than `display: none`, because hidden elements are
+     removed from the tab order entirely — which would defeat the purpose. */
+  transform: translateY(-200%);
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.skip-link:focus {
+  transform: translateY(0);
+}
+
+/* Visually hides content while keeping it available to screen readers. Used
+   for things like a heading that provides structure but would be redundant
+   on screen. Do NOT use `display: none` for this — it hides from everyone. */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus ring. `:focus-visible` shows the ring for keyboard users but NOT for
+   mouse clicks — which is why we can afford to make it bold and obvious
+   without it feeling intrusive during normal mouse use. */
+:focus-visible {
+  outline: 2px solid var(--color-red);
+  outline-offset: 3px;
+}
+
+/* Remove the ring only for pointer-driven focus, where it reads as a bug. */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+
+/* ==========================================================================
+   4. LAYOUT PRIMITIVES
+   ========================================================================== */
+
+/* The container. Caps width and applies the fluid page gutter. Nearly every
+   section on the site wraps its content in one of these. */
+.container {
+  width: 100%;
+  max-width: var(--width-max);
+  margin-inline: auto;              /* Logical property — centers horizontally */
+  padding-inline: var(--gutter);    /* Logical property — left and right */
+}
+
+/* A narrower container for long-form prose. Constrains line length to the
+   readable measure defined in the tokens. */
+.container--narrow {
+  max-width: calc(var(--width-text) + (var(--gutter) * 2));
+}
+
+/* Standard vertical rhythm for a full-width section band. */
+.section {
+  padding-block: var(--space-section);   /* Logical — top and bottom */
+}
+
+/* Modifier: dark section. Flips background AND all the semantic text aliases
+   in one place, so every child component inside automatically inverts without
+   needing its own dark variant. This is the payoff of the alias layer in the
+   tokens. */
+.section--dark {
+  background-color: var(--bg-invert);
+  color: var(--text-invert);
+  --text-primary: var(--color-paper);
+  --text-muted: rgba(245, 242, 238, 0.62);
+  --color-rule: var(--color-rule-invert);
+  --bg-surface: var(--color-ink-warm);
+}
+
+/* Modifier: warm dark, for sections that need separation from a pure-ink
+   neighbor without changing the palette. */
+.section--warm {
+  background-color: var(--color-ink-warm);
+  color: var(--text-invert);
+  --text-primary: var(--color-paper);
+  --text-muted: rgba(245, 242, 238, 0.62);
+  --color-rule: var(--color-rule-invert);
+  --bg-surface: #262320;
+}
+
+/* Modifier: removes top padding when a section must butt directly against
+   the one above it. */
+.section--flush-top {
+  padding-block-start: 0;
+}
+
+/* Auto-fitting card grid. `auto-fit` + `minmax` means the browser fits as many
+   columns as will hold the minimum width, then stretches them to fill the row.
+   One rule replaces three media queries — this is the core modern layout idiom. */
+.grid {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 18rem), 1fr));
+}
+
+/* Fixed two-column grid for editorial layouts that must NOT reflow into an
+   arbitrary number of columns. Stacks on mobile via the media query below. */
+.grid--two {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: 1fr;
+}
+
+/* Asymmetric editorial split — narrow label column, wide content column.
+   Stacks on mobile. */
+.grid--split {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 48rem) {   /* 768px — tablet and up */
+  .grid--two {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .grid--split {
+    /* 1fr / 2fr asymmetry rather than 50/50. Even splits read as static;
+       an asymmetric ratio creates a clear primary and secondary. */
+    grid-template-columns: 1fr 2fr;
+    gap: var(--space-xl);
+  }
+}
+
+
+/* ==========================================================================
+   5. TYPOGRAPHY COMPONENTS
+   ========================================================================== */
+
+/* Eyebrow / kicker. Small uppercase sans label that sits above a heading and
+   tells the reader what kind of content follows. The red leading rule is the
+   brand's structural signature — it marks conviction points throughout the
+   site and is the one repeated red element. */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xs);
+  margin-bottom: var(--space-md);
+  font-family: var(--font-body);
+  font-size: var(--size-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* The rule itself, drawn with a pseudo-element so it needs no extra markup. */
+.eyebrow::before {
+  content: "";
+  width: 2rem;
+  height: 2px;
+  background-color: var(--color-red);
+  flex-shrink: 0;          /* Stops the rule collapsing when text is long */
+}
+
+/* Display headline — hero use only, one per page maximum. */
+.display {
+  font-size: var(--size-display);
+  line-height: var(--leading-tight);
+  font-weight: 500;        /* Large serif needs LESS weight, not more */
+}
+
+/* Standard page title. */
+.h1 {
+  font-size: var(--size-h1);
+  line-height: var(--leading-tight);
+  font-weight: 500;
+}
+
+/* Section heading. */
+.h2 {
+  font-size: var(--size-h2);
+  font-weight: 500;
+}
+
+/* Card / sub-section heading. */
+.h3 {
+  font-size: var(--size-h3);
+  font-weight: 600;
+}
+
+/* Lead paragraph — the one paragraph directly under a headline. Larger and
+   set in the body face for contrast against the serif above it. */
+.lead {
+  font-size: var(--size-lead);
+  line-height: 1.5;
+  max-width: 46ch;         /* Deliberately shorter measure than body prose */
+  color: var(--text-primary);
+}
+
+/* Generic muted small text — captions, metadata, timestamps. */
+.meta {
+  font-size: var(--size-small);
+  color: var(--text-muted);
+}
+
+/* Emphasis span used inside display headlines to color a single phrase red.
+   This is the ONLY place red is allowed inside running text. */
+.accent {
+  color: var(--color-red);
+}
+
+/* Prose block. Applies readable measure and paragraph spacing to any
+   long-form content region. */
+.prose {
+  max-width: var(--width-text);
+}
+
+.prose p + p {
+  /* The `+` adjacent sibling selector spaces paragraphs from EACH OTHER
+     without adding stray margin before the first or after the last. */
+  margin-top: var(--space-md);
+}
+
+.prose h2,
+.prose h3 {
+  margin-top: var(--space-lg);
+  margin-bottom: var(--space-sm);
+}
+
+
+/* ==========================================================================
+   6. BUTTONS
+   ========================================================================== */
+
+/* Base button. Shared by every variant. Note min-height 44px — the WCAG 2.5.8
+   minimum touch target size, and the practical size of an adult fingertip. */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  min-height: 44px;
+  padding: var(--space-xs) var(--space-md);
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  font-family: var(--font-body);
+  font-size: var(--size-small);
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  text-decoration: none;
+  cursor: pointer;
+
+  /* Animate only transform, background, and color — all cheap for the browser.
+     Never transition `all`; it silently animates expensive properties like
+     width and height and tanks scroll performance. */
+  transition:
+    background-color var(--dur-fast) var(--ease),
+    color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease),
+    transform var(--dur-fast) var(--ease);
+}
+
+/* Primary action. Red fill — one per screen. If two primary buttons are
+   visible at once, one of them is not actually primary. */
+.btn--primary {
+  background-color: var(--color-red);
+  color: var(--color-paper);
+}
+
+.btn--primary:hover {
+  background-color: var(--color-red-deep);
+  color: var(--color-paper);
+  transform: translateY(-2px);   /* Micro-lift confirms the hover physically */
+}
+
+/* Secondary action. Outlined, inherits current text color so it works on
+   both light and dark grounds without a separate variant. */
+.btn--outline {
+  background-color: transparent;
+  border-color: currentColor;
+  color: inherit;
+}
+
+.btn--outline:hover {
+  background-color: var(--text-primary);
+  color: var(--bg-page);
+  transform: translateY(-2px);
+}
+
+/* Text-only action with an animated arrow. Used for in-content links that
+   need more presence than an underline but less than a filled button. */
+.btn--text {
+  padding-inline: 0;
+  background: none;
+  border: none;
+  color: inherit;
+}
+
+/* The arrow slides right on hover — a directional cue that reinforces
+   "this takes you somewhere". Targets the arrow span inside the button. */
+.btn--text .btn__arrow {
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.btn--text:hover {
+  color: var(--color-red);
+}
+
+.btn--text:hover .btn__arrow {
+  transform: translateX(4px);
+}
+
+
+/* ==========================================================================
+   7. SITE HEADER AND NAVIGATION
+   ========================================================================== */
+
+/* Fixed header so navigation is always reachable. `backdrop-filter` frosts
+   whatever scrolls underneath — modern, and cheaper than a solid bar because
+   it preserves a sense of depth without a shadow. */
+.site-header {
+  position: fixed;
+  inset-block-start: 0;      /* Logical property for `top: 0` */
+  inset-inline: 0;           /* Logical shorthand for `left: 0; right: 0` */
+  z-index: var(--z-header);
+  background-color: rgba(245, 242, 238, 0.82);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);   /* Safari prefix, still required */
+  border-bottom: 1px solid transparent;
+  transition:
+    background-color var(--dur-fast) var(--ease),
+    border-color var(--dur-fast) var(--ease);
+}
+
+/* Applied by main.js once the user scrolls past the hero. Adds the hairline
+   so the header separates from content that scrolls beneath it. */
+.site-header.is-scrolled {
+  border-bottom-color: var(--color-rule);
+}
+
+/* Inner flex row: logo left, nav right. */
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-md);
+  min-height: 4.5rem;
+}
+
+/* Wordmark / logo lockup. */
+.site-logo {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+  color: var(--color-ink);
+}
+
+/* PLACEHOLDER: swap this <img> src for the real heart mark.
+   Sized small and fixed so it never causes layout shift. */
+.site-logo__mark {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.site-logo:hover {
+  color: var(--color-ink);   /* Logo does not turn red — it is not a CTA */
+}
+
+/* --- Desktop navigation ------------------------------------------------ */
+
+.site-nav {
+  display: none;   /* Hidden on mobile; the drawer takes over. Revealed at 62rem. */
+}
+
+.site-nav__list {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.site-nav__link {
+  position: relative;
+  padding-block: var(--space-2xs);
+  font-size: var(--size-small);
+  font-weight: 500;
+  text-decoration: none;
+  color: var(--color-ink);
+}
+
+/* Underline that grows from left on hover, drawn with a pseudo-element and
+   animated via scaleX. Scaling a transform is GPU-accelerated; animating
+   `width` would force the browser to recalculate layout on every frame. */
+.site-nav__link::after {
+  content: "";
+  position: absolute;
+  inset-block-end: 0;
+  inset-inline-start: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.site-nav__link:hover::after,
+.site-nav__link[aria-current="page"]::after {
+  transform: scaleX(1);
+}
+
+/* The current page's link stays marked. `aria-current="page"` is set in the
+   HTML (and re-verified by main.js) — it is the accessible way to indicate
+   location, and we style off the attribute rather than a separate class so
+   the visual state and the screen-reader state can never drift apart. */
+.site-nav__link[aria-current="page"] {
+  color: var(--color-ink);
+}
+
+/* --- Mobile menu button ------------------------------------------------- */
+
+.nav-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Two bars, not three. Cleaner, and still universally recognized. */
+.nav-toggle__bar {
+  display: block;
+  width: 24px;
+  height: 1.5px;
+  background-color: var(--color-ink);
+  transition: transform var(--dur-fast) var(--ease),
+              opacity var(--dur-fast) var(--ease);
+}
+
+/* When open, the two bars rotate into an X. The translateY values move each
+   bar to the vertical center first, then rotate — order matters in a
+   transform list, it reads right to left. */
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:first-child {
+  transform: translateY(3.25px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle__bar:last-child {
+  transform: translateY(-3.25px) rotate(-45deg);
+}
+
+/* --- Mobile drawer ------------------------------------------------------ */
+
+/* Full-screen overlay panel. Positioned fixed and slid in from the right.
+   `visibility: hidden` (not display:none) so the slide transition can run. */
+.nav-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: var(--space-xl) var(--gutter);
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  transform: translateX(100%);
+  visibility: hidden;
+  transition: transform var(--dur-slow) var(--ease),
+              visibility var(--dur-slow) var(--ease);
+}
+
+.nav-drawer.is-open {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.nav-drawer__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+/* Drawer links are large — display serif at hero scale. On a phone the menu
+   is a full screen, so it should feel like a destination, not a dropdown. */
+.nav-drawer__link {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.2rem + 4vw, 3rem);
+  font-weight: 500;
+  line-height: 1.1;
+  text-decoration: none;
+  color: var(--color-paper);
+}
+
+.nav-drawer__link:hover {
+  color: var(--color-red);
+}
+
+/* Contact block pinned below the drawer links. */
+.nav-drawer__footer {
+  margin-top: var(--space-xl);
+  padding-top: var(--space-md);
+  border-top: 1px solid var(--color-rule-invert);
+  font-size: var(--size-small);
+  color: rgba(245, 242, 238, 0.7);
+}
+
+/* Close button, top-right of the drawer. */
+.nav-drawer__close {
+  position: absolute;
+  inset-block-start: var(--space-md);
+  inset-inline-end: var(--gutter);
+  width: 44px;
+  height: 44px;
+  background: none;
+  border: none;
+  color: var(--color-paper);
+  font-size: 1.75rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* Locks background scrolling while the drawer is open. Applied to <body> by
+   main.js. Without this, scrolling the drawer scrolls the page behind it —
+   a classic mobile menu bug. */
+body.nav-open {
+  overflow: hidden;
+}
+
+/* At 62rem (992px) the desktop nav appears and both mobile controls vanish. */
+@media (min-width: 62rem) {
+  .site-nav {
+    display: block;
+  }
+
+  .nav-toggle,
+  .nav-drawer {
+    display: none;
+  }
+}
+
+/* Spacer that pushes page content below the fixed header. Applied to <main>. */
+.site-main {
+  padding-top: 4.5rem;
+}
+
+
+/* ==========================================================================
+   8. CARDS
+   ========================================================================== */
+
+/* Generic content card. Flex column with the CTA pushed to the bottom so a
+   row of cards with different text lengths still aligns its buttons. */
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+  background-color: var(--bg-surface);
+  border: var(--border-hair);
+  border-radius: var(--radius);
+  transition: transform var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease);
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-red);
+}
+
+/* Pushes whatever it is applied to down to the bottom of the flex column,
+   absorbing all leftover space. This is what aligns the CTAs. */
+.card__spacer {
+  margin-top: auto;
+}
+
+/* Card image placeholder. `aspect-ratio` reserves the correct space before the
+   image loads — the single most effective CLS fix available. */
+.card__media {
+  aspect-ratio: 3 / 2;
+  width: 100%;
+  object-fit: cover;
+  background-color: var(--color-rule);
+  border-radius: var(--radius);
+}
+
+/* Numbered card variant. Only used where the content genuinely IS a sequence
+   (the engagement process), never as decoration. */
+.card__index {
+  font-family: var(--font-display);
+  font-size: var(--size-h2);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--color-red);
+}
+
+
+/* ==========================================================================
+   9. STAT / CREDENTIAL BLOCK
+   ========================================================================== */
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  padding-top: var(--space-sm);
+  border-top: 2px solid var(--color-red);
+}
+
+.stat__value {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 1.5rem + 3vw, 3.75rem);
+  font-weight: 500;
+  line-height: 1;
+
+  /* Tabular figures keep every digit the same width, so an animated counter
+     ticking 0 → 30 doesn't cause the surrounding layout to jitter. */
+  font-variant-numeric: tabular-nums;
+}
+
+.stat__label {
+  font-size: var(--size-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+
+/* ==========================================================================
+   10. FORMS
+   ========================================================================== */
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+/* One label + input pair. */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+}
+
+/* Labels are always visible. Placeholder-only forms fail accessibility —
+   the placeholder disappears the moment the user starts typing, leaving
+   anyone who loses their place with no way to recover the field's purpose. */
+.field__label {
+  font-size: var(--size-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Required marker. `aria-hidden` on the asterisk in the HTML keeps screen
+   readers from announcing "asterisk" — they get the `required` attribute
+   instead, which is the correct semantic signal. */
+.field__required {
+  color: var(--color-red);
+}
+
+/* Bottom-border-only inputs. Reads as a form on paper rather than a boxed
+   web widget — consistent with the editorial direction. */
+.field__input,
+.field__textarea,
+.field__select {
+  width: 100%;
+  min-height: 44px;
+  padding: var(--space-2xs) 0;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-rule);
+  border-radius: 0;                 /* Kills iOS Safari's forced rounding */
+  font-size: var(--size-body);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.field__input:focus,
+.field__textarea:focus,
+.field__select:focus {
+  border-bottom-color: var(--color-red);
+}
+
+.field__textarea {
+  min-height: 8rem;
+  resize: vertical;    /* Horizontal resize would break the layout */
+}
+
+/* Error state, toggled by JS. */
+.field__input[aria-invalid="true"],
+.field__textarea[aria-invalid="true"] {
+  border-bottom-color: var(--color-red);
+}
+
+/* Error message. `role="alert"` in the HTML makes screen readers announce it
+   the instant it appears. Hidden by default via the [hidden] attribute. */
+.field__error {
+  font-size: var(--size-small);
+  color: var(--color-red);
+}
+
+/* Belt-and-braces: some browsers ignore [hidden] when display is set
+   elsewhere, so we force it. */
+[hidden] {
+  display: none !important;
+}
+
+/* Honeypot field. Invisible to humans, but bots fill in every field they find.
+   If this one has a value on submit, the submission is silently discarded.
+   Spam protection with no CAPTCHA and no accessibility penalty. */
+.honeypot {
+  position: absolute;
+  left: -9999px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Form-level success/failure banner. */
+.form-status {
+  padding: var(--space-sm) var(--space-md);
+  border-left: 3px solid var(--color-red);
+  background-color: rgba(196, 43, 24, 0.06);
+  font-size: var(--size-small);
+}
+
+.form-status--success {
+  border-left-color: #1F7A4D;
+  background-color: rgba(31, 122, 77, 0.08);
+}
+
+
+/* ==========================================================================
+   11. SITE FOOTER
+   ========================================================================== */
+
+.site-footer {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+  padding-block: var(--space-xl) var(--space-lg);
+}
+
+/* Top region: brand statement left, link columns right. */
+.site-footer__top {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: 1fr;
+  padding-bottom: var(--space-lg);
+  border-bottom: 1px solid var(--color-rule-invert);
+}
+
+@media (min-width: 48rem) {
+  .site-footer__top {
+    /* Brand block takes 1.5x the width of each link column. */
+    grid-template-columns: 1.5fr 1fr 1fr;
+    gap: var(--space-xl);
+  }
+}
+
+.site-footer__heading {
+  margin-bottom: var(--space-sm);
+  font-family: var(--font-body);
+  font-size: var(--size-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: rgba(245, 242, 238, 0.55);
+}
+
+.site-footer__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  font-size: var(--size-small);
+}
+
+.site-footer__list a {
+  text-decoration: none;
+}
+
+/* Bottom bar: legal line and social icons. */
+.site-footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+  padding-top: var(--space-md);
+  font-size: var(--size-small);
+  color: rgba(245, 242, 238, 0.55);
+}
+
+.site-footer__social {
+  display: flex;
+  gap: var(--space-sm);
+}
+
+/* Social links are 44px targets even though the icon inside is smaller —
+   padding does the work. Undersized icon links are one of the most common
+   mobile usability failures. */
+.site-footer__social a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  color: rgba(245, 242, 238, 0.7);
+}
+
+.site-footer__social a:hover {
+  color: var(--color-red);
+}
+
+
+/* ==========================================================================
+   12. CTA BAND
+   Repeated conversion block used at the bottom of most pages.
+   ========================================================================== */
+
+.cta-band {
+  padding-block: var(--space-section);
+  background-color: var(--color-red);
+  color: var(--color-paper);
+  text-align: center;
+}
+
+.cta-band__title {
+  max-width: 20ch;
+  margin-inline: auto;
+  margin-bottom: var(--space-md);
+  font-size: var(--size-h1);
+  font-weight: 500;
+}
+
+.cta-band .btn--outline:hover {
+  background-color: var(--color-paper);
+  color: var(--color-red);
+}
+
+
+/* ==========================================================================
+   13. SCROLL REVEAL
+   Elements fade and rise into view as they enter the viewport.
+
+   IMPORTANT — PROGRESSIVE ENHANCEMENT: the default state here is VISIBLE.
+   main.js adds the `js-reveal-ready` class to <html> before hiding anything.
+   If JavaScript fails, is blocked, or is still loading, the content is simply
+   there. A reveal system that hides content by default in CSS will hide it
+   permanently the day the JS breaks — a failure mode that has taken real
+   sites offline.
+   ========================================================================== */
+
+/* Only once JS has confirmed it is running do we hide reveal targets. */
+.js-reveal-ready [data-reveal] {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity var(--dur-slow) var(--ease),
+              transform var(--dur-slow) var(--ease);
+}
+
+/* Added by the IntersectionObserver in main.js when the element scrolls in. */
+.js-reveal-ready [data-reveal].is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Staggered children. Each subsequent item waits slightly longer, producing a
+   cascade rather than everything appearing at once. `--i` is set inline in the
+   HTML as a custom property, which lets one CSS rule handle any number of
+   items. */
+.js-reveal-ready [data-reveal-stagger] > * {
+  transition-delay: calc(var(--i, 0) * 90ms);
+}
+
+
+/* ==========================================================================
+   14. REDUCED MOTION
+   Must be the LAST block in the file so its overrides win on specificity ties.
+
+   Users set this at the OS level, usually because motion triggers vestibular
+   disorders, migraines, or nausea. Honoring it is a WCAG 2.3.3 requirement,
+   not a nicety.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  /* Collapse every animation and transition to effectively instant. We use
+     0.01ms rather than 0 so any JS listening for `transitionend` still fires
+     and does not hang waiting for an event that never arrives. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  /* Reveal targets are shown outright — no fade, no translate. */
+  .js-reveal-ready [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

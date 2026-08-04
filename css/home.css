@@ -1,0 +1,269 @@
+/* ==========================================================================
+   COLLABORATION FOR GOOD — home.css
+   Page-specific styles for index.html ONLY.
+
+   Loaded AFTER base.css. Contains nothing that another page might need — if a
+   rule in here ever gets copied to a second page, that is the signal it
+   belongs in base.css instead. This discipline is what keeps a stylesheet from
+   degrading into an unmaintainable pile over the life of a project.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. HERO
+   ========================================================================== */
+
+.hero {
+  /* Asymmetric vertical padding — more above than below. The extra top space
+     compensates for the fixed header and gives the headline room to land;
+     the tighter bottom pulls the credential bar up into the same visual
+     group, so the stats read as evidence FOR the claim above them. */
+  padding-block: clamp(4rem, 2rem + 9vw, 9rem) clamp(2.5rem, 1.5rem + 4vw, 5rem);
+}
+
+.hero__inner {
+  /* max-width on the inner wrapper rather than the container, so the hero
+     text block stays left-aligned inside a centered page container instead of
+     stretching to the full 1280px. Long display lines are hard to read. */
+  max-width: 60rem;
+}
+
+.hero__title {
+  /* Negative left offset optically aligns the first letter of the serif
+     headline with the text below it. Large serif type has visible side
+     bearing (built-in whitespace) that makes it LOOK indented when it is
+     mathematically flush. This is a print typesetting correction. */
+  margin-left: -0.04em;
+  margin-bottom: var(--space-md);
+
+  /* `balance` distributes words evenly across lines instead of leaving a
+     single orphaned word on the last line. Supported in all current browsers
+     and silently ignored by older ones — a free improvement. */
+  text-wrap: balance;
+}
+
+.hero__lead {
+  margin-bottom: var(--space-lg);
+}
+
+.hero__actions {
+  display: flex;
+  flex-wrap: wrap;              /* Buttons stack on narrow screens */
+  align-items: center;
+  gap: var(--space-md);
+}
+
+
+/* ==========================================================================
+   2. CREDENTIAL BAR
+   ========================================================================== */
+
+.credentials {
+  /* Tighter than the standard section rhythm — this band belongs to the hero
+     above it, not to the section below. Spacing is how grouping is
+     communicated; this is the Gestalt principle of proximity applied. */
+  padding-block: 0 var(--space-2xl);
+}
+
+.credentials__grid {
+  /* Override the base .grid minimum so four stats fit in one row earlier.
+     Stats are short, so they need far less minimum width than a text card. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+  gap: var(--space-md);
+}
+
+
+/* ==========================================================================
+   3. POSITIONING STATEMENT
+   ========================================================================== */
+
+.statement__title {
+  margin-bottom: var(--space-lg);
+  text-wrap: balance;
+}
+
+.statement__body {
+  /* Slightly larger than default body copy. This is the argumentative core of
+     the page and deserves more presence than standard running text. */
+  font-size: var(--size-lead);
+  line-height: 1.6;
+}
+
+
+/* ==========================================================================
+   4. SHARED SECTION HEADER
+   Eyebrow + heading pair used by several sections on this page.
+   ========================================================================== */
+
+.section-head {
+  max-width: 40ch;
+  margin-bottom: var(--space-xl);
+}
+
+
+/* ==========================================================================
+   5. EXPLAINER VIDEO — FACADE
+   The lightweight stand-in that gets replaced by a real iframe on click.
+   ========================================================================== */
+
+.video__facade {
+  position: relative;             /* Positioning context for the play button */
+  aspect-ratio: 16 / 9;           /* Reserves exact space — no layout shift */
+  overflow: hidden;
+  border-radius: var(--radius);
+  background-color: var(--color-ink);
+  cursor: pointer;
+}
+
+.video__poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;              /* Fills the frame without distorting */
+
+  /* Slightly dimmed so the white play button has guaranteed contrast against
+     any poster image, whatever we end up using. */
+  opacity: 0.8;
+  transition: opacity var(--dur-fast) var(--ease),
+              transform var(--dur-slow) var(--ease);
+}
+
+/* Subtle zoom on hover signals interactivity without a text label. */
+.video__facade:hover .video__poster {
+  opacity: 0.65;
+  transform: scale(1.02);
+}
+
+.video__play {
+  /* Absolute centering via the transform technique: position at 50%/50%, then
+     pull back by half the element's own size. Works regardless of the
+     element's dimensions, unlike negative-margin centering. */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(64px, 8vw, 92px);
+  aspect-ratio: 1;                /* Guarantees a perfect circle */
+  border: none;
+  border-radius: 50%;
+  background-color: var(--color-red);
+  color: var(--color-paper);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease),
+              background-color var(--dur-fast) var(--ease);
+}
+
+/* Scale must be re-applied WITH the centering translate — a second transform
+   declaration replaces the first entirely rather than adding to it. Forgetting
+   this is one of the most common CSS transform bugs. */
+.video__facade:hover .video__play {
+  transform: translate(-50%, -50%) scale(1.08);
+  background-color: var(--color-red-deep);
+}
+
+.video__play-icon {
+  /* Optical centering: a triangle's visual center of mass sits left of its
+     bounding box center, so it needs a nudge right to look centered. */
+  margin-left: 4px;
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+/* The <iframe> injected by home.js inherits the facade's dimensions. */
+.video__facade iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+
+/* ==========================================================================
+   6. FOUNDER SECTION
+   ========================================================================== */
+
+.founder__media img {
+  width: 100%;
+  aspect-ratio: 4 / 5;            /* Portrait crop, consistent every time */
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.founder__cta {
+  margin-top: var(--space-lg);
+}
+
+
+/* ==========================================================================
+   7. PRESS STRIP
+   ========================================================================== */
+
+.press__list {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md) var(--space-xl);   /* row-gap column-gap */
+  margin-top: var(--space-lg);
+}
+
+.press__item {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1rem + 2vw, 2.5rem);
+  font-weight: 500;
+
+  /* Set at reduced opacity so the group reads as a texture of credibility
+     rather than six competing headlines. */
+  color: rgba(245, 242, 238, 0.55);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+.press__item:hover {
+  color: var(--color-paper);
+}
+
+
+/* ==========================================================================
+   8. CLIENT ROSTER
+   ========================================================================== */
+
+.clients__list {
+  display: grid;
+  /* Auto-fitting grid of short names. minmax keeps them from becoming
+     awkwardly wide on desktop while still filling the row. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  gap: 1px;                       /* The gap IS the rule — see below */
+
+  /* Background shows through the 1px gaps, drawing every grid line with zero
+     border code. Avoids the classic double-border problem where adjacent
+     cells each contribute a border and the line renders 2px thick. */
+  background-color: var(--color-rule);
+  border: 1px solid var(--color-rule);
+}
+
+.clients__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 5.5rem;
+  padding: var(--space-sm);
+  background-color: var(--bg-page);   /* Covers the gap color per cell */
+  font-size: var(--size-small);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--text-muted);
+  transition: background-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+
+.clients__item:hover {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.clients__cta {
+  margin-top: var(--space-lg);
+}

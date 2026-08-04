@@ -1,0 +1,338 @@
+/* ==========================================================================
+   COLLABORATION FOR GOOD — video.css
+   Styles for the hero background video and the explainer video facades.
+   Loaded after base.css, alongside the page stylesheet.
+
+   Kept in its own file because video appears on several pages but not all of
+   them — pages without video simply don't load this, and pay nothing for it.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. HERO WITH BACKGROUND VIDEO
+   ========================================================================== */
+
+.hero--video {
+  position: relative;              /* Positioning context for the media layer */
+  display: flex;
+  align-items: center;
+  overflow: hidden;                /* Clips the media layer to the hero box */
+
+  /* Viewport-relative height with a floor and a ceiling.
+     `svh` (small viewport height) is the modern unit that accounts for mobile
+     browser chrome. Plain `vh` on iOS measures the viewport WITHOUT the
+     address bar, so a 100vh hero gets its bottom edge hidden behind the bar
+     until the user scrolls — the single most common mobile hero bug.
+     Capped at 780px so the hero doesn't become absurd on a tall desktop
+     monitor, and floored at 520px so it stays usable on a short laptop. */
+  min-height: clamp(520px, 78svh, 780px);
+
+  padding-block: var(--space-xl);
+}
+
+/* --- Media layer: poster and video stacked --------------------------------- */
+
+.hero__media {
+  position: absolute;
+  inset: 0;                        /* Shorthand for top/right/bottom/left: 0 */
+  z-index: 0;                      /* Sits beneath the text panel */
+}
+
+/* Both the poster and the video fill the layer identically and are stacked in
+   the same place, so the video can cross-fade over the poster with no shift. */
+.hero__poster,
+.hero__video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;               /* Fills the box, crops overflow, never
+                                      distorts the aspect ratio */
+}
+
+/* The poster is the LCP element. It carries fetchpriority="high" in the markup
+   so the browser promotes it ahead of other images in the fetch queue. */
+.hero__poster {
+  z-index: 1;
+}
+
+/* The video starts fully transparent and is faded in by JS once it can play
+   through. Because it sits directly on top of an identical poster frame, the
+   transition is invisible — the still simply starts moving. */
+.hero__video {
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 600ms var(--ease);
+}
+
+/* Added by video.js on the `canplaythrough` event. */
+.hero__video.is-ready {
+  opacity: 1;
+}
+
+/* --- Scrim: the contrast guarantee ---------------------------------------- */
+
+/* This is the most important rule in the file.
+
+   Text over video is the classic accessibility failure, because the background
+   is DIFFERENT IN EVERY FRAME. A contrast ratio measured against the poster
+   tells you nothing about the frame two seconds later. On the Planet+Purpose
+   reference, the body copy sits over churning white surf and dark wet rock in
+   the same shot — contrast swings wildly and fails part of the time.
+
+   A scrim solves it deterministically: a gradient overlay between the video
+   and the text means the text's effective background is a known, fixed value
+   no matter what the footage does. Contrast becomes measurable and constant.
+
+   The gradient is directional rather than a flat wash so the footage stays
+   visible on the side away from the text. */
+.hero__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 3;                      /* Above the video, below the text */
+  background: linear-gradient(
+    100deg,
+    rgba(17, 17, 17, 0.92) 0%,
+    rgba(17, 17, 17, 0.82) 38%,
+    rgba(17, 17, 17, 0.45) 62%,
+    rgba(17, 17, 17, 0.25) 100%
+  );
+}
+
+/* --- Text panel ------------------------------------------------------------ */
+
+.hero--video .hero__inner {
+  position: relative;
+  z-index: 4;                      /* Above the scrim */
+  max-width: 46rem;
+}
+
+/* Palette overrides, scoped to this hero. Because base.css defines components
+   in terms of the semantic aliases rather than raw colors, reassigning three
+   variables here flips the eyebrow, headings, and body copy to their light
+   treatment without touching any component rule. */
+.hero--video {
+  --text-primary: var(--color-paper);
+  --text-muted: rgba(245, 242, 238, 0.72);
+  color: var(--color-paper);
+}
+
+.hero--video .hero__title {
+  margin-left: -0.04em;            /* Optical alignment for the display serif */
+  margin-bottom: var(--space-md);
+  text-wrap: balance;
+
+  /* TIGHTER THAN THE GLOBAL --size-display TOKEN, DELIBERATELY.
+
+     The static hero can afford maximum display size because it scrolls
+     naturally. This hero cannot: min-height only sets a FLOOR, so when the
+     content is taller than the floor it pushes the hero past it. At the global
+     token's 7rem ceiling the hero measured 1071px on a 1440x900 laptop —
+     taller than the viewport, which pushed both calls to action below the
+     fold. A hero whose CTA you have to scroll to find is not doing its job.
+
+     Capping at 4.75rem keeps the full hero — eyebrow, three-line headline,
+     lead, and both buttons — inside a standard laptop viewport. The vw
+     component still scales it fluidly below that ceiling. */
+  font-size: clamp(2.5rem, 1.4rem + 4.4vw, 4.75rem);
+
+  /* A soft shadow as the second line of defense behind the scrim. Barely
+     perceptible on its own, but it keeps the thin strokes of a high-contrast
+     serif legible if a bright frame passes underneath. */
+  text-shadow: 0 1px 24px rgba(0, 0, 0, 0.35);
+}
+
+.hero--video .hero__lead {
+  margin-bottom: var(--space-lg);
+  color: var(--color-paper);
+}
+
+.hero--video .hero__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+/* The outline button inherits currentColor, so on this dark ground it is
+   already correct. This only fixes the hover inversion. */
+.hero--video .btn--outline:hover {
+  background-color: var(--color-paper);
+  color: var(--color-ink);
+}
+
+/* --- WCAG 2.2.2 pause control ---------------------------------------------- */
+
+/* Required, not optional: content that moves automatically for more than five
+   seconds must offer a way to stop it. Deliberately quiet — bottom corner,
+   low opacity until hovered or focused — so it meets the requirement without
+   competing with the headline. */
+.hero__motion-toggle {
+  position: absolute;
+  z-index: 5;
+  inset-block-end: var(--space-md);
+  inset-inline-end: var(--gutter);
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2xs);
+  min-width: 44px;
+  min-height: 44px;                /* WCAG 2.5.8 minimum target size */
+  padding-inline: var(--space-xs);
+
+  background-color: rgba(17, 17, 17, 0.55);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border: 1px solid rgba(245, 242, 238, 0.28);
+  border-radius: var(--radius);
+
+  font-size: var(--size-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-paper);
+  cursor: pointer;
+  opacity: 0.55;
+  transition: opacity var(--dur-fast) var(--ease),
+              background-color var(--dur-fast) var(--ease);
+}
+
+.hero__motion-toggle:hover,
+.hero__motion-toggle:focus-visible {
+  opacity: 1;
+  background-color: rgba(17, 17, 17, 0.8);
+}
+
+/* Swap the glyph based on the button's own pressed state, so the icon can
+   never disagree with the announced state. */
+.hero__motion-toggle::before {
+  content: "❚❚";                   /* Pause bars — video is playing */
+  font-size: 0.7em;
+  line-height: 1;
+}
+
+.hero__motion-toggle[aria-pressed="true"]::before {
+  content: "▶";                    /* Play triangle — video is paused */
+}
+
+
+/* ==========================================================================
+   2. REDUCED MOTION
+   video.js already refuses to load the video for these users, so this is a
+   belt-and-braces guarantee: even if a video element somehow ends up playing,
+   it is never shown.
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__video {
+    display: none;
+  }
+
+  .hero__motion-toggle {
+    display: none;                 /* Nothing to pause */
+  }
+}
+
+
+/* ==========================================================================
+   3. EXPLAINER VIDEO FACADE
+   The click-to-load poster used for the tagline films. Multiple instances per
+   page are supported.
+   ========================================================================== */
+
+.video-facade {
+  position: relative;
+  aspect-ratio: 16 / 9;            /* Reserves exact space before load —
+                                      the single most effective CLS fix */
+  width: 100%;
+  overflow: hidden;
+  border-radius: var(--radius);
+  background-color: var(--color-ink);
+  cursor: pointer;
+}
+
+.video-facade__poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  /* Dimmed so the play button has guaranteed contrast against any poster
+     frame, whatever footage ends up behind it. */
+  opacity: 0.78;
+  transition: opacity var(--dur-fast) var(--ease),
+              transform var(--dur-slow) var(--ease);
+}
+
+.video-facade:hover .video-facade__poster {
+  opacity: 0.62;
+  transform: scale(1.02);          /* Slow push signals interactivity */
+}
+
+.video-facade__play {
+  /* Absolute centering that works regardless of the element's own size. */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: clamp(60px, 7vw, 88px);
+  aspect-ratio: 1;                 /* Guarantees a circle */
+  border: none;
+  border-radius: 50%;
+  background-color: var(--color-red);
+  color: var(--color-paper);
+  cursor: pointer;
+  transition: transform var(--dur-fast) var(--ease),
+              background-color var(--dur-fast) var(--ease);
+}
+
+/* The scale must be declared together with the centering translate — a second
+   transform declaration REPLACES the first rather than adding to it. Omitting
+   the translate here would snap the button to the bottom-right corner. */
+.video-facade:hover .video-facade__play {
+  transform: translate(-50%, -50%) scale(1.08);
+  background-color: var(--color-red-deep);
+}
+
+.video-facade__play-icon {
+  /* A triangle's visual center of mass sits left of its bounding-box center,
+     so it needs a nudge right to LOOK centered inside a circle. */
+  margin-left: 4px;
+  font-size: 1.4rem;
+  line-height: 1;
+}
+
+/* Caption strip below the facade — names the film and gives its runtime.
+   Stating the duration up front measurably improves play rates: people are far
+   more willing to start something when they know it is thirty seconds. */
+.video-facade__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-2xs);
+  margin-top: var(--space-sm);
+  font-size: var(--size-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.video-facade__duration::before {
+  content: "·";
+  margin-right: var(--space-2xs);
+}
+
+/* Both injected player types inherit the facade's reserved dimensions. */
+.video-facade iframe,
+.video-facade video {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  display: block;
+  object-fit: cover;
+}

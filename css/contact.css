@@ -1,0 +1,152 @@
+/* ==========================================================================
+   COLLABORATION FOR GOOD — contact.css
+   Page-specific styles for contact.html ONLY. Loaded after base.css.
+
+   Most form styling already lives in base.css section 10, because forms appear
+   on more than one page (contact + newsletter). Only what is unique to this
+   page's layout is defined here.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. INTERIOR PAGE HERO
+   ========================================================================== */
+
+.page-hero {
+  padding-block: clamp(3rem, 2rem + 5vw, 6rem) clamp(2rem, 1.5rem + 3vw, 4rem);
+}
+
+.page-hero__title {
+  max-width: 18ch;
+  margin-bottom: var(--space-md);
+  text-wrap: balance;
+}
+
+
+/* ==========================================================================
+   2. PAGE LAYOUT
+   ========================================================================== */
+
+.contact__layout {
+  display: grid;
+  grid-template-columns: 1fr;     /* Stacked on mobile */
+  gap: var(--space-2xl);
+}
+
+@media (min-width: 62rem) {
+  .contact__layout {
+    /* Form column gets 1.4x the width of the details column. The form is the
+       primary action on this page and the layout should say so — an even split
+       would present the two as equally weighted choices. */
+    grid-template-columns: 1.4fr 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+
+/* ==========================================================================
+   3. SHARED SUBHEADING
+   ========================================================================== */
+
+.contact__subhead {
+  margin-bottom: var(--space-lg);
+  padding-bottom: var(--space-2xs);
+
+  /* Red underline rule — the same conviction marker used on .eyebrow, .stat,
+     and .value. Repeating one structural motif is what makes separate
+     components read as a single system. */
+  border-bottom: 2px solid var(--color-red);
+}
+
+
+/* ==========================================================================
+   4. FORM
+   ========================================================================== */
+
+.contact__form {
+  max-width: 34rem;
+}
+
+/* Optional-field marker. Deliberately quiet — it is a clarification, not a
+   warning, and should not compete with the red required asterisk. */
+.field__optional {
+  font-weight: 400;
+  text-transform: none;
+  letter-spacing: normal;
+  color: var(--text-muted);
+}
+
+/* Helper text under a field. Sits between the input and any error message. */
+.field__hint {
+  margin-top: var(--space-3xs);
+  font-size: var(--size-small);
+}
+
+/* The <select> needs a custom arrow because `appearance: none` strips the
+   native one along with the OS styling. The arrow is drawn as an inline SVG in
+   a data URI — no extra HTTP request, and it inherits nothing from the theme
+   so the color is set explicitly to match --color-ink. */
+.field__select {
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='none' stroke='%23111111' stroke-width='1.5' d='M1 1.5L6 6.5L11 1.5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+
+  /* Positioned from the right edge, vertically centered. */
+  background-position: right 0 center;
+
+  /* Right padding keeps long option text from running underneath the arrow. */
+  padding-right: var(--space-lg);
+  cursor: pointer;
+}
+
+
+/* ==========================================================================
+   5. DIRECT CONTACT COLUMN
+   ========================================================================== */
+
+.contact__details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+
+  /* <address> renders italic by default in every browser. Reset it — these
+     are contact details, not emphasized prose. */
+  font-style: normal;
+}
+
+.contact__item {
+  padding-bottom: var(--space-md);
+  border-bottom: var(--border-hair);
+}
+
+/* Removes the trailing rule from the final item so no line hangs below the
+   last entry with nothing under it. */
+.contact__item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.contact__label {
+  margin-bottom: var(--space-3xs);
+  font-size: var(--size-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.contact__booking {
+  margin-top: var(--space-lg);
+  padding-top: var(--space-md);
+  border-top: 2px solid var(--color-red);
+}
+
+.contact__booking .btn {
+  margin-top: var(--space-2xs);
+}
+
+.contact__response {
+  margin-top: var(--space-lg);
+  font-size: var(--size-small);
+}

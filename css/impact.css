@@ -1,0 +1,274 @@
+/* ==========================================================================
+   COLLABORATION FOR GOOD — impact.css
+   Page-specific styles for impact.html ONLY. Loaded after base.css.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. INTERIOR PAGE HERO
+   ========================================================================== */
+
+.page-hero {
+  padding-block: clamp(3rem, 2rem + 5vw, 6rem) clamp(2rem, 1.5rem + 3vw, 4rem);
+}
+
+.page-hero__title {
+  max-width: 20ch;
+  margin-bottom: var(--space-md);
+  text-wrap: balance;
+}
+
+
+/* ==========================================================================
+   2. SECTION HEADER (shared pattern)
+   ========================================================================== */
+
+.section-head {
+  max-width: 40ch;
+  margin-bottom: var(--space-xl);
+}
+
+
+/* ==========================================================================
+   3. FILTER CONTROLS
+   ========================================================================== */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin-bottom: var(--space-md);
+}
+
+.filter {
+  min-height: 44px;               /* WCAG 2.5.8 minimum touch target */
+  padding: var(--space-2xs) var(--space-md);
+  background: transparent;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius);
+  font-size: var(--size-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+
+.filter:hover {
+  border-color: var(--color-ink);
+  color: var(--text-primary);
+}
+
+/* Selected state, driven by the aria-pressed attribute rather than a class.
+   Using the ARIA attribute as the styling hook means the visual state and the
+   accessible state are the same fact — they cannot fall out of sync, which is
+   the usual failure mode when a class and an attribute are maintained
+   separately. */
+.filter[aria-pressed="true"] {
+  background-color: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.filters__count {
+  margin-bottom: var(--space-lg);
+}
+
+.filters__empty {
+  padding-block: var(--space-xl);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+
+/* ==========================================================================
+   4. CASE STUDY CARDS
+   ========================================================================== */
+
+.cases__grid {
+  /* Wider minimum than the base grid — these cards carry an image, three
+     labelled text blocks, and a metric. Below about 20rem they become
+     unreadably narrow columns of two-word lines. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr));
+  align-items: start;             /* Cards size to their own content rather
+                                     than all stretching to match the tallest */
+}
+
+.case {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-surface);
+  border: var(--border-hair);
+  border-radius: var(--radius);
+  overflow: hidden;               /* Clips the image to the card's radius */
+  transition: transform var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease);
+}
+
+.case:hover {
+  transform: translateY(-4px);
+  border-color: var(--color-red);
+}
+
+/* Applied by impact.js to cards filtered out. `display: none` removes them
+   from layout entirely so the grid reflows and closes the gaps — visibility
+   or opacity would leave holes in the grid. */
+.case.is-hidden {
+  display: none;
+}
+
+.case__media {
+  width: 100%;
+  aspect-ratio: 3 / 2;            /* Reserves exact space — prevents CLS */
+  object-fit: cover;
+  background-color: var(--color-rule);   /* Visible placeholder tone before
+                                            the image loads or if it 404s */
+}
+
+.case__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+  padding: var(--space-md);
+}
+
+.case__tag {
+  font-size: var(--size-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--color-red);
+}
+
+.case__title {
+  margin-bottom: var(--space-2xs);
+}
+
+/* The Challenge / Approach / Outcome description list. */
+.case__label {
+  margin-top: var(--space-sm);
+  font-size: var(--size-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* `:first-of-type` removes the top margin from the first label so it does not
+   double up with the gap already provided by the flex container above it. */
+.case__label:first-of-type {
+  margin-top: 0;
+}
+
+.case__text {
+  /* <dd> ships with a 40px browser indent. Zero it or every text block sits
+     inset from its own label. */
+  margin-inline-start: 0;
+  margin-top: var(--space-3xs);
+  font-size: var(--size-small);
+}
+
+/* The single headline metric, pushed to the bottom of the card. */
+.case__metric {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  margin-top: auto;               /* Absorbs leftover space, so metrics align
+                                     across cards of differing text length */
+  padding-top: var(--space-md);
+  border-top: 2px solid var(--color-red);
+}
+
+.case__metric-value {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.5rem + 2vw, 2.75rem);
+  font-weight: 500;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+
+.case__metric-label {
+  font-size: var(--size-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+
+/* ==========================================================================
+   5. TESTIMONIALS
+   ========================================================================== */
+
+.quote {
+  padding-left: var(--space-md);
+  border-left: 2px solid var(--color-red);
+}
+
+.quote__text {
+  /* Display serif at a large size. A pull quote should read differently from
+     the body copy around it or it stops functioning as a pull quote. */
+  font-family: var(--font-display);
+  font-size: clamp(1.25rem, 1rem + 1.2vw, 1.75rem);
+  font-weight: 400;
+  line-height: 1.35;
+  margin-bottom: var(--space-md);
+}
+
+.quote__source {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3xs);
+  font-size: var(--size-small);
+}
+
+.quote__name {
+  /* <cite> renders italic by default in every browser. Normalizing it here
+     because the attribution should read as a label, not as emphasis. */
+  font-style: normal;
+  font-weight: 500;
+}
+
+.quote__org {
+  color: var(--text-muted);
+}
+
+
+/* ==========================================================================
+   6. CLIENT ROSTER
+   Same hairline-grid technique used on the home page: a 1px gap over a
+   colored background draws every rule with no border code and no
+   double-border problem where cells meet.
+   ========================================================================== */
+
+.clients__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 9rem), 1fr));
+  gap: 1px;
+  background-color: var(--color-rule);
+  border: 1px solid var(--color-rule);
+}
+
+.clients__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 5.5rem;
+  padding: var(--space-sm);
+  background-color: var(--bg-page);
+  font-size: var(--size-small);
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--text-muted);
+  transition: background-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+
+.clients__item:hover {
+  background-color: var(--color-ink);
+  color: var(--color-paper);
+}

@@ -1,0 +1,278 @@
+/* ==========================================================================
+   COLLABORATION FOR GOOD — insights.css
+   Page-specific styles for insights.html ONLY. Loaded after base.css.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. INTERIOR PAGE HERO
+   ========================================================================== */
+
+.page-hero {
+  padding-block: clamp(3rem, 2rem + 5vw, 6rem) clamp(2rem, 1.5rem + 3vw, 4rem);
+}
+
+.page-hero__title {
+  max-width: 22ch;
+  margin-bottom: var(--space-md);
+  text-wrap: balance;
+}
+
+
+/* ==========================================================================
+   2. SECTION HEADER (shared pattern)
+   ========================================================================== */
+
+.section-head {
+  max-width: 40ch;
+  margin-bottom: var(--space-xl);
+}
+
+
+/* ==========================================================================
+   3. FEATURED ARTICLE
+   ========================================================================== */
+
+.feature {
+  display: grid;
+  grid-template-columns: 1fr;     /* Stacked on mobile */
+  gap: var(--space-lg);
+  margin-top: var(--space-md);
+  padding-bottom: var(--space-xl);
+  border-bottom: var(--border-hair);
+}
+
+@media (min-width: 48rem) {
+  .feature {
+    /* Image slightly wider than the text column. Reversing this ratio would
+       make the feature read as a text article with a thumbnail rather than as
+       a featured item. */
+    grid-template-columns: 1.2fr 1fr;
+    gap: var(--space-xl);
+    align-items: center;
+  }
+}
+
+.feature__media {
+  display: block;
+  overflow: hidden;               /* Contains the hover zoom below */
+  border-radius: var(--radius);
+  background-color: var(--color-rule);
+}
+
+.feature__media img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  transition: transform var(--dur-slow) var(--ease);
+}
+
+/* Slow zoom on hover. Scaling the image inside an `overflow: hidden` parent
+   means the frame stays fixed while the content grows — the effect reads as
+   a camera push rather than the whole card inflating. */
+.feature__media:hover img {
+  transform: scale(1.04);
+}
+
+.feature__title {
+  margin-block: var(--space-2xs) var(--space-md);
+  text-wrap: balance;
+}
+
+.feature__title a {
+  text-decoration: none;
+}
+
+.feature__title a:hover {
+  color: var(--color-red);
+}
+
+
+/* ==========================================================================
+   4. ARTICLE METADATA
+   Shared by the feature and the archive cards.
+   ========================================================================== */
+
+.article__meta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2xs);
+  font-size: var(--size-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+}
+
+.article__outlet {
+  font-weight: 500;
+  color: var(--color-red);
+}
+
+/* Separator dot drawn with a pseudo-element rather than typed into the HTML.
+   Punctuation that exists purely for visual separation does not belong in the
+   content layer — a screen reader would otherwise read it aloud. */
+.article__outlet::after {
+  content: "·";
+  margin-left: var(--space-2xs);
+  color: var(--text-muted);
+}
+
+.article__date {
+  color: var(--text-muted);
+}
+
+/* External link indicator on the featured article. */
+.article__external {
+  margin-top: var(--space-md);
+  font-size: var(--size-small);
+  font-weight: 500;
+  color: var(--color-red);
+}
+
+.article__external-icon {
+  display: inline-block;
+  margin-left: 2px;
+  transition: transform var(--dur-fast) var(--ease);
+}
+
+.feature:hover .article__external-icon {
+  /* Moves up and right, mirroring the direction of the arrow glyph itself. */
+  transform: translate(2px, -2px);
+}
+
+
+/* ==========================================================================
+   5. FILTER CONTROLS
+   Identical pattern to impact.css. Duplicated deliberately rather than
+   promoted to base.css: only two pages use it, and the two may diverge as the
+   article archive grows. If a third page adopts it unchanged, move it.
+   ========================================================================== */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+  margin-bottom: var(--space-md);
+}
+
+.filter {
+  min-height: 44px;
+  padding: var(--space-2xs) var(--space-md);
+  background: transparent;
+  border: 1px solid var(--color-rule);
+  border-radius: var(--radius);
+  font-size: var(--size-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background-color var(--dur-fast) var(--ease),
+              border-color var(--dur-fast) var(--ease),
+              color var(--dur-fast) var(--ease);
+}
+
+.filter:hover {
+  border-color: var(--color-ink);
+  color: var(--text-primary);
+}
+
+.filter[aria-pressed="true"] {
+  background-color: var(--color-ink);
+  border-color: var(--color-ink);
+  color: var(--color-paper);
+}
+
+.filters__count {
+  margin-bottom: var(--space-lg);
+}
+
+.filters__empty {
+  padding-block: var(--space-xl);
+  text-align: center;
+  color: var(--text-muted);
+}
+
+
+/* ==========================================================================
+   6. ARCHIVE GRID
+   ========================================================================== */
+
+.archive__grid {
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 17rem), 1fr));
+}
+
+.article {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xs);
+  padding-top: var(--space-md);
+
+  /* Top rule instead of a card border. These are index entries in a list of
+     writing, and a ruled list reads as an archive; boxing each one would make
+     six placeholder entries look like a product grid. */
+  border-top: 1px solid var(--color-rule);
+  transition: border-color var(--dur-fast) var(--ease);
+}
+
+.article:hover {
+  border-top-color: var(--color-red);
+}
+
+/* Hidden by the filter in insights.js. */
+.article.is-hidden {
+  display: none;
+}
+
+.article__title a {
+  text-decoration: none;
+}
+
+.article__title a:hover {
+  color: var(--color-red);
+}
+
+.article__excerpt {
+  font-size: var(--size-small);
+  color: var(--text-muted);
+}
+
+.archive__more {
+  margin-top: var(--space-xl);
+}
+
+
+/* ==========================================================================
+   7. NEWSLETTER
+   ========================================================================== */
+
+.newsletter__title {
+  margin-bottom: var(--space-sm);
+  text-wrap: balance;
+}
+
+.newsletter__lead {
+  margin-bottom: var(--space-lg);
+}
+
+.newsletter__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  max-width: 30rem;
+}
+
+@media (min-width: 34rem) {
+  .newsletter__form {
+    /* Input and button side by side on wider screens. `align-items: end`
+       aligns the button's bottom edge with the input's underline rather than
+       centering it against the label+input pair — the button lines up with the
+       field, not with the block. */
+    flex-direction: row;
+    align-items: end;
+    max-width: 34rem;
+  }
+
+  .newsletter__field {
+    flex: 1;                      /* Field absorbs all available width */
+  }
+}

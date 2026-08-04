@@ -1,486 +1,817 @@
 <!DOCTYPE html>
+<!--
+  ============================================================================
+  COLLABORATION FOR GOOD — index.html (Home)
+  Built by Aaron Hurst · UAT Computer Science
+  Brand system: "The Protagonist" (locked by Tyler Butler, May 21, 2026)
+  ============================================================================
+
+  ---------------------------------------------------------------------------
+  PREVAILING MODERN WEB DESIGN PRACTICES — THE MARKUP SIDE
+  (The CSS-side explanation lives at the top of css/base.css.)
+  ---------------------------------------------------------------------------
+
+  1. SEMANTIC HTML5. <header>, <nav>, <main>, <section>, <article>, <footer>
+     instead of generic <div>s. Screen readers build a navigable landmark map
+     from these elements, and search engines use them to understand which part
+     of the page is actual content versus navigation furniture. Accessibility
+     and SEO are the same work.
+
+  2. ONE <h1> PER PAGE, HEADINGS IN ORDER. h1 → h2 → h3, never skipping a
+     level. Screen reader users navigate by heading list the way sighted users
+     skim; a broken hierarchy makes that map useless. Note that visual size is
+     controlled by a CSS CLASS (.h2, .h3), completely separate from the heading
+     LEVEL — so we can make an h2 look small without breaking the structure.
+
+  3. PROGRESSIVE ENHANCEMENT. Every link is a real href, every form is a real
+     form. JavaScript adds motion and convenience; it never gates content.
+
+  4. STRUCTURED DATA (JSON-LD). The <script type="application/ld+json"> block
+     at the bottom tells Google exactly what this organization is, where it's
+     located, and who runs it. This is what powers rich results and knowledge
+     panels — and it is the fastest available lever for a local Phoenix
+     business trying to rank for branded searches.
+
+  5. OPEN GRAPH + TWITTER CARDS. Controls the preview card when a link is
+     shared on LinkedIn, Slack, or X. For a consultancy whose founder is a
+     Forbes contributor, shared links are a primary traffic channel — an
+     unstyled preview is a wasted impression.
+
+  6. PERFORMANCE. Fonts preconnected and loaded with `display=swap`; scripts
+     `defer`red; below-the-fold images `loading="lazy"` with explicit
+     width/height to prevent layout shift.
+
+  7. ACCESSIBLE IMAGES. Every <img> has alt text describing its MEANING, not
+     its appearance. Purely decorative images get alt="" so screen readers
+     skip them entirely.
+
+  ---------------------------------------------------------------------------
+  PLACEHOLDER CONVENTION
+  Everything Aaron/Tyler must supply is marked with a comment beginning
+  "PLACEHOLDER:". Search the file for that string to find every open item.
+  ---------------------------------------------------------------------------
+-->
 <html lang="en">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CFG Mockups — Collaboration for Good</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=DM+Sans:wght@200;300;400;500&display=swap" rel="stylesheet">
-<style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-html{font-size:16px;}
-body{
-  font-family:'DM Sans',sans-serif;font-weight:300;
-  background:#F5F2EE;color:#111111;
-  min-height:100vh;
-}
+  <!-- Character encoding. Must appear within the first 1024 bytes of the
+       document or the browser may guess wrong and mangle special characters. -->
+  <meta charset="UTF-8">
 
-:root{
-  --red:#C42B18;
-  --ink:#111111;
-  --offwhite:#F5F2EE;
-  --mid:rgba(17,17,17,0.45);
-  --ghost:rgba(17,17,17,0.1);
-  --warm-dark:#1C1A18;
-}
+  <!-- The viewport tag. Without it, mobile browsers render the page at a
+       simulated 980px width and zoom out — every responsive rule in the
+       stylesheet would be ignored. This single line is the prerequisite for
+       mobile-first design working at all. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-/* ── HEADER ─────────────────────────────────── */
-header{
-  border-bottom:0.5px solid var(--ghost);
-  padding:2.5rem 3.5rem 2rem;
-}
-.header-top{
-  display:flex;align-items:flex-start;justify-content:space-between;
-  flex-wrap:wrap;gap:1rem;margin-bottom:1.25rem;
-}
-.site-title{
-  font-family:'Cormorant Garamond',serif;font-size:clamp(1.6rem,3vw,2.4rem);
-  font-weight:300;color:var(--ink);letter-spacing:-0.01em;
-}
-.site-title em{color:var(--red);font-style:italic;}
-.phase-badge{
-  font-size:0.62rem;font-weight:500;letter-spacing:0.18em;text-transform:uppercase;
-  color:var(--red);border:0.5px solid rgba(196,43,24,0.3);
-  border-radius:100px;padding:5px 14px;white-space:nowrap;align-self:flex-start;
-  margin-top:4px;
-}
-.site-meta{
-  font-size:0.75rem;font-weight:300;letter-spacing:0.04em;color:var(--mid);
-}
+  <!-- Page title. Format is "Primary keyword phrase | Brand". Google truncates
+       around 60 characters, so the most important words go first. -->
+  <title>Corporate Social Responsibility &amp; ESG Consulting | Collaboration for Good</title>
 
-/* ── MAIN CONTENT ────────────────────────────── */
-main{padding:0 3.5rem 5rem;}
+  <!-- Meta description. Not a ranking factor directly, but it IS the snippet
+       shown in search results, so it drives click-through rate. ~155 chars. -->
+  <meta name="description"
+        content="Collaboration for Good is a Phoenix-based social impact consultancy helping companies build CSR, ESG, and community programs that hold up to scrutiny.">
 
-/* ── SECTION ─────────────────────────────────── */
-.section{padding:3rem 0 0;}
-.section-header{
-  display:flex;align-items:baseline;gap:1.5rem;
-  padding-bottom:1.25rem;
-  border-bottom:0.5px solid var(--ghost);
-  margin-bottom:2rem;
-}
-.section-title{
-  font-family:'Cormorant Garamond',serif;font-size:1.3rem;
-  font-weight:400;color:var(--ink);letter-spacing:0.01em;
-}
-.section-count{
-  font-size:0.65rem;font-weight:400;letter-spacing:0.16em;
-  text-transform:uppercase;color:var(--mid);
-}
-.section-note{
-  font-size:0.78rem;font-weight:300;line-height:1.7;
-  color:var(--mid);margin-bottom:1.75rem;max-width:680px;
-}
+  <!-- Canonical URL. Tells search engines which version of a URL is the
+       authoritative one, preventing duplicate-content dilution across
+       www/non-www and http/https variants.
+       PLACEHOLDER: confirm final production URL before launch. -->
+  <link rel="canonical" href="https://collaborationforgood.com/">
 
-/* ── CARD GRID ───────────────────────────────── */
-.grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
-  gap:1px;
-  border:0.5px solid var(--ghost);
-}
-.grid.wide{grid-template-columns:repeat(auto-fill,minmax(340px,1fr));}
-.grid.solo{grid-template-columns:1fr;}
+  <!-- Open Graph tags — controls link previews on LinkedIn, Facebook, Slack. -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Collaboration for Good">
+  <meta property="og:title" content="Corporate Social Responsibility &amp; ESG Consulting | Collaboration for Good">
+  <meta property="og:description"
+        content="Phoenix-based social impact consultancy. CSR, ESG, and community programs built to withstand scrutiny.">
+  <meta property="og:url" content="https://collaborationforgood.com/">
+  <!-- PLACEHOLDER: produce a 1200x630px share image and place at assets/img/og-image.jpg -->
+  <meta property="og:image" content="https://collaborationforgood.com/assets/img/og-image.jpg">
 
-/* ── CARD ────────────────────────────────────── */
-.card{
-  background:var(--offwhite);padding:1.75rem;
-  display:flex;flex-direction:column;gap:1rem;
-  border:0.5px solid var(--ghost);
-  transition:background 0.18s;
-  position:relative;
-}
-.card:hover{background:#EDE9E4;}
-.card.dark{background:var(--warm-dark);border-color:rgba(245,242,238,0.07);}
-.card.dark:hover{background:#232120;}
-.card.featured{
-  border-color:var(--red);
-  background:rgba(196,43,24,0.03);
-}
-.card.featured:hover{background:rgba(196,43,24,0.06);}
-.card.inactive{opacity:0.55;}
-.card.inactive:hover{background:var(--offwhite);}
+  <!-- Twitter/X card. `summary_large_image` gives the full-width preview. -->
+  <meta name="twitter:card" content="summary_large_image">
 
-.card-badges{display:flex;gap:6px;flex-wrap:wrap;}
-.badge{
-  font-size:0.58rem;font-weight:500;letter-spacing:0.15em;text-transform:uppercase;
-  padding:3px 10px;border-radius:100px;
-}
-.badge-selected{background:var(--red);color:#fff;}
-.badge-new{background:rgba(17,17,17,0.08);color:var(--mid);}
-.badge-dark{background:rgba(245,242,238,0.1);color:rgba(245,242,238,0.5);}
-.badge-interactive{background:rgba(196,43,24,0.1);color:var(--red);border:0.5px solid rgba(196,43,24,0.2);}
-.badge-pending{background:rgba(17,17,17,0.06);color:rgba(17,17,17,0.3);}
+  <!-- Favicon. PLACEHOLDER: export the heart mark as a 32x32 favicon.
+       Noted in the progress doc as a known gap in the logo system. -->
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
 
-.card-title{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.2rem;font-weight:400;color:var(--ink);
-  line-height:1.2;
-}
-.card.dark .card-title{color:rgba(245,242,238,0.88);}
+  <!-- FONT LOADING.
+       `preconnect` opens the TCP + TLS connection to Google's font servers
+       BEFORE the browser discovers it needs them, shaving 100-300ms off first
+       paint. The crossorigin attribute is required on the second one because
+       font files are fetched in CORS mode.
+       `display=swap` shows fallback text immediately and swaps in the web font
+       when it arrives — the alternative is invisible text for up to 3 seconds. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet">
 
-.card-desc{
-  font-size:0.78rem;font-weight:300;line-height:1.7;
-  color:var(--mid);flex:1;
-}
-.card.dark .card-desc{color:rgba(245,242,238,0.3);}
+  <!-- STYLESHEETS.
+       Order matters: base.css defines the tokens and shared components; the
+       page stylesheet loads second so its rules win on equal specificity. -->
+  <!-- PRELOAD THE LCP ELEMENT.
+       The hero poster is the Largest Contentful Paint element. Preloading
+       it here means the browser starts fetching it during head parsing,
+       rather than waiting until the parser reaches the <img> tag several
+       kilobytes later. On a slow connection this routinely saves 200-400ms
+       of LCP. `fetchpriority="high"` promotes it ahead of other images. -->
+  <link rel="preload" as="image" href="assets/img/hero-poster.avif"
+        type="image/avif" fetchpriority="high">
 
-.card-footer{
-  display:flex;align-items:center;justify-content:space-between;
-  margin-top:0.25rem;
-}
-.card-link{
-  font-size:0.7rem;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;
-  color:var(--ink);text-decoration:none;
-  border-bottom:0.5px solid var(--ghost);padding-bottom:2px;
-  transition:color 0.15s,border-color 0.15s;
-}
-.card-link:hover{color:var(--red);border-color:rgba(196,43,24,0.4);}
-.card.dark .card-link{color:rgba(245,242,238,0.45);border-color:rgba(245,242,238,0.12);}
-.card.dark .card-link:hover{color:rgba(196,43,24,0.85);border-color:rgba(196,43,24,0.3);}
-.card-link.disabled{color:rgba(17,17,17,0.22);border-color:transparent;pointer-events:none;}
-
-.card-sub{
-  font-size:0.65rem;font-weight:300;letter-spacing:0.08em;
-  color:rgba(17,17,17,0.25);
-}
-.card.dark .card-sub{color:rgba(245,242,238,0.14);}
-
-/* ── SUBSECTION LABEL ────────────────────────── */
-.subsection-label{
-  font-size:0.62rem;font-weight:500;letter-spacing:0.2em;text-transform:uppercase;
-  color:var(--mid);padding:2rem 0 1rem;border-top:0.5px solid var(--ghost);
-  margin-top:2rem;
-}
-.subsection-label:first-of-type{border-top:none;margin-top:0;}
-
-/* ── DIVIDER ─────────────────────────────────── */
-.divider{height:0.5px;background:var(--ghost);margin:3rem 0 0;}
-
-/* ── FOOTER ──────────────────────────────────── */
-footer{
-  padding:2rem 3.5rem;border-top:0.5px solid var(--ghost);
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:1rem;
-}
-.footer-copy{font-size:0.7rem;font-weight:300;color:var(--mid);}
-.footer-note{font-size:0.7rem;font-weight:300;color:rgba(17,17,17,0.28);}
-
-/* ── RESPONSIVE ──────────────────────────────── */
-@media(max-width:680px){
-  header,main,footer{padding-left:1.5rem;padding-right:1.5rem;}
-  .grid{grid-template-columns:1fr;}
-}
-</style>
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/home.css">
+  <link rel="stylesheet" href="css/video.css">
 </head>
+
 <body>
 
-<!-- HEADER -->
-<header>
-  <div class="header-top">
-    <h1 class="site-title">Collaboration <em>for Good</em> — Site Mockups</h1>
-    <span class="phase-badge">Phase 1 · Audit & Discovery</span>
-  </div>
-  <p class="site-meta">Website Redesign & Brand Consolidation &nbsp;·&nbsp; Intern: Aaron Hurst, UAT &nbsp;·&nbsp; Principal: Tyler Butler</p>
-</header>
+  <!-- Skip link. Must be the very first focusable element in the document.
+       A keyboard user presses Tab once on page load and lands here, letting
+       them jump past the navigation directly to content. WCAG 2.4.1. -->
+  <a class="skip-link" href="#main">Skip to main content</a>
 
-<main>
 
-  <!-- ═══════════════════════════════════════════
-       SECTION 1 — UNDER CONSTRUCTION MOCKUPS
-       ═══════════════════════════════════════════ -->
-  <div class="section">
-    <div class="section-header">
-      <h2 class="section-title">Under Construction Mockups</h2>
-      <span class="section-count">12 options · 3 files</span>
-    </div>
-    <p class="section-note">Placeholder pages to replace the live WordPress site during the rebuild. All options use The Protagonist color system — Ink · Logo Red · Off-White. Tyler has requested the live site come down before an upcoming speaking engagement. Options 1–9 and 10–11 use an in-page switcher.</p>
+  <!-- ======================================================================
+       SITE HEADER
+       `data-header` is the JavaScript hook (see main.js). The CSS class is
+       for styling only — keeping the two separate means renaming a class
+       can never break behavior.
+       ====================================================================== -->
+  <header class="site-header" data-header>
+    <div class="container site-header__inner">
 
-    <div class="subsection-label">Options 1–9 &nbsp;·&nbsp; Light & Dark Variants</div>
-    <div class="grid wide">
+      <!-- Logo links home. On the home page it still links here, which is
+           standard and expected behavior. -->
+      <a class="site-logo" href="index.html">
+        <!-- PLACEHOLDER: replace with the real CFG heart mark.
+             Explicit width/height reserve the space so the layout does not
+             shift when the image finishes loading.
+             alt="" because the adjacent text already names the brand —
+             repeating it would make a screen reader say it twice. -->
+        <img class="site-logo__mark" src="assets/img/cfg-heart-mark.png"
+             alt="" width="28" height="28">
+        <span>Collaboration for Good</span>
+      </a>
 
-      <div class="card dark">
-        <div class="card-badges">
-          <span class="badge badge-dark">Warm Dark</span>
-          <span class="badge badge-interactive">Interactive · 9 Options</span>
-        </div>
-        <p class="card-title">Options 1–9 · Interactive Switcher</p>
-        <p class="card-desc">Nine complete placeholder designs in one file — numbered switcher at bottom. Covers The Reveal, The Column, The Void, The Warmth, The Edition, The Grain, The Edge, The Mark, and The Split. All with entrance animations and warm dark or ivory backgrounds.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-placeholder-v2.html" class="card-link">View All 9 →</a>
-          <span class="card-sub">Use switcher to compare</span>
-        </div>
-      </div>
+      <!-- Desktop navigation. <nav> is a landmark element; the aria-label
+           distinguishes it from other navs on the page (footer, drawer) in a
+           screen reader's landmark list. -->
+      <nav class="site-nav" aria-label="Main">
+        <ul class="site-nav__list">
+          <!-- aria-current="page" is hardcoded on the active page's link so it
+               works without JavaScript. main.js re-verifies it as a fallback. -->
+          <li><a class="site-nav__link" href="index.html" data-nav-link aria-current="page">Home</a></li>
+          <li><a class="site-nav__link" href="about.html" data-nav-link>About</a></li>
+          <li><a class="site-nav__link" href="capabilities.html" data-nav-link>Capabilities</a></li>
+          <li><a class="site-nav__link" href="impact.html" data-nav-link>Impact</a></li>
+          <li><a class="site-nav__link" href="insights.html" data-nav-link>Insights</a></li>
+          <li><a class="btn btn--primary" href="contact.html">Start a conversation</a></li>
+        </ul>
+      </nav>
 
-    </div>
-
-    <div class="subsection-label">Options 10–11 &nbsp;·&nbsp; Elevated Concepts</div>
-    <div class="grid">
-
-      <div class="card">
-        <div class="card-badges">
-          <span class="badge badge-new">Light</span>
-          <span class="badge badge-interactive">Interactive · Shared File</span>
-        </div>
-        <p class="card-title">Option 10 · The Masthead</p>
-        <p class="card-desc">The placeholder IS a masthead. Horizontal rules, press names as a structured dateline, centered serif wordmark — references the publications Tyler appears in. Staggered rule-draw animations. Light, print-quality, editorial.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-placeholder-v2-extended.html" class="card-link">View →</a>
-          <span class="card-sub">Option 10 of 2</span>
-        </div>
-      </div>
-
-      <div class="card dark">
-        <div class="card-badges">
-          <span class="badge badge-dark">Warm Dark · Grain</span>
-          <span class="badge badge-interactive">Interactive · Shared File</span>
-        </div>
-        <p class="card-title">Option 11 · The Conviction</p>
-        <p class="card-desc">Not "we're under construction." This IS the pitch. Tyler's conviction copy as hero — "Business has the power to change the world." Dark, grainy, spare. Red on the words that matter. The placeholder becomes a brand statement.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-placeholder-v2-extended.html" class="card-link">View →</a>
-          <span class="card-sub">Option 11 of 2</span>
-        </div>
-      </div>
+      <!-- Mobile menu trigger.
+           `aria-expanded` communicates open/closed state to assistive tech and
+           is the single source of truth main.js reads from.
+           `aria-controls` links the button to the panel it operates.
+           The <span> bars are aria-hidden because they are pure decoration —
+           the aria-label carries the meaning. -->
+      <button class="nav-toggle" type="button"
+              aria-label="Open menu"
+              aria-expanded="false"
+              aria-controls="nav-drawer"
+              data-nav-toggle>
+        <span class="nav-toggle__bar" aria-hidden="true"></span>
+        <span class="nav-toggle__bar" aria-hidden="true"></span>
+      </button>
 
     </div>
+  </header>
 
-    <div class="subsection-label">Option 12 &nbsp;·&nbsp; Full Interactive Experience</div>
-    <div class="grid">
 
-      <div class="card dark">
-        <div class="card-badges">
-          <span class="badge badge-dark">Warm Dark · Grain</span>
-          <span class="badge badge-new">Recommended</span>
-        </div>
-        <p class="card-title">Option 12 · The Experience</p>
-        <p class="card-desc">Custom cursor (red dot + lagging ring). Per-line headline reveal from behind clip masks — the luxury text technique used by Loewe, A24, and Apple. Animated credential counters (10+ years, 30+ boards, F100, 90%) that count up on load. Magnetic email link that floats toward the cursor. Continuous press name marquee with hover-pause. The most sophisticated option in the set.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-placeholder-v2-option12.html" class="card-link">View →</a>
-          <span class="card-sub">Recommended for live deployment</span>
-        </div>
-      </div>
+  <!-- ======================================================================
+       MOBILE NAVIGATION DRAWER
+       Lives outside the header so it can cover the full viewport. Hidden by
+       CSS transform (not display:none) so it can animate in and out.
+       ====================================================================== -->
+  <div class="nav-drawer" id="nav-drawer" data-nav-drawer>
 
-    </div>
-  </div>
+    <!-- &times; is the HTML entity for a multiplication sign, which is the
+         correct close glyph. aria-hidden hides it from screen readers, which
+         get the aria-label on the button instead. -->
+    <button class="nav-drawer__close" type="button" aria-label="Close menu" data-nav-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
 
-  <!-- ═══════════════════════════════════════════
-       SECTION 2 — COLOR SCHEMES
-       ═══════════════════════════════════════════ -->
-  <div class="section">
-    <div class="section-header">
-      <h2 class="section-title">Color Schemes</h2>
-      <span class="section-count">12 concepts</span>
-    </div>
+    <nav aria-label="Mobile">
+      <ul class="nav-drawer__list">
+        <li><a class="nav-drawer__link" href="index.html">Home</a></li>
+        <li><a class="nav-drawer__link" href="about.html">About</a></li>
+        <li><a class="nav-drawer__link" href="capabilities.html">Capabilities</a></li>
+        <li><a class="nav-drawer__link" href="impact.html">Impact</a></li>
+        <li><a class="nav-drawer__link" href="insights.html">Insights</a></li>
+        <li><a class="nav-drawer__link" href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
 
-    <!-- THE PROTAGONIST — SELECTED, featured at top -->
-    <div class="subsection-label" style="border-top:none;margin-top:0;">Tyler's Selection &nbsp;·&nbsp; Locked Direction</div>
-    <div class="grid">
-      <div class="card featured">
-        <div class="card-badges">
-          <span class="badge badge-selected">Selected · May 21</span>
-          <span class="badge badge-new">CFG Brand Direction</span>
-        </div>
-        <p class="card-title">The Protagonist</p>
-        <p class="card-desc">Ink #111111 · Logo Red #C42B18 · Off-White #F5F2EE · Playfair Display + DM Sans. Purpose-first editorial direction — beliefs before services, conviction over catalog. Tyler selected this as the CFG color scheme on May 21, 2026. Active and production-committed. Also the basis for all Under Construction mockups above.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-the-protagonist.html" class="card-link">View →</a>
-          <span class="card-sub">Phase 3 build target</span>
-        </div>
-      </div>
+    <div class="nav-drawer__footer">
+      <!-- mailto: and tel: links let a phone dial or compose with one tap. -->
+      <p><a href="mailto:connect@collaborationforgood.com">connect@collaborationforgood.com</a></p>
+      <p><a href="tel:+14804318580">480.431.8580</a></p>
+      <p>Phoenix, Arizona</p>
     </div>
 
-    <!-- TYLER'S DIRECTION -->
-    <div class="subsection-label">Tyler's Direction &nbsp;·&nbsp; Black · White · Off-White · Red</div>
-    <div class="grid">
-
-      <div class="card">
-        <div class="card-badges"><span class="badge badge-new">Near-Black</span></div>
-        <p class="card-title">Crimson & Gold</p>
-        <p class="card-desc">Deep crimson · gold · near-black — bold, high-energy, brand-forward.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-crimson-gold.html" class="card-link">View →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-badges"><span class="badge badge-new">Editorial</span></div>
-        <p class="card-title">Chic Noir</p>
-        <p class="card-desc">Near-black · logo red · off-white — streamlined, editorial, restrained.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-chic-noir.html" class="card-link">View →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-badges"><span class="badge badge-new">High Contrast</span></div>
-        <p class="card-title">Carbon & Red</p>
-        <p class="card-desc">Carbon black · bright red · clean white — high-contrast, modern, sharp.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-carbon-red.html" class="card-link">View →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-badges"><span class="badge badge-new">Sophisticated</span></div>
-        <p class="card-title">Ivory & Red</p>
-        <p class="card-desc">Soft black · deep muted red · warm ivory — Parisian editorial, most sophisticated.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-ivory-red.html" class="card-link">View →</a>
-        </div>
-      </div>
-
-    </div>
-
-    <!-- OFFICIAL BRAND PALETTE -->
-    <div class="subsection-label">Official CFG Brand Palette</div>
-    <div class="grid">
-      <div class="card">
-        <div class="card-badges"><span class="badge badge-new">Brand Book</span></div>
-        <p class="card-title">Magic & Connection</p>
-        <p class="card-desc">Official brand palette · Bebas Neue · rust · creme · brand black — straight from the Aidan Taylor Marketing brand book.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-magic-connection.html" class="card-link">View →</a>
-        </div>
-      </div>
-    </div>
-
-    <!-- EMBER SERIES -->
-    <div class="subsection-label">Original Concepts &nbsp;·&nbsp; Ember Series + Brand Exploration</div>
-    <div class="grid">
-
-      <div class="card">
-        <div class="card-badges"><span class="badge badge-new">Forest Green</span></div>
-        <p class="card-title">Forbes Authority</p>
-        <p class="card-desc">Deep forest green · gold · parchment — editorial gravitas.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-forbes-authority.html" class="card-link">View →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-badges"><span class="badge badge-new">Teal · Coral</span></div>
-        <p class="card-title">Electric Heart</p>
-        <p class="card-desc">Deep teal · warm coral · soft blush — Tyler's energy made visual.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-electric-heart.html" class="card-link">View →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-badges"><span class="badge badge-new">Arizona</span></div>
-        <p class="card-title">Desert Authority</p>
-        <p class="card-desc">Terracotta · sage green · warm sand — Arizona roots, B-Corp signal.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-desert-authority.html" class="card-link">View →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-badges"><span class="badge badge-new">Cool Slate</span></div>
-        <p class="card-title">Ember Slate</p>
-        <p class="card-desc">Cool slate · steel blue · warm gray — professional with controlled warmth.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-ember-slate.html" class="card-link">View →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-badges"><span class="badge badge-new">B-Corp</span></div>
-        <p class="card-title">Ember Forest</p>
-        <p class="card-desc">Forest green · teal green · ember orange — B-Corp earthy meets energy.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-ember-forest.html" class="card-link">View →</a>
-        </div>
-      </div>
-
-      <div class="card">
-        <div class="card-badges"><span class="badge badge-new">Warm</span></div>
-        <p class="card-title">Ember Earth</p>
-        <p class="card-desc">Deep espresso · adobe · warm sand — grounded, warm, approachable.</p>
-        <div class="card-footer">
-          <a href="./01_Audit_and_Discovery/mockups/brand-concepts/cfg-ember-earth.html" class="card-link">View →</a>
-        </div>
-      </div>
-
-    </div>
   </div>
 
-  <!-- ═══════════════════════════════════════════
-       SECTION 3 — PAGE MOCKUPS
-       ═══════════════════════════════════════════ -->
-  <div class="section">
-    <div class="section-header">
-      <h2 class="section-title">Page Mockups</h2>
-      <span class="section-count">6 pages · not started</span>
+
+  <!-- ======================================================================
+       MAIN CONTENT
+       `id="main"` is the skip link's destination. `tabindex="-1"` makes the
+       element programmatically focusable so the skip link actually moves
+       keyboard focus here — without it, some browsers scroll but leave focus
+       stranded back in the navigation.
+       ====================================================================== -->
+  <main class="site-main" id="main" tabindex="-1">
+
+
+    <!-- ==================================================================
+         HERO — with looping background video
+
+         PERFORMANCE ARCHITECTURE (the important part):
+
+         The <img> poster is the LCP element. It carries fetchpriority="high"
+         so the browser promotes it to the front of the fetch queue, and it is
+         preloaded in <head>. LCP is decided by this image and nothing else.
+
+         The <video> element ships with NO src and NO <source> children. This
+         is deliberate and it matters more than it looks: a browser begins
+         fetching a source declared in the markup even with preload="none",
+         because preload governs how MUCH it buffers, not WHETHER it starts.
+         Sources live in data-* attributes and are injected by video.js only
+         after window.load fires — and only on devices that pass the checks in
+         shouldPlayBackgroundVideo(). On mobile, on a metered connection, or
+         under reduced-motion, zero video bytes are ever requested.
+
+         ACCESSIBILITY:
+         - aria-hidden + tabindex="-1" on the video: it is decoration and
+           carries no information, so it stays out of the accessibility tree
+           and out of the tab order entirely.
+         - The poster's alt="" for the same reason — a screen reader announcing
+           the background is noise, not content.
+         - The pause control satisfies WCAG 2.2.2 (Level A), which requires a
+           mechanism to stop any motion running longer than five seconds.
+         ================================================================== -->
+    <section class="hero hero--video">
+
+      <div class="hero__media">
+
+        <!-- PLACEHOLDER: assets/img/hero-poster.avif + .jpg fallback.
+             MUST be a frame from the video itself — ideally frame 1 — so the
+             handoff from still to moving is invisible.
+             Explicit width/height reserve the space and prevent layout shift. -->
+        <picture>
+          <source srcset="assets/img/hero-poster.avif" type="image/avif">
+          <img class="hero__poster"
+               src="assets/img/hero-poster.jpg"
+               alt=""
+               width="1920" height="1080"
+               fetchpriority="high"
+               decoding="async">
+        </picture>
+
+        <!-- PLACEHOLDER: assets/video/hero-loop.webm and .mp4
+             muted is REQUIRED for autoplay — every browser blocks autoplay
+             with sound. playsinline is REQUIRED or iOS Safari hijacks the
+             video into native fullscreen the moment it plays. -->
+        <video class="hero__video"
+               data-hero-video
+               data-src-webm="assets/video/hero-loop.webm"
+               data-src-mp4="assets/video/hero-loop.mp4"
+               muted loop playsinline
+               preload="none"
+               aria-hidden="true"
+               tabindex="-1"></video>
+
+      </div>
+
+      <!-- WCAG 2.2.2 control. Starts hidden; video.js reveals it only if the
+           video actually loads and plays. Offering to pause something that
+           isn't moving would be confusing. -->
+      <button class="hero__motion-toggle"
+              type="button"
+              data-hero-motion
+              aria-pressed="false"
+              aria-label="Pause background video"
+              hidden></button>
+
+      <div class="container hero__inner">
+
+        <p class="eyebrow">Phoenix, Arizona &middot; Est. 2023</p>
+
+        <!-- The single <h1> for this page. The .display class controls SIZE;
+             the h1 tag controls STRUCTURE. Keeping those independent is what
+             lets us style freely without breaking the heading outline. -->
+        <h1 class="display hero__title">
+          Business has the power to<br>
+          change the world.<br>
+          <span class="accent">Most of it doesn&rsquo;t.</span>
+        </h1>
+
+        <p class="lead hero__lead">
+          We build corporate social responsibility programs that survive
+          scrutiny &mdash; from the boardroom, from employees, and from the
+          communities they claim to serve.
+        </p>
+
+        <div class="hero__actions">
+          <a class="btn btn--primary" href="contact.html">Start a conversation</a>
+          <a class="btn btn--text" href="capabilities.html">
+            See how we work
+            <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         CREDENTIAL BAR
+         Carried over from the approved Option 12 placeholder so the live
+         site feels continuous with what visitors already saw.
+         `data-reveal-stagger` makes the four stats cascade in rather than
+         appearing simultaneously.
+         ================================================================== -->
+    <section class="section credentials" aria-labelledby="credentials-heading">
+      <div class="container">
+
+        <!-- This heading exists for document structure and screen readers but
+             would be visual clutter on screen, so it is visually hidden. -->
+        <h2 class="visually-hidden" id="credentials-heading">By the numbers</h2>
+
+        <div class="grid credentials__grid" data-reveal data-reveal-stagger>
+
+          <!-- `data-count-to` is read by home.js to animate the number from 0.
+               The visible text is the FINAL value, hardcoded — so if JS never
+               runs, the correct number is already on screen. -->
+          <div class="stat">
+            <span class="stat__value" data-count-to="10" data-count-suffix="+">10+</span>
+            <span class="stat__label">Years in practice</span>
+          </div>
+
+          <div class="stat">
+            <span class="stat__value" data-count-to="30" data-count-suffix="+">30+</span>
+            <span class="stat__label">Boards served</span>
+          </div>
+
+          <!-- Not a number, so no count animation — just static text. -->
+          <div class="stat">
+            <span class="stat__value">F100</span>
+            <span class="stat__label">Client roster</span>
+          </div>
+
+          <div class="stat">
+            <span class="stat__value" data-count-to="90" data-count-suffix="%">90%</span>
+            <span class="stat__label">Employee mobilization</span>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         POSITIONING STATEMENT
+         Dark band. The .section--dark modifier flips every semantic color
+         token at once, so every child inherits the inverted palette without
+         needing its own dark variant.
+         ================================================================== -->
+    <section class="section section--dark statement" aria-labelledby="statement-heading">
+      <div class="container container--narrow">
+
+        <p class="eyebrow">The problem</p>
+
+        <h2 class="h1 statement__title" id="statement-heading" data-reveal>
+          Corporate responsibility fails when it&rsquo;s
+          <span class="accent">a press release</span>
+          instead of an operating decision.
+        </h2>
+
+        <div class="prose statement__body" data-reveal>
+          <p>
+            Most companies want to do good. Fewer know how to build a program
+            that holds up when a journalist, an investor, or their own workforce
+            starts asking questions.
+          </p>
+          <p>
+            We work with organizations that are ready to stop performing social
+            impact and start operating it &mdash; with governance, measurement,
+            and reporting that stands on its own.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         CAPABILITIES PREVIEW
+         The four-part CFG service framework: Collaborate / Create / Report /
+         Lead. Full detail lives on capabilities.html; this is the summary.
+         ================================================================== -->
+    <section class="section capabilities-preview" aria-labelledby="capabilities-heading">
+      <div class="container">
+
+        <div class="section-head">
+          <p class="eyebrow">Capabilities</p>
+          <h2 class="h2" id="capabilities-heading">Four ways we work</h2>
+        </div>
+
+        <div class="grid" data-reveal data-reveal-stagger>
+
+          <!-- <article> because each card is a self-contained unit of content
+               that would still make sense if syndicated elsewhere. -->
+          <article class="card">
+            <h3 class="h3">Collaborate</h3>
+            <p>
+              Cross-sector partnerships between companies, nonprofits, and
+              community organizations that produce measurable outcomes rather
+              than photo opportunities.
+            </p>
+            <div class="card__spacer"></div>
+            <a class="btn btn--text" href="capabilities.html#collaborate">
+              Learn more <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </article>
+
+          <article class="card">
+            <h3 class="h3">Create</h3>
+            <p>
+              Purpose-built CSR and ESG programs designed around what a business
+              actually does &mdash; not a template borrowed from a competitor.
+            </p>
+            <div class="card__spacer"></div>
+            <a class="btn btn--text" href="capabilities.html#create">
+              Learn more <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </article>
+
+          <article class="card">
+            <h3 class="h3">Report</h3>
+            <p>
+              Impact reporting and ESG disclosure that satisfies investors,
+              regulators, and B Corp assessors &mdash; built to be audited, not
+              admired.
+            </p>
+            <div class="card__spacer"></div>
+            <a class="btn btn--text" href="capabilities.html#report">
+              Learn more <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </article>
+
+          <article class="card">
+            <h3 class="h3">Lead</h3>
+            <p>
+              Executive advisory and board-level counsel for leaders who own
+              social impact as a business responsibility, not a department.
+            </p>
+            <div class="card__spacer"></div>
+            <a class="btn btn--text" href="capabilities.html#lead">
+              Learn more <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </article>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         EXPLAINER FILM — "Where Purpose Meets Possibility"
+
+         PLACEMENT REASONING: this is the broadest, most brand-level of the
+         seven tagline scripts, so it is the one that belongs on the page where
+         a visitor has the least context. The other six are distributed to the
+         pages whose subject they actually match — one per page, maximum.
+
+         PERFORMANCE: this is a FACADE, not an embed. A poster image and a
+         button; the real player is injected by video.js only on click. A
+         standard YouTube iframe would pull roughly 1MB of third-party
+         JavaScript on page load whether or not anyone presses play. Since well
+         under a third of visitors typically play an embedded marketing video,
+         the default embed spends that megabyte on the majority to serve the
+         minority. The facade inverts it.
+         ================================================================== -->
+    <section class="section section--warm video" aria-labelledby="video-heading">
+      <div class="container">
+
+        <div class="section-head">
+          <p class="eyebrow">Watch</p>
+          <h2 class="h2" id="video-heading">Where purpose meets possibility</h2>
+        </div>
+
+        <!-- PLACEHOLDER: swap in the real sources once Phase 5 delivers.
+             Self-hosted (data-video-mp4 / data-video-webm) is preferred for a
+             30-second brand film: no third-party JS, no cookies, and the file
+             is smaller than YouTube's player bundle alone. Use
+             data-video-embed instead only if the view counts are needed. -->
+        <div class="video-facade"
+             data-video-facade
+             data-video-mp4="assets/video/explainer-purpose-possibility.mp4"
+             data-video-webm="assets/video/explainer-purpose-possibility.webm"
+             data-video-title="Where Purpose Meets Possibility - Collaboration for Good"
+             data-reveal>
+
+          <!-- PLACEHOLDER: 1280x720 poster frame. -->
+          <img class="video-facade__poster"
+               src="assets/img/video-poster.jpg"
+               alt="Collaboration for Good explainer film"
+               width="1280" height="720"
+               loading="lazy" decoding="async">
+
+          <button class="video-facade__play" type="button"
+                  aria-label="Play the film: Where Purpose Meets Possibility">
+            <span class="video-facade__play-icon" aria-hidden="true">&#9654;</span>
+          </button>
+
+        </div>
+
+        <!-- Stating the runtime up front measurably improves play rates.
+             People commit far more readily to something they know is short. -->
+        <p class="video-facade__meta">
+          <span>Where Purpose Meets Possibility</span>
+          <span class="video-facade__duration">30 seconds</span>
+        </p>
+
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         FOUNDER INTRODUCTION
+         Per the progress doc, Tyler's personal brand is materially stronger
+         than CFG's company brand and is currently absent from the site.
+         Surfacing it on the home page is the central strategic fix.
+         ================================================================== -->
+    <section class="section founder" aria-labelledby="founder-heading">
+      <div class="container grid--split">
+
+        <div class="founder__media" data-reveal>
+          <!-- PLACEHOLDER: professional photograph of Tyler Butler.
+               Per the brand direction, real photography over stock.
+               Alt text describes who and what, since this image carries
+               meaning rather than decoration. -->
+          <img src="assets/img/tyler-butler.jpg"
+               alt="Tyler Butler, founder and principal of Collaboration for Good"
+               width="800" height="1000"
+               loading="lazy">
+        </div>
+
+        <div class="founder__body" data-reveal>
+          <p class="eyebrow">Founder</p>
+          <h2 class="h2" id="founder-heading">Tyler Butler</h2>
+
+          <div class="prose">
+            <p>
+              Tyler has spent more than a decade building social impact programs
+              for companies including Microsoft, GoDaddy, Lyft, Nissan,
+              Bridgestone, and Shell &mdash; and writing about the practice as a
+              contributor to Forbes, Fortune, and Fast Company.
+            </p>
+            <p>
+              She founded Collaboration for Good in 2023 to do the work
+              directly: helping organizations build responsibility programs that
+              are operationally real, publicly defensible, and genuinely useful
+              to the communities they touch.
+            </p>
+          </div>
+
+          <a class="btn btn--outline founder__cta" href="about.html">Read her full background</a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         PRESS STRIP
+         The publications Tyler contributes to. This is third-party credibility
+         and it currently appears nowhere on the live site.
+         ================================================================== -->
+    <section class="section section--dark press" aria-labelledby="press-heading">
+      <div class="container">
+
+        <h2 class="eyebrow" id="press-heading">Featured expert contributor</h2>
+
+        <!-- PLACEHOLDER: if licensed publication logos become available, swap
+             this text list for images. Text is used here deliberately —
+             publication logos are trademarked and using them without
+             permission is a real legal exposure for a firm that advises on
+             corporate ethics. Text citation carries no such risk. -->
+        <ul class="press__list" data-reveal data-reveal-stagger>
+          <li class="press__item">Forbes</li>
+          <li class="press__item">Fortune</li>
+          <li class="press__item">Fast Company</li>
+          <li class="press__item">U.S. News</li>
+          <li class="press__item">InBusiness Phoenix</li>
+          <li class="press__item">Green Living</li>
+        </ul>
+
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         SELECTED CLIENTS
+         ================================================================== -->
+    <section class="section clients" aria-labelledby="clients-heading">
+      <div class="container">
+
+        <div class="section-head">
+          <p class="eyebrow">Selected clients</p>
+          <h2 class="h2" id="clients-heading">Who we&rsquo;ve done this for</h2>
+        </div>
+
+        <!-- PLACEHOLDER: confirm with Tyler which client names she is
+             contractually permitted to display publicly before launch. Some
+             consulting agreements prohibit naming clients — this list comes
+             from the discovery audit, not from signed permission. -->
+        <ul class="clients__list" data-reveal data-reveal-stagger>
+          <li class="clients__item">Microsoft</li>
+          <li class="clients__item">GoDaddy</li>
+          <li class="clients__item">Lyft</li>
+          <li class="clients__item">Nissan</li>
+          <li class="clients__item">Bridgestone</li>
+          <li class="clients__item">Shell</li>
+          <li class="clients__item">WebPT</li>
+          <li class="clients__item">Weedmaps</li>
+          <li class="clients__item">Aventiv</li>
+          <li class="clients__item">UTI</li>
+        </ul>
+
+        <a class="btn btn--text clients__cta" href="impact.html">
+          See the work <span class="btn__arrow" aria-hidden="true">&rarr;</span>
+        </a>
+
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         CTA BAND
+         Terminal conversion block. Repeated on every page.
+         ================================================================== -->
+    <section class="cta-band" aria-labelledby="cta-heading">
+      <div class="container">
+        <h2 class="cta-band__title" id="cta-heading">
+          Ready to build something that holds up?
+        </h2>
+        <a class="btn btn--outline" href="contact.html">Start a conversation</a>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ======================================================================
+       SITE FOOTER
+       ====================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+
+      <div class="site-footer__top">
+
+        <!-- Brand column -->
+        <div>
+          <p class="site-footer__heading">Collaboration for Good</p>
+          <p class="meta" style="color: rgba(245,242,238,0.75); max-width: 34ch;">
+            A social impact consultancy in Phoenix, Arizona. Building corporate
+            responsibility programs that survive scrutiny.
+          </p>
+        </div>
+
+        <!-- Navigation column. A second <nav> landmark, labelled so it is
+             distinguishable from the main navigation. -->
+        <nav aria-label="Footer">
+          <p class="site-footer__heading">Navigate</p>
+          <ul class="site-footer__list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="capabilities.html">Capabilities</a></li>
+            <li><a href="impact.html">Impact</a></li>
+            <li><a href="insights.html">Insights</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+
+        <!-- Contact column. <address> is the correct semantic element for
+             contact details belonging to the nearest article or document. -->
+        <div>
+          <p class="site-footer__heading">Contact</p>
+          <address class="site-footer__list" style="font-style: normal;">
+            <a href="mailto:connect@collaborationforgood.com">connect@collaborationforgood.com</a>
+            <a href="tel:+14804318580">480.431.8580</a>
+            <span>3219 E. Camelback Rd. #299<br>Phoenix, AZ 85018</span>
+          </address>
+        </div>
+
+      </div>
+
+      <div class="site-footer__bottom">
+
+        <!-- main.js writes the current year into the data-current-year span. -->
+        <p>&copy; <span data-current-year>2026</span> Collaboration For Good, LLC. All rights reserved.</p>
+
+        <!-- PLACEHOLDER: confirm every social URL before launch. The progress
+             doc flags one of the four current footer icons as already broken.
+             `rel="noopener"` prevents the opened page from getting a reference
+             back to this window (a known security issue with target="_blank");
+             `noreferrer` also strips the referrer header. -->
+        <div class="site-footer__social">
+          <a href="https://www.linkedin.com/in/tylerjbutler" target="_blank" rel="noopener noreferrer">
+            LinkedIn
+          </a>
+          <a href="https://muckrack.com/tylerjbutler_" target="_blank" rel="noopener noreferrer">
+            MuckRack
+          </a>
+          <a href="https://www.behance.net/tylerbutler" target="_blank" rel="noopener noreferrer">
+            Behance
+          </a>
+        </div>
+
+      </div>
     </div>
-    <p class="section-note">Full page mockups built against The Protagonist design system. These begin after Phase 2 strategy and information architecture are locked with Tyler.</p>
-    <div class="grid">
+  </footer>
 
-      <div class="card inactive">
-        <div class="card-badges"><span class="badge badge-pending">Not Started</span></div>
-        <p class="card-title">Home</p>
-        <p class="card-desc">Primary landing page · hero, value prop, social proof, CTA.</p>
-        <div class="card-footer">
-          <span class="card-link disabled">Pending Phase 2</span>
-        </div>
-      </div>
 
-      <div class="card inactive">
-        <div class="card-badges"><span class="badge badge-pending">Not Started</span></div>
-        <p class="card-title">About</p>
-        <p class="card-desc">Tyler's bio · Forbes credentials · client history · personal brand.</p>
-        <div class="card-footer">
-          <span class="card-link disabled">Pending Phase 2</span>
-        </div>
-      </div>
+  <!-- ======================================================================
+       STRUCTURED DATA (JSON-LD)
 
-      <div class="card inactive">
-        <div class="card-badges"><span class="badge badge-pending">Not Started</span></div>
-        <p class="card-title">Capabilities</p>
-        <p class="card-desc">Collaborate / Create / Report / Lead framework.</p>
-        <div class="card-footer">
-          <span class="card-link disabled">Pending Phase 2</span>
-        </div>
-      </div>
+       Machine-readable description of the organization for search engines.
+       Placed at the end of <body> because it is not needed for rendering.
 
-      <div class="card inactive">
-        <div class="card-badges"><span class="badge badge-pending">Not Started</span></div>
-        <p class="card-title">Impact / Case Studies</p>
-        <p class="card-desc">Microsoft, GoDaddy, Lyft, Bridgestone — documented results.</p>
-        <div class="card-footer">
-          <span class="card-link disabled">Pending Phase 2</span>
-        </div>
-      </div>
+       ProfessionalService is a subtype of LocalBusiness — it inherits the
+       local signals (address, phone, geo) that matter for a Phoenix firm
+       trying to rank in local search, which the progress doc identifies as
+       the highest-leverage available SEO move.
+       ====================================================================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Collaboration for Good",
+    "legalName": "Collaboration For Good, LLC",
+    "url": "https://collaborationforgood.com/",
+    "logo": "https://collaborationforgood.com/assets/img/cfg-logo.png",
+    "description": "Phoenix-based social impact consultancy specializing in corporate social responsibility, ESG strategy, and community partnership programs.",
+    "foundingDate": "2023-01",
+    "email": "connect@collaborationforgood.com",
+    "telephone": "+1-480-431-8580",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "3219 E. Camelback Rd. #299",
+      "addressLocality": "Phoenix",
+      "addressRegion": "AZ",
+      "postalCode": "85018",
+      "addressCountry": "US"
+    },
+    "areaServed": "US",
+    "founder": {
+      "@type": "Person",
+      "name": "Tyler Butler",
+      "jobTitle": "Founder & Principal",
+      "sameAs": [
+        "https://www.linkedin.com/in/tylerjbutler",
+        "https://muckrack.com/tylerjbutler_",
+        "https://www.behance.net/tylerbutler"
+      ]
+    },
+    "knowsAbout": [
+      "Corporate Social Responsibility",
+      "ESG Strategy",
+      "B Corp Certification",
+      "Social Impact Measurement",
+      "Cross-Sector Partnerships"
+    ]
+  }
+  </script>
 
-      <div class="card inactive">
-        <div class="card-badges"><span class="badge badge-pending">Not Started</span></div>
-        <p class="card-title">Insights / Blog</p>
-        <p class="card-desc">Forbes column integration · content syndication strategy.</p>
-        <div class="card-footer">
-          <span class="card-link disabled">Pending Phase 2</span>
-        </div>
-      </div>
 
-      <div class="card inactive">
-        <div class="card-badges"><span class="badge badge-pending">Not Started</span></div>
-        <p class="card-title">Contact</p>
-        <p class="card-desc">First build · fixes "Send us a Massage" · Calendly integration.</p>
-        <div class="card-footer">
-          <span class="card-link disabled">Pending Phase 2</span>
-        </div>
-      </div>
+  <!-- ======================================================================
+       SCRIPTS
 
-    </div>
-  </div>
+       `defer` downloads the file in parallel with HTML parsing, then executes
+       it after the DOM is complete but before DOMContentLoaded fires. That
+       gives us non-blocking loading AND a guaranteed-ready DOM, which is why
+       neither file needs a DOMContentLoaded wrapper.
 
-</main>
-
-<footer>
-  <span class="footer-copy">Collaboration for Good, LLC &nbsp;·&nbsp; 3219 E. Camelback Rd. #299, Phoenix, AZ 85018</span>
-  <span class="footer-note">Feedback? Reply to your weekly status email.</span>
-</footer>
+       Order is preserved with defer, so main.js always runs before home.js.
+       ====================================================================== -->
+  <script src="js/main.js" defer></script>
+  <script src="js/video.js" defer></script>
+  <script src="js/home.js" defer></script>
 
 </body>
 </html>

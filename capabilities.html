@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  COLLABORATION FOR GOOD — capabilities.html
+  ============================================================================
+  Presents CFG's four-part service framework: Collaborate / Create / Report /
+  Lead.
+
+  DESIGN DECISION — WHY FULL SECTIONS INSTEAD OF AN ACCORDION:
+  An accordion would be more compact, but it hides the majority of the page's
+  substantive content behind a click. That costs on two fronts: search engines
+  weight visible content more heavily than collapsed content, and a prospect
+  evaluating a consultancy wants to scan everything on offer without
+  interrogating the interface. The sticky sub-navigation gives us the
+  wayfinding benefit of an accordion without hiding anything.
+  ============================================================================
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>CSR, ESG &amp; Impact Reporting Services | Collaboration for Good</title>
+  <meta name="description"
+        content="Cross-sector partnerships, CSR program design, ESG and impact reporting, and executive advisory for companies serious about social responsibility.">
+
+  <link rel="canonical" href="https://collaborationforgood.com/capabilities.html">
+
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Collaboration for Good">
+  <meta property="og:title" content="Capabilities | Collaboration for Good">
+  <meta property="og:description"
+        content="Collaborate, Create, Report, Lead — four ways we help companies build responsibility programs that work.">
+  <meta property="og:url" content="https://collaborationforgood.com/capabilities.html">
+  <meta property="og:image" content="https://collaborationforgood.com/assets/img/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/capabilities.css">
+  <link rel="stylesheet" href="css/video.css">
+</head>
+
+<body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ===== SITE HEADER ================================================== -->
+  <header class="site-header" data-header>
+    <div class="container site-header__inner">
+      <a class="site-logo" href="index.html">
+        <img class="site-logo__mark" src="assets/img/cfg-heart-mark.png" alt="" width="28" height="28">
+        <span>Collaboration for Good</span>
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        <ul class="site-nav__list">
+          <li><a class="site-nav__link" href="index.html" data-nav-link>Home</a></li>
+          <li><a class="site-nav__link" href="about.html" data-nav-link>About</a></li>
+          <li><a class="site-nav__link" href="capabilities.html" data-nav-link aria-current="page">Capabilities</a></li>
+          <li><a class="site-nav__link" href="impact.html" data-nav-link>Impact</a></li>
+          <li><a class="site-nav__link" href="insights.html" data-nav-link>Insights</a></li>
+          <li><a class="btn btn--primary" href="contact.html">Start a conversation</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false"
+              aria-controls="nav-drawer" data-nav-toggle>
+        <span class="nav-toggle__bar" aria-hidden="true"></span>
+        <span class="nav-toggle__bar" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== MOBILE DRAWER ================================================ -->
+  <div class="nav-drawer" id="nav-drawer" data-nav-drawer>
+    <button class="nav-drawer__close" type="button" aria-label="Close menu" data-nav-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <nav aria-label="Mobile">
+      <ul class="nav-drawer__list">
+        <li><a class="nav-drawer__link" href="index.html">Home</a></li>
+        <li><a class="nav-drawer__link" href="about.html">About</a></li>
+        <li><a class="nav-drawer__link" href="capabilities.html">Capabilities</a></li>
+        <li><a class="nav-drawer__link" href="impact.html">Impact</a></li>
+        <li><a class="nav-drawer__link" href="insights.html">Insights</a></li>
+        <li><a class="nav-drawer__link" href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-drawer__footer">
+      <p><a href="mailto:connect@collaborationforgood.com">connect@collaborationforgood.com</a></p>
+      <p><a href="tel:+14804318580">480.431.8580</a></p>
+      <p>Phoenix, Arizona</p>
+    </div>
+  </div>
+
+
+  <main class="site-main" id="main" tabindex="-1">
+
+    <!-- ===== PAGE HERO ================================================== -->
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">Capabilities</p>
+        <h1 class="h1 page-hero__title">
+          Four ways we work.<br>
+          <span class="accent">One standard.</span>
+        </h1>
+        <p class="lead">
+          Every engagement is built around the same question: will this hold up
+          when someone who does not work here starts asking how it works?
+        </p>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         CAPABILITIES BODY
+         Two columns on desktop: sticky sub-nav on the left, service sections
+         on the right. On mobile the sub-nav becomes a horizontally scrolling
+         strip pinned under the header.
+         ================================================================== -->
+    <div class="container capabilities">
+
+      <!-- Sticky sub-navigation.
+           `data-scrollspy-nav` is the JS hook. The links are real anchor
+           links, so they work perfectly with JavaScript disabled — the script
+           only adds the active-state highlighting on top. -->
+      <nav class="cap-nav" aria-label="Capabilities" data-scrollspy-nav>
+        <ul class="cap-nav__list">
+          <li><a class="cap-nav__link" href="#collaborate" data-scrollspy-link>Collaborate</a></li>
+          <li><a class="cap-nav__link" href="#create" data-scrollspy-link>Create</a></li>
+          <li><a class="cap-nav__link" href="#report" data-scrollspy-link>Report</a></li>
+          <li><a class="cap-nav__link" href="#lead" data-scrollspy-link>Lead</a></li>
+        </ul>
+      </nav>
+
+      <div class="cap-body">
+
+        <!-- ============ 01 · COLLABORATE ============ -->
+        <!-- The id is the anchor target for both the sub-nav and the home
+             page's "Learn more" links. `data-scrollspy-section` is what the
+             observer in capabilities.js watches. -->
+        <section class="cap-block" id="collaborate" data-scrollspy-section
+                 aria-labelledby="collaborate-heading">
+
+          <p class="cap-block__index" aria-hidden="true">01</p>
+          <h2 class="h2 cap-block__title" id="collaborate-heading">Collaborate</h2>
+
+          <p class="lead cap-block__lead">
+            Partnerships between companies, nonprofits, and community
+            organizations that produce measurable outcomes.
+          </p>
+
+          <div class="prose">
+            <p>
+              Most corporate-nonprofit partnerships fail quietly. The company
+              writes a check, the nonprofit sends a thank-you, and neither side
+              can describe what changed. We design partnerships where both
+              parties have something at stake and a defined result they are
+              jointly accountable for.
+            </p>
+          </div>
+
+          <!-- Deliverables list. This one uses visible markers because the
+               reader is scanning for specifics — a run-on paragraph would
+               bury exactly what a prospect is looking for. -->
+          <ul class="deliverables">
+            <li class="deliverables__item">Partner identification and vetting</li>
+            <li class="deliverables__item">Partnership structure and governance design</li>
+            <li class="deliverables__item">Shared measurement frameworks</li>
+            <li class="deliverables__item">Employee volunteer program design</li>
+            <li class="deliverables__item">Community advisory board formation</li>
+          </ul>
+        </section>
+
+
+        <!-- ============ 02 · CREATE ============ -->
+        <section class="cap-block" id="create" data-scrollspy-section
+                 aria-labelledby="create-heading">
+
+          <p class="cap-block__index" aria-hidden="true">02</p>
+          <h2 class="h2 cap-block__title" id="create-heading">Create</h2>
+
+          <p class="lead cap-block__lead">
+            CSR and ESG programs designed around what your business actually
+            does.
+          </p>
+
+          <div class="prose">
+            <p>
+              A responsibility program borrowed from a competitor will read as
+              borrowed. We build from the operating model outward: where the
+              company already has scale, expertise, or relationships that make
+              a real difference, and where its footprint creates an obligation
+              it has not yet met.
+            </p>
+          </div>
+
+          <ul class="deliverables">
+            <li class="deliverables__item">Materiality assessment and stakeholder mapping</li>
+            <li class="deliverables__item">CSR and ESG strategy development</li>
+            <li class="deliverables__item">Program architecture and rollout planning</li>
+            <li class="deliverables__item">Internal governance and ownership model</li>
+            <li class="deliverables__item">Budget framework and resourcing plan</li>
+          </ul>
+        </section>
+
+
+        <!-- ============ 03 · REPORT ============ -->
+        <section class="cap-block" id="report" data-scrollspy-section
+                 aria-labelledby="report-heading">
+
+          <p class="cap-block__index" aria-hidden="true">03</p>
+          <h2 class="h2 cap-block__title" id="report-heading">Report</h2>
+
+          <p class="lead cap-block__lead">
+            Impact and ESG reporting built to be audited, not admired.
+          </p>
+
+          <div class="prose">
+            <p>
+              Investors, regulators, and B Lab assessors are all asking harder
+              questions than they were five years ago, and a glossy PDF of
+              smiling volunteers no longer answers any of them. We build
+              reporting against recognized frameworks and we are direct about
+              what cannot yet be measured.
+            </p>
+          </div>
+
+          <ul class="deliverables">
+            <li class="deliverables__item">Annual impact and CSR report production</li>
+            <li class="deliverables__item">ESG disclosure aligned to GRI, SASB, or TCFD</li>
+            <li class="deliverables__item">B Impact Assessment preparation and support</li>
+            <li class="deliverables__item">KPI definition and measurement systems</li>
+            <li class="deliverables__item">Third-party verification readiness</li>
+          </ul>
+        </section>
+
+
+        <!-- ============ 04 · LEAD ============ -->
+        <section class="cap-block" id="lead" data-scrollspy-section
+                 aria-labelledby="lead-heading">
+
+          <p class="cap-block__index" aria-hidden="true">04</p>
+          <h2 class="h2 cap-block__title" id="lead-heading">Lead</h2>
+
+          <p class="lead cap-block__lead">
+            Executive and board-level counsel for leaders who own this
+            personally.
+          </p>
+
+          <div class="prose">
+            <p>
+              Social impact fails when it is delegated to a department with no
+              budget authority and no line to the executive team. This work is
+              for CEOs, boards, and senior leaders who intend to own the
+              outcome &mdash; including the parts that are uncomfortable to
+              say publicly.
+            </p>
+          </div>
+
+          <ul class="deliverables">
+            <li class="deliverables__item">Executive advisory and strategic counsel</li>
+            <li class="deliverables__item">Board education and presentation support</li>
+            <li class="deliverables__item">Crisis and reputation guidance</li>
+            <li class="deliverables__item">Leadership positioning and thought leadership</li>
+            <li class="deliverables__item">Speaking engagements and workshops</li>
+          </ul>
+        </section>
+
+      </div>
+    </div>
+
+
+
+    <!-- ==================================================================
+         EXPLAINER FILM — "Connection Is the Catalyst"
+
+         PLACEMENT REASONING: the script is about bringing the right partners and experts together, which is the Collaborate capability stated in film form. It sits after the four capability blocks so it summarizes rather than pre-empts them.
+
+         Facade pattern: poster + button only. video.js injects the real
+         player on click. Nothing is fetched until the visitor asks.
+         ================================================================== -->
+    <section class="section section--dark  film" aria-labelledby="film-heading">
+      <div class="container">
+
+        <div class="section-head">
+          <p class="eyebrow">Watch</p>
+          <h2 class="h2" id="film-heading">Connection is the catalyst</h2>
+        </div>
+
+        <!-- PLACEHOLDER: real sources pending Phase 5 delivery. -->
+        <div class="video-facade"
+             data-video-facade
+             data-video-mp4="assets/video/film-connection-is-the-catalyst.mp4"
+             data-video-webm="assets/video/film-connection-is-the-catalyst.webm"
+             data-video-title="Connection Is the Catalyst - Collaboration for Good"
+             data-reveal>
+
+          <!-- PLACEHOLDER: 1280x720 poster frame from the film. -->
+          <img class="video-facade__poster"
+               src="assets/img/video-poster.jpg"
+               alt="Collaboration for Good film: Connection Is the Catalyst"
+               width="1280" height="720"
+               loading="lazy" decoding="async">
+
+          <button class="video-facade__play" type="button"
+                  aria-label="Play the film: Connection Is the Catalyst">
+            <span class="video-facade__play-icon" aria-hidden="true">&#9654;</span>
+          </button>
+
+        </div>
+
+        <p class="video-facade__meta">
+          <span>Connection Is the Catalyst</span>
+          <span class="video-facade__duration">30 seconds</span>
+        </p>
+
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         WHO WE WORK WITH
+         Qualifying section. Naming who this ISN'T for is a deliberate
+         positioning move — a consultancy that claims to serve everyone reads
+         as serving no one in particular.
+         ================================================================== -->
+    <section class="section section--dark fit" aria-labelledby="fit-heading">
+      <div class="container grid--split">
+
+        <div>
+          <p class="eyebrow">Fit</p>
+          <h2 class="h2" id="fit-heading">Who this is for</h2>
+        </div>
+
+        <div class="prose" data-reveal>
+          <p>
+            We work best with organizations that have already decided
+            responsibility matters and now need it to function &mdash;
+            mid-market and enterprise companies, foundations, and
+            mission-driven brands preparing for B Corp certification.
+          </p>
+          <p>
+            We are a poor fit for companies looking for a communications
+            campaign to sit on top of an unchanged operating model. That work
+            exists and other firms do it well.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ===== CTA BAND ================================================== -->
+    <section class="cta-band" aria-labelledby="cta-heading">
+      <div class="container">
+        <h2 class="cta-band__title" id="cta-heading">
+          Not sure which of these you need?
+        </h2>
+        <a class="btn btn--outline" href="contact.html">Start a conversation</a>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ===== SITE FOOTER ================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__top">
+        <div>
+          <p class="site-footer__heading">Collaboration for Good</p>
+          <p class="meta" style="color: rgba(245,242,238,0.75); max-width: 34ch;">
+            A social impact consultancy in Phoenix, Arizona. Building corporate
+            responsibility programs that survive scrutiny.
+          </p>
+        </div>
+        <nav aria-label="Footer">
+          <p class="site-footer__heading">Navigate</p>
+          <ul class="site-footer__list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="capabilities.html">Capabilities</a></li>
+            <li><a href="impact.html">Impact</a></li>
+            <li><a href="insights.html">Insights</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div>
+          <p class="site-footer__heading">Contact</p>
+          <address class="site-footer__list" style="font-style: normal;">
+            <a href="mailto:connect@collaborationforgood.com">connect@collaborationforgood.com</a>
+            <a href="tel:+14804318580">480.431.8580</a>
+            <span>3219 E. Camelback Rd. #299<br>Phoenix, AZ 85018</span>
+          </address>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>&copy; <span data-current-year>2026</span> Collaboration For Good, LLC. All rights reserved.</p>
+        <div class="site-footer__social">
+          <a href="https://www.linkedin.com/in/tylerjbutler" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://muckrack.com/tylerjbutler_" target="_blank" rel="noopener noreferrer">MuckRack</a>
+          <a href="https://www.behance.net/tylerbutler" target="_blank" rel="noopener noreferrer">Behance</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ======================================================================
+       STRUCTURED DATA — service catalog.
+
+       `OfferCatalog` describes a structured list of services. This is what
+       makes the four capabilities eligible to appear as distinct offerings
+       rather than as undifferentiated page text.
+       ====================================================================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "ProfessionalService",
+    "name": "Collaboration for Good",
+    "url": "https://collaborationforgood.com/",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Social Impact Consulting Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Collaborate",
+            "description": "Cross-sector partnership design between companies, nonprofits, and community organizations."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Create",
+            "description": "CSR and ESG program strategy and architecture built around the client's operating model."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Report",
+            "description": "Impact reporting, ESG disclosure, and B Impact Assessment preparation."
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Lead",
+            "description": "Executive advisory and board-level counsel on corporate social responsibility."
+          }
+        }
+      ]
+    }
+  }
+  </script>
+
+  <script src="js/main.js" defer></script>
+  <script src="js/video.js" defer></script>
+  <script src="js/capabilities.js" defer></script>
+
+</body>
+</html>

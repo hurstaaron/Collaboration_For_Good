@@ -1,0 +1,226 @@
+/* ==========================================================================
+   COLLABORATION FOR GOOD — capabilities.css
+   Page-specific styles for capabilities.html ONLY. Loaded after base.css.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. INTERIOR PAGE HERO
+   ========================================================================== */
+
+.page-hero {
+  padding-block: clamp(3rem, 2rem + 5vw, 6rem) clamp(2rem, 1.5rem + 3vw, 4rem);
+}
+
+.page-hero__title {
+  max-width: 20ch;
+  margin-bottom: var(--space-md);
+  text-wrap: balance;
+}
+
+
+/* ==========================================================================
+   2. PAGE LAYOUT
+   Single column on mobile; sub-nav column plus content column on desktop.
+   ========================================================================== */
+
+.capabilities {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-lg);
+  padding-bottom: var(--space-2xl);
+}
+
+@media (min-width: 62rem) {       /* 992px — same breakpoint as the main nav */
+  .capabilities {
+    /* Fixed 14rem nav column. A fixed width (not a fraction) keeps the nav
+       from stretching on ultrawide screens, where a 400px-wide list of four
+       short words would look broken. */
+    grid-template-columns: 14rem 1fr;
+    gap: var(--space-2xl);
+  }
+}
+
+
+/* ==========================================================================
+   3. STICKY SUB-NAVIGATION
+   ========================================================================== */
+
+.cap-nav {
+  /* MOBILE BEHAVIOR: pinned directly under the fixed site header as a
+     horizontally scrollable strip. `position: sticky` with a top value equal
+     to the header height (4.5rem) parks it exactly beneath. */
+  position: sticky;
+  top: 4.5rem;
+  z-index: 10;
+
+  /* Full-bleed background so content scrolling underneath is covered. The
+     negative margin + matching padding trick pushes the background out past
+     the container gutter while keeping the content inside it. */
+  margin-inline: calc(var(--gutter) * -1);
+  padding: var(--space-2xs) var(--gutter);
+  background-color: var(--bg-page);
+  border-bottom: var(--border-hair);
+}
+
+.cap-nav__list {
+  display: flex;
+  gap: var(--space-md);
+
+  /* Horizontal scroll on narrow screens rather than wrapping to two rows,
+     which would double the height of a sticky element and eat the viewport. */
+  overflow-x: auto;
+
+  /* Hides the scrollbar on Firefox and IE while keeping scroll functional.
+     WebKit gets the same treatment in the rule below. */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.cap-nav__list::-webkit-scrollbar {
+  display: none;
+}
+
+.cap-nav__link {
+  display: block;
+  padding-block: var(--space-2xs);
+
+  /* `nowrap` stops "Collaborate" breaking across two lines inside the strip. */
+  white-space: nowrap;
+
+  font-size: var(--size-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--text-muted);
+  transition: color var(--dur-fast) var(--ease);
+}
+
+/* Active state, applied by capabilities.js as the reader scrolls. The
+   attribute selector — not a class — because aria-current is simultaneously
+   the accessible state and the styling hook, which means the two can never
+   fall out of sync. */
+.cap-nav__link[aria-current="true"] {
+  color: var(--color-red);
+}
+
+@media (min-width: 62rem) {
+
+  .cap-nav {
+    /* DESKTOP BEHAVIOR: becomes a vertical rail that sticks alongside the
+       content. All the mobile full-bleed and border treatment is reversed. */
+    top: 7rem;
+    align-self: start;            /* Required for sticky inside a grid —
+                                     see the same note in about.css */
+    margin-inline: 0;
+    padding: 0;
+    background: none;
+    border-bottom: none;
+  }
+
+  .cap-nav__list {
+    flex-direction: column;
+    gap: var(--space-xs);
+    overflow-x: visible;
+  }
+
+  .cap-nav__link {
+    /* Left padding makes room for the red active indicator drawn below. */
+    padding-left: var(--space-sm);
+    border-left: 2px solid transparent;
+    transition: color var(--dur-fast) var(--ease),
+                border-color var(--dur-fast) var(--ease);
+  }
+
+  .cap-nav__link[aria-current="true"] {
+    border-left-color: var(--color-red);
+  }
+}
+
+
+/* ==========================================================================
+   4. CAPABILITY BLOCKS
+   ========================================================================== */
+
+.cap-block {
+  padding-block: var(--space-xl);
+  border-bottom: var(--border-hair);
+
+  /* Pushes the anchor target down clear of the fixed header AND the sticky
+     sub-nav when a #hash link jumps here. Without this the section heading
+     lands underneath both bars and appears to have been skipped.
+     This is a per-element refinement of the global scroll-padding-top set on
+     <html> in base.css — needed because this page has two stacked sticky
+     elements instead of one. */
+  scroll-margin-top: 8.5rem;
+}
+
+/* `:last-child` removes the trailing rule so the final block doesn't have a
+   line hanging below it with nothing underneath. */
+.cap-block:last-child {
+  border-bottom: none;
+}
+
+.cap-block__index {
+  margin-bottom: var(--space-2xs);
+  font-family: var(--font-display);
+  font-size: var(--size-h2);
+  font-weight: 500;
+  line-height: 1;
+  color: var(--color-red);
+}
+
+.cap-block__title {
+  margin-bottom: var(--space-sm);
+}
+
+.cap-block__lead {
+  margin-bottom: var(--space-md);
+}
+
+
+/* ==========================================================================
+   5. DELIVERABLES LIST
+   ========================================================================== */
+
+.deliverables {
+  margin-top: var(--space-lg);
+  border-top: var(--border-hair);
+}
+
+.deliverables__item {
+  position: relative;
+  padding: var(--space-xs) 0 var(--space-xs) var(--space-md);
+  border-bottom: var(--border-hair);
+  font-size: var(--size-small);
+}
+
+/* Custom marker drawn with a pseudo-element rather than a list-style bullet.
+   This gives full control over color, size, and position — a native bullet
+   cannot be styled red and cannot be aligned precisely against the text
+   baseline the way this can. */
+.deliverables__item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+
+  /* 1.05em down positions the dot on the text's optical center line rather
+     than its box top. `em` rather than `px` so it tracks the font size if the
+     type scale changes. */
+  top: 1.05em;
+
+  width: 6px;
+  height: 6px;
+  background-color: var(--color-red);
+  border-radius: 50%;
+}
+
+
+/* ==========================================================================
+   6. FIT SECTION
+   ========================================================================== */
+
+.fit .prose p + p {
+  margin-top: var(--space-md);
+}

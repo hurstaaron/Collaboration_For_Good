@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<!--
+  ============================================================================
+  COLLABORATION FOR GOOD — about.html
+  ============================================================================
+  NOTE ON COMMENTS: the full explanation of the shared <head> tags, header,
+  drawer, and footer lives in index.html. It is not repeated on every page —
+  duplicated comments go stale independently and become misleading. Comments
+  here cover only what is NEW or DIFFERENT on this page.
+
+  STRATEGIC PURPOSE OF THIS PAGE: the discovery audit found that Tyler's
+  personal brand (Forbes/Fortune/Fast Company contributor, Fortune 100 client
+  history, 30+ board appointments) is materially stronger than CFG's company
+  brand — and appears nowhere on the current site. This page is the primary
+  fix. It also carries the mission/values content CFG needs in place to be
+  "certification-ready on day one" for B Corp.
+  ============================================================================
+-->
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>About Tyler Butler &amp; Our Approach | Collaboration for Good</title>
+  <meta name="description"
+        content="Tyler Butler founded Collaboration for Good after a decade building social impact programs for Microsoft, GoDaddy, Lyft, and Shell. Forbes and Fortune contributor.">
+
+  <link rel="canonical" href="https://collaborationforgood.com/about.html">
+
+  <meta property="og:type" content="profile">
+  <meta property="og:site_name" content="Collaboration for Good">
+  <meta property="og:title" content="About Tyler Butler | Collaboration for Good">
+  <meta property="og:description"
+        content="A decade of social impact work for Fortune 100 companies. Forbes, Fortune, and Fast Company contributor.">
+  <meta property="og:url" content="https://collaborationforgood.com/about.html">
+  <meta property="og:image" content="https://collaborationforgood.com/assets/img/og-image.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="icon" type="image/png" href="assets/img/favicon.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@400;500;700&display=swap"
+    rel="stylesheet">
+
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/about.css">
+  <link rel="stylesheet" href="css/video.css">
+</head>
+
+<body>
+
+  <a class="skip-link" href="#main">Skip to main content</a>
+
+  <!-- ===== SITE HEADER (identical across all pages) ===================== -->
+  <header class="site-header" data-header>
+    <div class="container site-header__inner">
+      <a class="site-logo" href="index.html">
+        <img class="site-logo__mark" src="assets/img/cfg-heart-mark.png" alt="" width="28" height="28">
+        <span>Collaboration for Good</span>
+      </a>
+      <nav class="site-nav" aria-label="Main">
+        <ul class="site-nav__list">
+          <li><a class="site-nav__link" href="index.html" data-nav-link>Home</a></li>
+          <!-- aria-current marks THIS page in the navigation. -->
+          <li><a class="site-nav__link" href="about.html" data-nav-link aria-current="page">About</a></li>
+          <li><a class="site-nav__link" href="capabilities.html" data-nav-link>Capabilities</a></li>
+          <li><a class="site-nav__link" href="impact.html" data-nav-link>Impact</a></li>
+          <li><a class="site-nav__link" href="insights.html" data-nav-link>Insights</a></li>
+          <li><a class="btn btn--primary" href="contact.html">Start a conversation</a></li>
+        </ul>
+      </nav>
+      <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false"
+              aria-controls="nav-drawer" data-nav-toggle>
+        <span class="nav-toggle__bar" aria-hidden="true"></span>
+        <span class="nav-toggle__bar" aria-hidden="true"></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ===== MOBILE DRAWER ================================================ -->
+  <div class="nav-drawer" id="nav-drawer" data-nav-drawer>
+    <button class="nav-drawer__close" type="button" aria-label="Close menu" data-nav-close>
+      <span aria-hidden="true">&times;</span>
+    </button>
+    <nav aria-label="Mobile">
+      <ul class="nav-drawer__list">
+        <li><a class="nav-drawer__link" href="index.html">Home</a></li>
+        <li><a class="nav-drawer__link" href="about.html">About</a></li>
+        <li><a class="nav-drawer__link" href="capabilities.html">Capabilities</a></li>
+        <li><a class="nav-drawer__link" href="impact.html">Impact</a></li>
+        <li><a class="nav-drawer__link" href="insights.html">Insights</a></li>
+        <li><a class="nav-drawer__link" href="contact.html">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="nav-drawer__footer">
+      <p><a href="mailto:connect@collaborationforgood.com">connect@collaborationforgood.com</a></p>
+      <p><a href="tel:+14804318580">480.431.8580</a></p>
+      <p>Phoenix, Arizona</p>
+    </div>
+  </div>
+
+
+  <main class="site-main" id="main" tabindex="-1">
+
+    <!-- ==================================================================
+         PAGE HERO
+         Shorter than the home hero. Interior pages state their subject and
+         get out of the way — a full-viewport hero on every page is a pattern
+         that wastes the reader's time on the pages they navigated to on
+         purpose.
+         ================================================================== -->
+    <section class="page-hero">
+      <div class="container">
+        <p class="eyebrow">About</p>
+        <h1 class="h1 page-hero__title">
+          Nine years of doing this work.<br>
+          <span class="accent">Three years doing it our way.</span>
+        </h1>
+        <p class="lead">
+          Collaboration for Good exists because corporate responsibility is too
+          often designed to be announced rather than to work.
+        </p>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         FOUNDER — the anchor content of this page
+         `grid--split` gives a narrow media column and a wide text column.
+         ================================================================== -->
+    <section class="section founder-full" aria-labelledby="founder-heading">
+      <div class="container grid--split">
+
+        <!-- Sticky portrait: on desktop the image stays fixed in the viewport
+             while the biography scrolls past it. `position: sticky` needs a
+             `top` value and a parent that is not `overflow: hidden` — both
+             handled in about.css. -->
+        <div class="founder-full__media" data-reveal>
+          <!-- PLACEHOLDER: professional portrait of Tyler Butler.
+               Brand direction specifies real photography over stock. -->
+          <img src="assets/img/tyler-butler-portrait.jpg"
+               alt="Tyler Butler, founder and principal of Collaboration for Good"
+               width="800" height="1000" loading="lazy">
+          <p class="meta founder-full__caption">
+            Tyler Butler &middot; Founder &amp; Principal
+          </p>
+        </div>
+
+        <div class="founder-full__body" data-reveal>
+          <p class="eyebrow">Founder &amp; Principal</p>
+          <h2 class="h2" id="founder-heading">Tyler Butler</h2>
+
+          <div class="prose">
+            <!-- PLACEHOLDER: this biography is assembled from the discovery
+                 audit and Founder_Bio_CFG.docx. Tyler must review and approve
+                 the final wording before launch — this is her professional
+                 record and she gets the last word on it. -->
+            <p>
+              Tyler Butler has spent more than a decade helping large
+              organizations turn stated values into operating practice. Her
+              client work spans Microsoft, GoDaddy, Lyft, Nissan, Bridgestone,
+              Shell, WebPT, Weedmaps, Aventiv, and Universal Technical
+              Institute.
+            </p>
+            <p>
+              She founded her first consultancy in 2016 and launched
+              Collaboration for Good in 2023 to focus the practice: fewer
+              engagements, deeper work, and programs built to be measured
+              rather than promoted.
+            </p>
+            <p>
+              Tyler writes about corporate responsibility as a featured expert
+              contributor to Forbes, Fortune, and Fast Company, and has been
+              recognized by Forbes among its Outstanding Businesswomen. She has
+              served on more than thirty nonprofit and advisory boards across
+              Arizona and nationally.
+            </p>
+          </div>
+
+          <!-- Credential list. <dl> is the correct element for label/value
+               pairs — a description list, not a bulleted list. Screen readers
+               announce the relationship between each term and its detail. -->
+          <dl class="credential-list">
+            <div class="credential-list__row">
+              <dt class="credential-list__term">Writing</dt>
+              <dd class="credential-list__detail">
+                Forbes &middot; Fortune &middot; Fast Company &middot; U.S. News
+                &middot; InBusiness Phoenix &middot; Green Living
+              </dd>
+            </div>
+            <div class="credential-list__row">
+              <dt class="credential-list__term">Recognition</dt>
+              <dd class="credential-list__detail">
+                Forbes Outstanding Businesswomen, 2019
+              </dd>
+            </div>
+            <div class="credential-list__row">
+              <dt class="credential-list__term">Service</dt>
+              <dd class="credential-list__detail">
+                30+ nonprofit and advisory board appointments
+              </dd>
+            </div>
+            <div class="credential-list__row">
+              <dt class="credential-list__term">Based in</dt>
+              <dd class="credential-list__detail">Phoenix, Arizona</dd>
+            </div>
+          </dl>
+
+          <a class="btn btn--outline" href="insights.html">Read her writing</a>
+        </div>
+
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         HOW WE WORK — the engagement sequence.
+         Numbered markers are used here because the content genuinely IS a
+         sequence: each step depends on the one before it. Numbering content
+         that has no inherent order is decoration, not structure.
+         ================================================================== -->
+    <section class="section section--dark approach" aria-labelledby="approach-heading">
+      <div class="container">
+
+        <div class="section-head">
+          <p class="eyebrow">Approach</p>
+          <h2 class="h2" id="approach-heading">How an engagement actually runs</h2>
+        </div>
+
+        <!-- <ol> not <ul>, because the order carries meaning. -->
+        <ol class="grid approach__list" data-reveal data-reveal-stagger>
+
+          <li class="card">
+            <span class="card__index" aria-hidden="true">01</span>
+            <h3 class="h3">Understand the business</h3>
+            <p>
+              Before anything else: what the company makes, who it affects, and
+              where its actual leverage sits. A responsibility program that
+              ignores the operating model is a donation, not a strategy.
+            </p>
+          </li>
+
+          <li class="card">
+            <span class="card__index" aria-hidden="true">02</span>
+            <h3 class="h3">Find the honest position</h3>
+            <p>
+              Every organization has a defensible place to stand and several
+              indefensible ones. We identify which claims survive contact with
+              an informed critic &mdash; and drop the rest.
+            </p>
+          </li>
+
+          <li class="card">
+            <span class="card__index" aria-hidden="true">03</span>
+            <h3 class="h3">Build the mechanism</h3>
+            <p>
+              Governance, partnerships, budget, ownership, and the internal
+              process that keeps the program running after the launch meeting.
+            </p>
+          </li>
+
+          <li class="card">
+            <span class="card__index" aria-hidden="true">04</span>
+            <h3 class="h3">Measure and report</h3>
+            <p>
+              Numbers that mean something, reported in a form investors,
+              regulators, and B Lab assessors accept. If it cannot be measured,
+              we say so rather than inventing a metric.
+            </p>
+          </li>
+
+        </ol>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         VALUES
+         PLACEHOLDER: Tyler must confirm final values wording.
+
+         B-CORP NOTE: publicly stated mission and values are a scored
+         component of the B Impact Assessment governance section. Having this
+         content live and indexed before certification is submitted is worth
+         real points, which is why it earns a dedicated section rather than a
+         line in the footer.
+         ================================================================== -->
+    <section class="section values" aria-labelledby="values-heading">
+      <div class="container">
+
+        <div class="section-head">
+          <p class="eyebrow">What we hold to</p>
+          <h2 class="h2" id="values-heading">Four commitments</h2>
+        </div>
+
+        <div class="grid--two values__grid" data-reveal data-reveal-stagger>
+
+          <div class="value">
+            <h3 class="h3 value__title">Say the true thing</h3>
+            <p>
+              We will tell a client their program does not work. That is the
+              service. A consultant who only confirms what leadership already
+              believes is an expensive mirror.
+            </p>
+          </div>
+
+          <div class="value">
+            <h3 class="h3 value__title">Community first, always</h3>
+            <p>
+              The people a program is meant to serve are consulted before it is
+              designed, not surveyed after it launches.
+            </p>
+          </div>
+
+          <div class="value">
+            <h3 class="h3 value__title">Build it to outlast us</h3>
+            <p>
+              Success is the client running the program without us. Engagements
+              are designed to end.
+            </p>
+          </div>
+
+          <div class="value">
+            <h3 class="h3 value__title">Hold ourselves to it</h3>
+            <p>
+              Collaboration for Good is pursuing B Corp certification. We
+              publish our own commitments so they can be checked.
+            </p>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ==================================================================
+         B CORP STATUS
+         Transparency block. PLACEHOLDER: update the status language and add
+         the certification date once B Lab confirms.
+         ================================================================== -->
+    <section class="section section--warm bcorp" aria-labelledby="bcorp-heading">
+      <div class="container container--narrow">
+        <p class="eyebrow">Accountability</p>
+        <h2 class="h2" id="bcorp-heading" data-reveal>
+          We are in the middle of our own B Corp assessment.
+        </h2>
+        <div class="prose bcorp__body" data-reveal>
+          <p>
+            It would be difficult to advise companies on measurable social
+            responsibility without submitting to the same standard. Collaboration
+            for Good is working through the B Impact Assessment and will publish
+            our score when certification completes.
+          </p>
+          <!-- PLACEHOLDER: replace with actual BIA score and target date once
+               Tyler confirms. Do not publish a number that isn't verified. -->
+          <p class="meta">Assessment in progress &middot; Status updated quarterly</p>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- ==================================================================
+         EXPLAINER FILM — "Building Better Business Through Community"
+
+         PLACEMENT REASONING: the script is about values and why the firm exists, which is exactly what the About page argues. It sits after the values and B Corp sections so the film confirms a claim the reader has just finished reading rather than making it cold.
+
+         Facade pattern: poster + button only. video.js injects the real
+         player on click. Nothing is fetched until the visitor asks.
+         ================================================================== -->
+    <section class="section  film" aria-labelledby="film-heading">
+      <div class="container">
+
+        <div class="section-head">
+          <p class="eyebrow">Watch</p>
+          <h2 class="h2" id="film-heading">Strong businesses are built on strong communities</h2>
+        </div>
+
+        <!-- PLACEHOLDER: real sources pending Phase 5 delivery. -->
+        <div class="video-facade"
+             data-video-facade
+             data-video-mp4="assets/video/film-building-better-business.mp4"
+             data-video-webm="assets/video/film-building-better-business.webm"
+             data-video-title="Building Better Business Through Community - Collaboration for Good"
+             data-reveal>
+
+          <!-- PLACEHOLDER: 1280x720 poster frame from the film. -->
+          <img class="video-facade__poster"
+               src="assets/img/video-poster.jpg"
+               alt="Collaboration for Good film: Building Better Business Through Community"
+               width="1280" height="720"
+               loading="lazy" decoding="async">
+
+          <button class="video-facade__play" type="button"
+                  aria-label="Play the film: Building Better Business Through Community">
+            <span class="video-facade__play-icon" aria-hidden="true">&#9654;</span>
+          </button>
+
+        </div>
+
+        <p class="video-facade__meta">
+          <span>Building Better Business Through Community</span>
+          <span class="video-facade__duration">30 seconds</span>
+        </p>
+
+      </div>
+    </section>
+
+
+    <!-- ===== CTA BAND ================================================== -->
+    <section class="cta-band" aria-labelledby="cta-heading">
+      <div class="container">
+        <h2 class="cta-band__title" id="cta-heading">
+          Tell us what you&rsquo;re trying to build.
+        </h2>
+        <a class="btn btn--outline" href="contact.html">Start a conversation</a>
+      </div>
+    </section>
+
+  </main>
+
+
+  <!-- ===== SITE FOOTER (identical across all pages) ===================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="site-footer__top">
+        <div>
+          <p class="site-footer__heading">Collaboration for Good</p>
+          <p class="meta" style="color: rgba(245,242,238,0.75); max-width: 34ch;">
+            A social impact consultancy in Phoenix, Arizona. Building corporate
+            responsibility programs that survive scrutiny.
+          </p>
+        </div>
+        <nav aria-label="Footer">
+          <p class="site-footer__heading">Navigate</p>
+          <ul class="site-footer__list">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About</a></li>
+            <li><a href="capabilities.html">Capabilities</a></li>
+            <li><a href="impact.html">Impact</a></li>
+            <li><a href="insights.html">Insights</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </nav>
+        <div>
+          <p class="site-footer__heading">Contact</p>
+          <address class="site-footer__list" style="font-style: normal;">
+            <a href="mailto:connect@collaborationforgood.com">connect@collaborationforgood.com</a>
+            <a href="tel:+14804318580">480.431.8580</a>
+            <span>3219 E. Camelback Rd. #299<br>Phoenix, AZ 85018</span>
+          </address>
+        </div>
+      </div>
+      <div class="site-footer__bottom">
+        <p>&copy; <span data-current-year>2026</span> Collaboration For Good, LLC. All rights reserved.</p>
+        <div class="site-footer__social">
+          <a href="https://www.linkedin.com/in/tylerjbutler" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+          <a href="https://muckrack.com/tylerjbutler_" target="_blank" rel="noopener noreferrer">MuckRack</a>
+          <a href="https://www.behance.net/tylerbutler" target="_blank" rel="noopener noreferrer">Behance</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+  <!-- ======================================================================
+       STRUCTURED DATA — Person schema for Tyler.
+
+       This is the mechanism by which Google can associate the Forbes byline,
+       the MuckRack profile, and the LinkedIn account as the SAME person. The
+       `sameAs` array is exactly what powers entity consolidation and is the
+       structured-data half of the personal brand consolidation strategy.
+       ====================================================================== -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Tyler Butler",
+    "jobTitle": "Founder & Principal",
+    "worksFor": {
+      "@type": "Organization",
+      "name": "Collaboration For Good, LLC",
+      "url": "https://collaborationforgood.com/"
+    },
+    "url": "https://collaborationforgood.com/about.html",
+    "image": "https://collaborationforgood.com/assets/img/tyler-butler-portrait.jpg",
+    "description": "Social impact strategist and Forbes contributor specializing in corporate social responsibility, ESG, and cross-sector partnerships.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressLocality": "Phoenix",
+      "addressRegion": "AZ",
+      "addressCountry": "US"
+    },
+    "sameAs": [
+      "https://www.linkedin.com/in/tylerjbutler",
+      "https://muckrack.com/tylerjbutler_",
+      "https://www.behance.net/tylerbutler"
+    ],
+    "knowsAbout": [
+      "Corporate Social Responsibility",
+      "ESG Strategy",
+      "B Corp Certification",
+      "Cross-Sector Partnerships"
+    ]
+  }
+  </script>
+
+  <script src="js/main.js" defer></script>
+  <script src="js/video.js" defer></script>
+  <script src="js/about.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,165 @@
+/* ==========================================================================
+   COLLABORATION FOR GOOD — about.css
+   Page-specific styles for about.html ONLY. Loaded after base.css.
+   ========================================================================== */
+
+
+/* ==========================================================================
+   1. INTERIOR PAGE HERO
+   Shared visual pattern across all five interior pages. It is defined once
+   per page rather than in base.css because each page tunes its own spacing —
+   if these ever converge to identical values, promote the rule to base.css.
+   ========================================================================== */
+
+.page-hero {
+  padding-block: clamp(3rem, 2rem + 5vw, 6rem) clamp(2rem, 1.5rem + 3vw, 4rem);
+}
+
+.page-hero__title {
+  max-width: 20ch;                /* Forces a deliberate line break point */
+  margin-bottom: var(--space-md);
+  text-wrap: balance;
+}
+
+
+/* ==========================================================================
+   2. FOUNDER SECTION
+   ========================================================================== */
+
+.founder-full__media img {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  border-radius: var(--radius);
+}
+
+.founder-full__caption {
+  margin-top: var(--space-2xs);
+  font-size: var(--size-label);
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+}
+
+/* Desktop only: the portrait sticks in place while the long biography beside
+   it scrolls. This keeps Tyler's face on screen for the entire time the
+   reader spends with her credentials — the whole strategic point of the page.
+   Applied only at 48rem+ because on mobile the columns stack and a sticky
+   image would just cover the text it is meant to accompany. */
+@media (min-width: 48rem) {
+  .founder-full__media {
+    position: sticky;
+
+    /* Must clear the 4.5rem fixed header plus a little breathing room. */
+    top: 6rem;
+
+    /* `align-self: start` is REQUIRED here. Grid items default to `stretch`,
+       which makes this item as tall as its row — and an element that already
+       fills the container has no room left to stick within. This one line is
+       the difference between sticky working and silently doing nothing. */
+    align-self: start;
+  }
+}
+
+
+/* ==========================================================================
+   3. CREDENTIAL LIST
+   A <dl> of term/detail pairs. Hairline-ruled rows, print-directory styling.
+   ========================================================================== */
+
+.credential-list {
+  margin-block: var(--space-lg);
+  border-top: var(--border-hair);
+}
+
+.credential-list__row {
+  display: grid;
+  grid-template-columns: 1fr;     /* Stacked on mobile */
+  gap: var(--space-3xs);
+  padding-block: var(--space-sm);
+  border-bottom: var(--border-hair);
+}
+
+@media (min-width: 34rem) {       /* ~544px */
+  .credential-list__row {
+    /* Narrow label column, wide detail column. Aligns every term so the eye
+       can scan straight down the left edge. */
+    grid-template-columns: 9rem 1fr;
+    gap: var(--space-md);
+    align-items: baseline;        /* Baseline, not center — text aligns to
+                                     its own baseline, which looks correct
+                                     when the two columns have different
+                                     font sizes */
+  }
+}
+
+.credential-list__term {
+  font-size: var(--size-label);
+  font-weight: 500;
+  letter-spacing: var(--track-label);
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.credential-list__detail {
+  /* <dd> carries a default 40px left indent in every browser. Zeroing it is
+     required or the detail column will not align with its own grid track. */
+  margin-inline-start: 0;
+  font-size: var(--size-small);
+}
+
+
+/* ==========================================================================
+   4. SECTION HEADER (shared pattern)
+   ========================================================================== */
+
+.section-head {
+  max-width: 40ch;
+  margin-bottom: var(--space-xl);
+}
+
+
+/* ==========================================================================
+   5. APPROACH — numbered sequence cards
+   ========================================================================== */
+
+.approach__list {
+  /* Wider minimum than the base grid: these cards carry a large numeral plus
+     a heading plus a paragraph, and cramping them makes the numeral collide
+     with the heading on tablet widths. */
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr));
+}
+
+/* The numeral gets its own space below it, separating it from the heading. */
+.approach__list .card__index {
+  margin-bottom: var(--space-2xs);
+}
+
+
+/* ==========================================================================
+   6. VALUES
+   ========================================================================== */
+
+.values__grid {
+  gap: var(--space-xl);
+}
+
+.value {
+  /* The red top rule is the same structural device used on .stat and
+     .eyebrow — repeating one motif across components is what makes a set of
+     sections read as a single system rather than assorted parts. */
+  padding-top: var(--space-md);
+  border-top: 2px solid var(--color-red);
+}
+
+.value__title {
+  margin-bottom: var(--space-2xs);
+}
+
+
+/* ==========================================================================
+   7. B CORP BLOCK
+   ========================================================================== */
+
+.bcorp__body {
+  margin-top: var(--space-md);
+}
